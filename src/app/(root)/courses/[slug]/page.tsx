@@ -5,6 +5,16 @@ import { instructors } from "./instructor";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { config } from "@/config";
+import { TCourse, TServerResponse } from "@/types";
+
+const fetchCourseDetails = async (
+	slug: string
+): Promise<TServerResponse<TCourse>> => {
+	const res = await fetch(`${config.backend_url}/course/slug/${slug}`);
+	const data = await res.json();
+	return data;
+};
 
 export default async function CourseDetails({
 	params,
@@ -12,35 +22,31 @@ export default async function CourseDetails({
 	params: Promise<{ slug: string }>;
 }) {
 	const slug = (await params).slug;
-	console.log(slug);
+	const course = await fetchCourseDetails(slug);
+
 	return (
 		<div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 				<div>
-					<h3>Full stack Web Developement with javascript(MERN)</h3>
+					<h3>{course?.result?.title}</h3>
 					<p className="my-3 text-muted-foreground">
-						Lorem ipsum dolor sit amet consectetur, adipisicing
-						elit. Dolores illum sunt veniam magnam! Maxime quod
-						fugit quae voluptas! Dolore, veniam assumenda at
-						repudiandae nulla suscipit id a qui sit tenetur cumque
-						quaerat vel necessitatibus magni, voluptatibus enim
-						debitis expedita eveniet voluptate similique reiciendis
-						earum. Repellendus cumque ratione esse blanditiis eos!
+						{course?.result?.description}
 					</p>
 					<ul className="grid grid-cols-2 lg:grid-cols-4 gap-2 *:bg-white">
 						<li className="inline-flex gap-x-2 items-center p-2 rounded-md text-sm">
 							<DollarSign />
-							4000
+							{course?.result?.price}
 						</li>
 						<li className="inline-flex gap-x-2 items-center p-2 rounded-md text-sm">
-							<List />3 Projects
+							<List /> {Math.round(Math.random() * 10)} Projects
 						</li>
 						<li className="inline-flex gap-x-2 items-center p-2 rounded-md text-sm">
-							<Layers />3 Modules
+							<Layers />
+							{course?.result?.modules?.length} Modules
 						</li>
 						<li className="inline-flex gap-x-2 items-center p-2 rounded-md text-sm">
 							<SquarePlay />
-							48 videos
+							{Math.round(Math.random() * 20)} Videos
 						</li>
 					</ul>
 
@@ -52,12 +58,10 @@ export default async function CourseDetails({
 				</div>
 				<div className="h-[280px] md:h-[350px] w-full overflow-hidden">
 					<Image
-						src={
-							"https://plus.unsplash.com/premium_photo-1678565879444-f87c8bd9f241?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D"
-						}
+						src={course?.result?.thumbnail}
 						height={400}
 						width={400}
-						alt="web development"
+						alt={course?.result?.title}
 						className="w-full h-full object-cover object-center rounded-md"
 					/>
 				</div>

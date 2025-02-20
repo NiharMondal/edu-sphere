@@ -1,36 +1,98 @@
+"use client";
 import { ArrowLeftCircle, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "./progress-bar";
+import { Input } from "@/components/ui/input";
+import { TModule, TServerResponse } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
+import { config } from "@/config";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ReactPlayer from "react-player/youtube";
+const fetchModules = async (): Promise<TServerResponse<TModule[]>> => {
+	const res = await fetch(`${config.backend_url}/module/course/module`);
+	const data = await res.json();
+	return data;
+};
 
 export default function Lecture() {
+	const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
+	const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
+
+	const {
+		data: modules,
+		isPending,
+		error,
+	} = useQuery({ queryKey: ["module"], queryFn: fetchModules });
+
+	// Get current module and lecture
+	const currentModule = modules?.result[currentModuleIndex];
+	const currentLecture = currentModule?.lectures[currentLectureIndex];
+
+	if (isPending) return "Please wait...";
+	if (error) return "An error occured...";
+
+	const handleNext = () => {
+		if (currentLectureIndex < currentModule!.lectures.length - 1) {
+			setCurrentLectureIndex(currentLectureIndex + 1);
+		} else if (currentModuleIndex < modules?.result?.length - 1) {
+			// Move to the next module if available
+			setCurrentModuleIndex(currentModuleIndex + 1);
+			setCurrentLectureIndex(0);
+		}
+	};
+
+	const handlePrev = () => {
+		if (currentLectureIndex > 0) {
+			setCurrentLectureIndex(currentLectureIndex - 1);
+		} else if (currentModuleIndex > 0) {
+			// Move to the last lecture of the previous module
+			setCurrentModuleIndex(currentModuleIndex - 1);
+			setCurrentLectureIndex(
+				modules?.result?.[currentModuleIndex - 1].lectures.length - 1
+			);
+		}
+	};
+
+	console.log(currentLecture?.url);
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-8">
 			<div className="h-[400px] lg:col-span-2">
 				<h4 className="font-semibold inline-flex gap-x-3 mb-2">
-					<span>
+					<Link href={"/courses"}>
 						<ArrowLeftCircle />
-					</span>
-					Course Name
+					</Link>
+					{currentLecture?.title}
 				</h4>
-				<iframe
-					className="w-full h-full rounded-md"
-					src="https://www.youtube.com/embed/VmFOsK7IhI4?si=EV3cHVVUTpIlnThK"
-					title="YouTube video player"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					referrerPolicy="strict-origin-when-cross-origin"
-					allowFullScreen
-				></iframe>
+				<div className="h-[350px] md:h-[400px] w-full">
+					{currentLecture?.type === "video" ? (
+						<ReactPlayer url={currentLecture?.url} />
+					) : (
+						<p>Lecture type not supported</p>
+					)}
+					<div className="flex items-center justify-end gap-x-5 mt-3">
+						<Button
+							size={"sm"}
+							variant={"outline"}
+							onClick={handlePrev}
+						>
+							Previous
+						</Button>
+						<Button size={"sm"} onClick={handleNext}>
+							Next
+						</Button>
+					</div>
+				</div>
 			</div>
 			<div className="lg:col-span-1 bg-gray-200  p-3 rounded-md">
 				<div className="flex items-center justify-between border-b border-muted-foreground pb-3">
-					<p>Module: 1 </p>
+					<p>Module: {currentModule?.index} </p>
 
 					<ProgressBar />
 				</div>
@@ -44,184 +106,28 @@ export default function Lecture() {
 						<Search />
 					</span>
 				</div>
-				<div className="overflow-y-scroll max-h-[470px] ">
+				<div className="max-h-[470px]">
 					<Accordion type="single" collapsible>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-1"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
-						<AccordionItem
-							value="item-2"
-							className="border-b border-muted"
-						>
-							<AccordionTrigger className="text-lg hover:no-underline">
-								Is it accessible?
-							</AccordionTrigger>
-							<AccordionContent>
-								Yes. It adheres to the WAI-ARIA design pattern.
-							</AccordionContent>
-						</AccordionItem>
+						{modules?.result?.map((module) => (
+							<AccordionItem
+								value={module._id}
+								className="border-b border-muted"
+								key={module._id}
+							>
+								<AccordionTrigger className="text-lg hover:no-underline">
+									{module.title}
+								</AccordionTrigger>
+								<AccordionContent>
+									{module?.lectures?.map((lecture) => (
+										<ul key={lecture._id} className="pl-5">
+											<li className="divide-y">
+												{lecture.title}
+											</li>
+										</ul>
+									))}
+								</AccordionContent>
+							</AccordionItem>
+						))}
 					</Accordion>
 				</div>
 			</div>
