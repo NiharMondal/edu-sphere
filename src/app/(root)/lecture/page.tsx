@@ -24,7 +24,7 @@ const fetchModules = async (): Promise<TServerResponse<TModule[]>> => {
 export default function Lecture() {
 	const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
 	const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
-
+	console.log(currentLectureIndex);
 	const {
 		data: modules,
 		isPending,
@@ -63,31 +63,52 @@ export default function Lecture() {
 	console.log(currentLecture?.url);
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-8">
-			<div className="h-[400px] lg:col-span-2">
+			<div className="lg:col-span-2">
 				<h4 className="font-semibold inline-flex gap-x-3 mb-2">
 					<Link href={"/courses"}>
 						<ArrowLeftCircle />
 					</Link>
 					{currentLecture?.title}
 				</h4>
-				<div className="h-[350px] md:h-[400px] w-full">
+				<div className="h-[320px] md:h-[450px] overflow-hidden">
 					{currentLecture?.type === "video" ? (
-						<ReactPlayer url={currentLecture?.url} />
+						<ReactPlayer
+							url={currentLecture?.url}
+							width={"100%"}
+							height={"100%"}
+							style={{ borderRadius: "12px", overflow: "hidden" }}
+						/>
 					) : (
 						<p>Lecture type not supported</p>
 					)}
-					<div className="flex items-center justify-end gap-x-5 mt-3">
-						<Button
-							size={"sm"}
-							variant={"outline"}
-							onClick={handlePrev}
-						>
-							Previous
-						</Button>
-						<Button size={"sm"} onClick={handleNext}>
-							Next
-						</Button>
-					</div>
+				</div>
+				<div className="flex items-center justify-end gap-x-5 mt-2">
+					<Button
+						size={"sm"}
+						variant={"outline"}
+						onClick={handlePrev}
+						className={`${
+							currentModuleIndex === 0 &&
+							currentLectureIndex === 0
+								? "cursor-not-allowed"
+								: "cursor-pointer"
+						} `}
+					>
+						Previous
+					</Button>
+					<Button
+						size={"sm"}
+						onClick={handleNext}
+						className={`${
+							currentModuleIndex === modules?.result.length - 1 &&
+							currentLectureIndex ===
+								currentModule!.lectures.length - 1
+								? "cursor-not-allowed"
+								: "cursor-pointer"
+						} `}
+					>
+						Next
+					</Button>
 				</div>
 			</div>
 			<div className="lg:col-span-1 bg-gray-200  p-3 rounded-md">
