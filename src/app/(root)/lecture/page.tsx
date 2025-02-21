@@ -14,7 +14,7 @@ import {
 import { config } from "@/config";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import ReactPlayer from "react-player/youtube";
+import ReactPlayer from "react-player";
 const fetchModules = async (): Promise<TServerResponse<TModule[]>> => {
 	const res = await fetch(`${config.backend_url}/module/course/module`);
 	const data = await res.json();
