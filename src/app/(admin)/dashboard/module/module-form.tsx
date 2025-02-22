@@ -79,12 +79,12 @@ export default function ModuleForm() {
 			toast(error?.data?.message);
 		},
 	});
-	if (isPending) return "Please wait...";
-	if (error) return "An error occured";
-
 	const handleModule = async (values: z.infer<typeof moduleSchema>) => {
 		mutation.mutate(values);
 	};
+
+	if (isPending) return "Please wait...";
+	if (error) return "An error occured";
 
 	return (
 		<Form {...form}>

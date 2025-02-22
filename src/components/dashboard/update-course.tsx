@@ -17,14 +17,24 @@ import { Input } from "@/components/ui/input";
 import { createCourseSchema } from "@/form-schema";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TCourse } from "@/types";
 import { config } from "@/config";
+import { useEffect } from "react";
 
-const createCourse = async (payload: Partial<TCourse>) => {
+const fetchCourse = async (courseId: string) => {
 	try {
-		const res = await fetch(`${config.backend_url}/course`, {
-			method: "POST",
+		const res = await fetch(`${config.backend_url}/course/${courseId}`);
+		const data = await res.json();
+		return data;
+	} catch (error) {
+		console.log(error);
+	}
+};
+const updateCourse = async (courseId: string, payload: Partial<TCourse>) => {
+	try {
+		const res = await fetch(`${config.backend_url}/course/${courseId}`, {
+			method: "PATCH",
 			body: JSON.stringify(payload),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -34,34 +44,61 @@ const createCourse = async (payload: Partial<TCourse>) => {
 		return error;
 	}
 };
-export default function CreateCourse() {
-	const queryClient = new QueryClient();
+
+export default function UpdateCourse({ courseId }: { courseId: string }) {
+	const queryClient = useQueryClient();
+
+	const {
+		data: course,
+		isPending,
+		error,
+	} = useQuery({
+		queryKey: ["single-course", courseId],
+		queryFn: () => fetchCourse(courseId),
+		enabled: !!courseId,
+	});
 
 	const form = useForm<z.infer<typeof createCourseSchema>>({
 		resolver: zodResolver(createCourseSchema),
 		defaultValues: {
-			thumbnail: "",
-			title: "",
-			price: 0,
-			description: "",
+			thumbnail: course?.result?.thumbnail || "",
+			title: course?.result.title || "",
+			price: course?.result?.price || 0,
+			description: course?.result?.description || "",
 		},
 	});
 
+	useEffect(() => {
+		if (course?.result) {
+			form.reset({
+				thumbnail: course.result.thumbnail || "",
+				title: course.result.title || "",
+				price: course.result.price || 0,
+				description: course.result.description || "",
+			});
+		}
+	}, [course?.result, courseId, form]);
+
 	const mutation = useMutation({
-		mutationFn: createCourse,
+		mutationFn: (payload: Partial<TCourse>) =>
+			updateCourse(courseId, payload),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["course"] });
-			toast("Course has been created");
+			queryClient.invalidateQueries({
+				queryKey: ["course"],
+			});
+			toast("Module has been updated");
 		},
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onError: (error: any) => {
 			toast(error?.data?.message);
 		},
 	});
-	const handleCourse = async (values: z.infer<typeof createCourseSchema>) => {
+	const handleCourse = (values: z.infer<typeof createCourseSchema>) => {
 		mutation.mutate(values);
 	};
 
+	if (isPending) return "Please wait...";
+	if (error) return "An error occured";
 	return (
 		<Form {...form}>
 			<form
@@ -131,7 +168,7 @@ export default function CreateCourse() {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">Create course</Button>
+				<Button type="submit">Update course</Button>
 			</form>
 		</Form>
 	);

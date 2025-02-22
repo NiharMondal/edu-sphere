@@ -1,7 +1,7 @@
 "use client";
 import { config } from "@/config";
-import { TModule, TServerResponse } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { TLecture, TModule, TServerResponse } from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import {
 	Form,
@@ -24,6 +24,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const fetchModule = async (): Promise<TServerResponse<TModule[]>> => {
 	const res = await fetch(`${config.backend_url}/module/course/module`);
@@ -31,7 +32,25 @@ const fetchModule = async (): Promise<TServerResponse<TModule[]>> => {
 	return course;
 };
 
-export default function LectureForm() {
+const createLecture = async (payload: Partial<TLecture>) => {
+	try {
+		const res = await fetch(
+			`${config.backend_url}/lecture/module/${payload.module}/create`,
+			{
+				method: "POST",
+				body: JSON.stringify(payload),
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+		const data = await res.json();
+		return data;
+	} catch (error) {
+		return error;
+	}
+};
+
+export default function CreateLecture() {
+	const queryClient = useQueryClient();
 	const form = useForm<z.infer<typeof lectureSchema>>({
 		resolver: zodResolver(lectureSchema),
 		defaultValues: {
@@ -48,18 +67,27 @@ export default function LectureForm() {
 		error,
 	} = useQuery({ queryKey: ["module"], queryFn: fetchModule });
 
+	const mutation = useMutation({
+		mutationFn: createLecture,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["lecture"] });
+			toast("Lecture has been created");
+		},
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		onError: (error: any) => {
+			toast(error?.data?.message);
+		},
+	});
+	async function handleLecture(values: z.infer<typeof lectureSchema>) {
+		mutation.mutate(values);
+	}
+
 	if (isPending) return "Please wait...";
 	if (error) return "An error occured";
-
-	function createModule(values: z.infer<typeof lectureSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
-	}
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(createModule)}
+				onSubmit={form.handleSubmit(handleLecture)}
 				className="space-y-8"
 			>
 				<FormField
@@ -67,7 +95,20 @@ export default function LectureForm() {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Course title</FormLabel>
+							<FormLabel>Lecture title</FormLabel>
+							<FormControl>
+								<Input placeholder="Title" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="url"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>URL</FormLabel>
 							<FormControl>
 								<Input placeholder="Title" {...field} />
 							</FormControl>
@@ -84,6 +125,7 @@ export default function LectureForm() {
 							<Select
 								onValueChange={field.onChange}
 								required={true}
+								{...field}
 							>
 								<FormControl>
 									<SelectTrigger>
@@ -108,13 +150,14 @@ export default function LectureForm() {
 				/>
 				<FormField
 					control={form.control}
-					name="module"
+					name="type"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Select Course</FormLabel>
+							<FormLabel>Select Type</FormLabel>
 							<Select
 								onValueChange={field.onChange}
 								required={true}
+								{...field}
 							>
 								<FormControl>
 									<SelectTrigger>
@@ -131,7 +174,7 @@ export default function LectureForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">Create Module</Button>
+				<Button type="submit">Create lecture</Button>
 			</form>
 		</Form>
 	);

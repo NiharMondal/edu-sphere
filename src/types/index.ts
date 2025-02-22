@@ -9,7 +9,7 @@ export type TCourse = {
 	thumbnail: string;
 	title: string;
 	description: string;
-	price: string;
+	price: number;
 	slug: string;
 	modules: string[];
 	createdAt: string;
@@ -24,12 +24,35 @@ export type TModule = {
 	createdAt: string;
 	updatedAt: string;
 };
-
+export type TModuleResponse = {
+	_id: string;
+	title: string;
+	index: string;
+	course: {
+		title: string;
+		_id: string;
+	};
+	lectures: TLecture[];
+	createdAt: string;
+	updatedAt: string;
+};
 export type TLecture = {
 	_id: string;
 	title: string;
 	type: string;
 	module: string;
+	url: string;
+	createdAt: string;
+	updatedAt: string;
+};
+export type TLectureResponse = {
+	_id: string;
+	title: string;
+	type: string;
+	module: {
+		title: string;
+		_id: string;
+	};
 	url: string;
 	createdAt: string;
 	updatedAt: string;

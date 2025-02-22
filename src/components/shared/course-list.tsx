@@ -9,27 +9,26 @@ type Props = {
 	role: "admin" | "user";
 };
 
+const fetchCourses = async (): Promise<TServerResponse<TCourse[]>> => {
+	const res = await fetch(`${config.backend_url}/course`);
+	const courses = await res.json();
+	return courses;
+};
 export default function CourseList({ role }: Props) {
-	const fetchTodos = async (): Promise<TServerResponse<TCourse[]>> => {
-		const res = await fetch(`${config.backend_url}/course`);
-		const courses = await res.json();
-		return courses;
-	};
-
 	const {
 		data: courses,
 		isLoading,
 		error,
 	} = useQuery({
 		queryKey: ["course"],
-		queryFn: fetchTodos,
+		queryFn: fetchCourses,
 	});
 
 	if (isLoading) return "Loading...";
 	if (error) return "An error occured";
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-			{courses?.result.map((course) => (
+			{courses?.result?.map((course) => (
 				<CourseCard key={course._id} data={course} role={role} />
 			))}
 		</div>

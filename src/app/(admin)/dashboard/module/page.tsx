@@ -1,15 +1,23 @@
-import React from "react";
+"use client";
+
+import Modal from "@/components/shared/modal";
+import { useState } from "react";
 import ModuleForm from "./module-form";
-import CustomModal from "@/components/shared/custom-modal";
-import { DialogTitle } from "@/components/ui/dialog";
+
+import ModuleTable from "@/components/dashboard/module-table";
 
 export default function Module() {
+	const [open, setOpen] = useState(false);
 	return (
 		<div className="space-y-5">
-			<CustomModal button_label="Create Module">
-				<DialogTitle>Create Module</DialogTitle>
+			<Modal
+				isOpen={open}
+				onOpenChange={setOpen}
+				triggerText="Create Moddule"
+			>
 				<ModuleForm />
-			</CustomModal>
+			</Modal>
+			<ModuleTable />
 		</div>
 	);
 }

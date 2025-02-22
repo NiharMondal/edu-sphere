@@ -1,3 +1,4 @@
+"use client";
 import {
 	Card,
 	CardDescription,
@@ -8,15 +9,46 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { ArrowRight, Delete, Edit } from "lucide-react";
+import { ArrowRight, Delete } from "lucide-react";
 import { TCourse } from "@/types";
+import Modal from "./modal";
+import { useState } from "react";
+import UpdateCourse from "../dashboard/update-course";
+import { config } from "@/config";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 type Props = {
 	data: TCourse;
 	role?: "admin" | "user";
 };
+const deleteCourse = async (courseId: string) => {
+	const res = await fetch(`${config.backend_url}/course/${courseId}`, {
+		method: "DELETE",
+	});
 
+	if (!res.ok) {
+		throw new Error("Failed to delete course");
+	}
+
+	return res.json(); // Return the response after deletion
+};
 export default function CourseCard({ data, role }: Props) {
+	const queryClient = useQueryClient();
+	const [open, setOpen] = useState(false);
+
+	const mutation = useMutation({
+		mutationFn: (courseId: string) => deleteCourse(courseId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["course"] });
+			toast.success("Course deleted successfully!");
+		},
+		onError: (error) => {
+			toast.error("Failed to delete course");
+			console.error(error);
+		},
+	});
+
 	return (
 		<Card className="overflow-hidden hover:ring-1 hover:ring-primary">
 			<div className="h-[200px]">
@@ -46,11 +78,18 @@ export default function CourseCard({ data, role }: Props) {
 
 				{role && (
 					<div className="flex items-center justify-between w-full mt-3 text-xs">
-						<span className="inline-flex items-center  gap-x-2 p-2 rounded-md bg-green-300 hover:bg-green-400 text-gray-700 cursor-pointer">
-							<Edit size={18} /> Edit
-						</span>
+						<Modal
+							isOpen={open}
+							onOpenChange={setOpen}
+							triggerText="Edit"
+						>
+							<UpdateCourse courseId={data?._id} />
+						</Modal>
 
-						<span className="inline-flex items-center  gap-x-2 p-2 rounded-md bg-destructive/75 hover:bg-destructive text-destructive-foreground cursor-pointer">
+						<span
+							className="inline-flex items-center  gap-x-2 p-2 rounded-md bg-destructive/75 hover:bg-destructive text-destructive-foreground cursor-pointer"
+							onClick={() => mutation.mutate(data?._id)}
+						>
 							<Delete size={18} /> Delete
 						</span>
 					</div>
