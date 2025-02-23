@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 type Props = {
-	role: "admin" | "user";
+	role?: "admin";
 };
 
 const fetchCourses = async (): Promise<TServerResponse<TCourse[]>> => {

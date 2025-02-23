@@ -35,7 +35,7 @@ const fetchCourse = async (): Promise<TServerResponse<TCourse[]>> => {
 	return course;
 };
 
-const createModule = async (values: { title: string; course: string }) => {
+const createModule = async (values: { title: string; course?: string }) => {
 	try {
 		const res = await fetch(
 			`${config.backend_url}/module/course/${values.course}/create`,
@@ -85,7 +85,7 @@ export default function ModuleForm() {
 
 	if (isPending) return "Please wait...";
 	if (error) return "An error occured";
-
+	if (courses?.result.length === 0) return "No course found!";
 	return (
 		<Form {...form}>
 			<form

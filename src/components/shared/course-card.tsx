@@ -20,7 +20,7 @@ import { toast } from "sonner";
 
 type Props = {
 	data: TCourse;
-	role?: "admin" | "user";
+	role?: string;
 };
 const deleteCourse = async (courseId: string) => {
 	const res = await fetch(`${config.backend_url}/course/${courseId}`, {
