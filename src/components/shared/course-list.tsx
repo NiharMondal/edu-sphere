@@ -7,21 +7,30 @@ import React from "react";
 
 type Props = {
 	role?: "admin";
+	search?: string | string[] | undefined;
 };
 
-const fetchCourses = async (): Promise<TServerResponse<TCourse[]>> => {
-	const res = await fetch(`${config.backend_url}/course`);
-	const courses = await res.json();
-	return courses;
+const fetchCourses = async (
+	search: string | string[] | undefined
+): Promise<TServerResponse<TCourse[]>> => {
+	const query = search?.length ? `?search=${search}` : "";
+
+	const res = await fetch(`${config.backend_url}/course${query}`);
+	if (!res.ok) {
+		throw new Error("Something went wrong!");
+	}
+	const data = await res.json();
+
+	return data;
 };
-export default function CourseList({ role }: Props) {
+export default function CourseList({ role, search }: Props) {
 	const {
 		data: courses,
 		isLoading,
 		error,
 	} = useQuery({
-		queryKey: ["course"],
-		queryFn: fetchCourses,
+		queryKey: ["course", search],
+		queryFn: () => fetchCourses(search),
 	});
 
 	if (isLoading) return "Loading...";
