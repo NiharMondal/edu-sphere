@@ -13,7 +13,7 @@ export default function Module() {
 			<Modal
 				isOpen={open}
 				onOpenChange={setOpen}
-				triggerText="Create Moddule"
+				triggerText="Create module"
 			>
 				<ModuleForm />
 			</Modal>

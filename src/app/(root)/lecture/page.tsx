@@ -1,4 +1,5 @@
 "use client";
+
 import { ArrowLeftCircle, Search } from "lucide-react";
 import React, { useState } from "react";
 import ProgressBar from "./progress-bar";
@@ -15,6 +16,8 @@ import { config } from "@/config";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ReactPlayer from "react-player";
+
+//fetch modules
 const fetchModules = async (): Promise<TServerResponse<TModule[]>> => {
 	const res = await fetch(`${config.backend_url}/module/course/module`);
 	const data = await res.json();
@@ -24,7 +27,9 @@ const fetchModules = async (): Promise<TServerResponse<TModule[]>> => {
 export default function Lecture() {
 	const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
 	const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
-	console.log(currentLectureIndex);
+
+	const [completedLectures, setCompletedLectures] = useState<string[]>([]);
+
 	const {
 		data: modules,
 		isPending,
@@ -37,6 +42,8 @@ export default function Lecture() {
 
 	if (isPending) return "Please wait...";
 	if (error) return "An error occured...";
+	if (!modules?.result || modules?.result?.length === 0)
+		return <p>No modules available</p>;
 
 	const handleNext = () => {
 		if (currentLectureIndex < currentModule!.lectures.length - 1) {
@@ -60,7 +67,34 @@ export default function Lecture() {
 		}
 	};
 
-	console.log(currentLecture?.url);
+	// Handle video end event
+	const handleVideoEnd = () => {
+		const lectureId = currentLecture?._id;
+
+		if (lectureId && !completedLectures.includes(lectureId)) {
+			// Update completedLectures state properly
+			setCompletedLectures((prev) => {
+				const newCompletedLectures = [...prev, lectureId];
+				console.log(
+					"Completed Lectures Updated:",
+					newCompletedLectures
+				); // Debugging
+				return newCompletedLectures;
+			});
+		}
+	};
+
+	const isLocked = (moduleIndex: number, lectureIndex: number) => {
+		if (moduleIndex === 0 && lectureIndex === 0) return false;
+
+		const prevLecture =
+			lectureIndex > 0
+				? modules?.result[moduleIndex].lectures[lectureIndex - 1]
+				: modules?.result[moduleIndex - 1]?.lectures?.slice(-1)[0];
+
+		return prevLecture && !completedLectures.includes(prevLecture._id);
+	};
+
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-8">
 			<div className="lg:col-span-2">
@@ -77,6 +111,8 @@ export default function Lecture() {
 							width={"100%"}
 							height={"100%"}
 							style={{ borderRadius: "12px", overflow: "hidden" }}
+							onEnded={handleVideoEnd}
+							controls
 						/>
 					) : (
 						<p>Lecture type not supported</p>
@@ -87,25 +123,21 @@ export default function Lecture() {
 						size={"sm"}
 						variant={"outline"}
 						onClick={handlePrev}
-						className={`${
+						disabled={
 							currentModuleIndex === 0 &&
 							currentLectureIndex === 0
-								? "cursor-not-allowed"
-								: "cursor-pointer"
-						} `}
+						}
 					>
 						Previous
 					</Button>
 					<Button
 						size={"sm"}
 						onClick={handleNext}
-						className={`${
+						disabled={
 							currentModuleIndex === modules?.result.length - 1 &&
 							currentLectureIndex ===
 								currentModule!.lectures.length - 1
-								? "cursor-not-allowed"
-								: "cursor-pointer"
-						} `}
+						}
 					>
 						Next
 					</Button>
@@ -120,7 +152,7 @@ export default function Lecture() {
 				<div className="relative my-4">
 					<Input
 						type="text"
-						placeholder="Search..."
+						placeholder="Search lecture..."
 						className="w-full outline-none rounded-full p-2 pl-4 ring-1 ring-secondary focus:ring-1 focus:ring-accent-foreground focus:min-w-40"
 					/>
 					<span className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -129,7 +161,7 @@ export default function Lecture() {
 				</div>
 				<div className="max-h-[470px]">
 					<Accordion type="single" collapsible>
-						{modules?.result?.map((module) => (
+						{modules?.result?.map((module, moduleIndex) => (
 							<AccordionItem
 								value={module._id}
 								className="border-b border-muted"
@@ -139,13 +171,45 @@ export default function Lecture() {
 									{module.title}
 								</AccordionTrigger>
 								<AccordionContent>
-									{module?.lectures?.map((lecture) => (
-										<ul key={lecture._id} className="pl-5">
-											<li className="divide-y">
-												{lecture.title}
-											</li>
-										</ul>
-									))}
+									{module?.lectures?.map(
+										(lecture, lectureIndex) => {
+											const locked = isLocked(
+												moduleIndex,
+												lectureIndex
+											);
+											return (
+												<ul
+													key={lecture._id}
+													className="pl-5"
+												>
+													<li
+														className={`py-2 cursor-pointer ${
+															moduleIndex ===
+																currentModuleIndex &&
+															lectureIndex ===
+																currentLectureIndex
+																? "font-bold text-primary"
+																: locked
+																? "text-gray-400 cursor-not-allowed"
+																: "text-gray-700"
+														}`}
+														onClick={() => {
+															if (!locked) {
+																setCurrentModuleIndex(
+																	moduleIndex
+																);
+																setCurrentLectureIndex(
+																	lectureIndex
+																);
+															}
+														}}
+													>
+														{lecture.title}
+													</li>
+												</ul>
+											);
+										}
+									)}
 								</AccordionContent>
 							</AccordionItem>
 						))}

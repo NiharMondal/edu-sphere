@@ -15,9 +15,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { login, setCookie } from "@/actions/login";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-	// 1. Define your form.
+	const router = useRouter();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -26,11 +29,16 @@ export default function LoginForm() {
 		},
 	});
 
-	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof loginSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+	async function onSubmit(values: z.infer<typeof loginSchema>) {
+		try {
+			const res = await login(values);
+			setCookie(res?.result?.accessToken);
+			toast("Logged in successfully");
+			router.push("/dashboard");
+		} catch (error) {
+			toast("Something went wrong!");
+			console.log(error);
+		}
 	}
 	return (
 		<Form {...form}>
