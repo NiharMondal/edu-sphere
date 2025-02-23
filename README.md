@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Minimal LMS System
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The **Minimal LMS System** is a Learning Management System designed for course management and user learning progress tracking. It features two primary panels:
+
+-   **Admin Dashboard**: For course content management.
+-   **User Panel**: For course consumption and progress tracking.
+
+The project follows the **MODULE architecture** and ensures a **responsive UI** using modern design principles.
+
+## Tech Stack
+
+-   **Frontend**: Next.js (TypeScript), Tailwind CSS
+-   **Backend**: Express.js (MVC architecture)
+-   **Database**: MongoDB (Mongoose ODM)
+
+---
+
+### Credentials for Admin
+
+-   **Email:** nihar@gmail.com
+-   **Password:** 123456
+
+## Features
+
+### **Admin Dashboard (Authentication Required)**
+
+#### **1. Course Management**
+
+-   **Course Upload**:
+    -   Fields: Thumbnail (image), Title, Price, Description
+    -   Courses are displayed in a grid with thumbnails, titles, prices, and descriptions.
+-   **Course CRUD Operations**:
+    -   Edit/Delete existing courses.
+    -   Dynamic routing: Clicking on a course navigates to its **Module & Lecture Management** page.
+
+#### **2. Module & Lecture Management**
+
+-   **Module Creation**:
+    -   Add modules with a **Title** and **Module Number** (auto-incremented).
+-   **Lecture Creation**:
+    -   Add lectures under modules with:
+        -   Title
+        -   Video Upload/URL (Embedded YouTube links for simplicity)
+        -   Multiple PDF notes (Upload)
+    -   CRUD operations: Edit/Delete modules and lectures.
+-   **Lecture List View**:
+    -   Display all lectures in a table.
+    -   Filter lectures by **Course** and **Module**.
+
+---
+
+### **User Panel**
+
+#### **1. Course Details Page**
+
+-   **Dynamic Content**:
+    -   Displays course details uploaded by the admin (Thumbnail, Title, Price, Description).
+    -   Uses static data for additional sections (Reviews, Instructor Info).
+
+#### **2. Lecture Page**
+
+-   **Structure**:
+    -   Numbered modules with expandable lecture lists.
+    -   Search bar for filtering lessons by title.
+-   **Content Delivery**:
+    -   **Locked Lectures**: Users unlock lectures sequentially (Next button unlocks subsequent lectures).
+    -   **Video Player**: Streams uploaded videos (Embedded YouTube links for simplicity).
+    -   **PDF Notes**: Download/view multiple PDFs per lecture.
+-   **Progress Tracking**:
+    -   Visual indicators (progress bar/checkmarks) for completed lectures.
+
+---
+
+## Installation & Setup
+
+### **1. Clone the Repository**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+    git clone https://github.com/NiharMondal/lms-client
+    cd lms-client
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **2. Install Dependencies**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+    npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
 
-## Learn More
+### **3. Configure Environement Variables**
 
-To learn more about Next.js, take a look at the following resources:
+Create a _.env.local_ file in the root directory and add the required environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+    NEXT_PUBLIC_SERVER_URL = "http://localhost:5000/api/v1"
+    # NEXT_PUBLIC_SERVER_URL = "your developed backend link"
+    NODE_ENV = developemnt
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
 
-## Deploy on Vercel
+### **4. Run the application**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+    npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Visit http://localhost:3000 in your browser.
