@@ -9,12 +9,10 @@ import {
 	GalleryVerticalEnd,
 	Map,
 	PieChart,
-	Settings2,
 	SquareTerminal,
 } from "lucide-react";
 
 import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
 import { NavUser } from "./nav-user";
 import {
 	Sidebar,
@@ -139,7 +137,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const [role, setRole] = useState<string>("admin");
+	const [role, _setRole] = useState<string>("admin");
 
 	const menuItems = role ? sidebars["admin"] : [];
 	return (
@@ -155,7 +153,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				</Link>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={menuItems} />
+				<NavMain items={menuItems} role={role} />
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={data.user} />

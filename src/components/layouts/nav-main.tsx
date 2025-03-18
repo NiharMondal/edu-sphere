@@ -26,9 +26,9 @@ type NavMainProps = {
 export function NavMain({ items, role }: NavMainProps) {
 	return (
 		<SidebarGroup>
-			<SidebarGroupLabel>Student</SidebarGroupLabel>
+			<SidebarGroupLabel className="capitalize">{role}</SidebarGroupLabel>
 			<SidebarMenu>
-				{items.map((item) => (
+				{items?.map((item) => (
 					<Collapsible
 						key={item.name}
 						asChild
@@ -36,41 +36,33 @@ export function NavMain({ items, role }: NavMainProps) {
 						className="group/collapsible"
 					>
 						<SidebarMenuItem>
-							<SidebarMenuButton asChild>
-								<Link href={item.url}>{item.name}</Link>
-							</SidebarMenuButton>
-							{item.items && (
-								<>
-									<CollapsibleTrigger asChild>
-										<SidebarMenuButton tooltip={item.name}>
-											{item.icon && <item.icon />}
-											<span>{item.name}</span>
+							<CollapsibleTrigger asChild>
+								<Link href={`/${role}/${item.url}`}>
+									<SidebarMenuButton tooltip={item.name}>
+										{item.icon && <item.icon />}
+
+										{item.name}
+										{item.items && (
 											<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-										</SidebarMenuButton>
-									</CollapsibleTrigger>
-									<CollapsibleContent>
-										<SidebarMenuSub>
-											{item.items?.map((subItem) => (
-												<SidebarMenuSubItem
-													key={subItem.name}
+										)}
+									</SidebarMenuButton>
+								</Link>
+							</CollapsibleTrigger>
+							<CollapsibleContent>
+								<SidebarMenuSub>
+									{item.items?.map((subItem) => (
+										<SidebarMenuSubItem key={subItem.name}>
+											<SidebarMenuSubButton asChild>
+												<Link
+													href={`/${role}/${subItem.url}`}
 												>
-													<SidebarMenuSubButton
-														asChild
-													>
-														<Link
-															href={subItem.url}
-														>
-															<span>
-																{subItem.name}
-															</span>
-														</Link>
-													</SidebarMenuSubButton>
-												</SidebarMenuSubItem>
-											))}
-										</SidebarMenuSub>
-									</CollapsibleContent>
-								</>
-							)}
+													<span>{subItem.name}</span>
+												</Link>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+									))}
+								</SidebarMenuSub>
+							</CollapsibleContent>
 						</SidebarMenuItem>
 					</Collapsible>
 				))}

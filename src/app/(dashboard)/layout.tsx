@@ -1,14 +1,19 @@
 import { AppSidebar } from "@/components/layouts/sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
-			<main>
+			<section className="p-3">
 				<SidebarTrigger />
 				{children}
-			</main>
+			</section>
 		</SidebarProvider>
 	);
 }

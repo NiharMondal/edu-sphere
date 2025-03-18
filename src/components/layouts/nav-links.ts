@@ -1,4 +1,12 @@
-import { Book, ListFilter, TvMinimalPlay, type LucideIcon } from "lucide-react";
+import {
+	Book,
+	LayoutDashboard,
+	ListFilter,
+	TvMinimalPlay,
+	Users,
+	UserCheck,
+	type LucideIcon,
+} from "lucide-react";
 
 export type TLink = {
 	name: string;
@@ -18,7 +26,7 @@ type TSidebar = {
 };
 export const sidebars: TSidebar = {
 	admin: [
-		{ url: "/dashboard", name: "Admin Dashboard" },
+		{ url: "", icon: LayoutDashboard, name: "Admin Dashboard" },
 		{
 			name: "Course",
 			url: "#",
@@ -26,11 +34,11 @@ export const sidebars: TSidebar = {
 			items: [
 				{
 					name: "Course List",
-					url: "/course-list",
+					url: "course-list",
 				},
 				{
 					name: "Create Course",
-					url: "/create-course",
+					url: "create-course",
 				},
 			],
 		},
@@ -42,11 +50,11 @@ export const sidebars: TSidebar = {
 			items: [
 				{
 					name: "Module List",
-					url: "/module-list",
+					url: "module-list",
 				},
 				{
 					name: "Create module",
-					url: "/create-module",
+					url: "create-module",
 				},
 			],
 		},
@@ -58,26 +66,25 @@ export const sidebars: TSidebar = {
 			items: [
 				{
 					name: "Lecture List",
-					url: "/lecture-list",
+					url: "lecture-list",
 				},
 				{
 					name: "Create Lecture",
-					url: "/create-lecture",
+					url: "create-lecture",
 				},
 			],
 		},
 
-		{ url: "/users", name: "Manage Users" },
-		{ url: "/instructors", name: "Manage Instructors" },
+		{ url: "users", icon: Users, name: "Manage Users" },
+		{ url: "instructors", icon: UserCheck, name: "Manage Instructors" },
 	],
 	student: [
-		{ url: "/dashboard", name: "Student Dashboard" },
-		{ url: "/courses", name: "My Courses" },
-		{ url: "/progress", name: "Progress" },
+		{ url: "", icon: LayoutDashboard, name: "Student Dashboard" },
+		{ url: "my-courses", icon: Book, name: "My Courses" },
 	],
 	instructor: [
-		{ url: "/instructor/dashboard", name: "Instructor Dashboard" },
-		{ url: "/instructor/classes", name: "My Classes" },
-		{ url: "/instructor/reviews", name: "Reviews" },
+		{ url: "", icon: LayoutDashboard, name: "Instructor Dashboard" },
+		{ url: "classes", icon: Book, name: "My Classes" },
+		{ url: "reviews", name: "Reviews" },
 	],
 };
