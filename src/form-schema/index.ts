@@ -7,16 +7,19 @@ export const createCourseSchema = z.object({
 		.trim(),
 	title: z
 		.string({ required_error: "Name is required" })
-		.min(3, "Should be more than 3 charactes")
-		.max(50, "Should be less than 30 charactes"),
+		.min(3, "Should be more than 3 characters")
+		.max(50, "Should be less than 30 characters"),
 	price: z.coerce
 		.number({ required_error: "Name is required" })
-		.positive({ message: "Price can not be negetive" })
-		.max(2000, "Should be less than 30 charactes"),
+		.positive({ message: "Price can not be negative" })
+		.max(2000, "Should be less than 30 characters"),
 	description: z
 		.string({ required_error: "Description is required" })
 		.min(20, { message: "Min characters is 20" })
 		.max(1000, { message: "Max character is 1000" })
+		.trim(),
+	instructor: z
+		.string({ required_error: "Instructor ID is required" })
 		.trim(),
 });
 

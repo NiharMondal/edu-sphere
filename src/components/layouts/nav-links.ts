@@ -10,12 +10,12 @@ import {
 
 export type TLink = {
 	name: string;
-	url: string;
+	url?: string;
 	isActive?: boolean;
 	icon?: LucideIcon;
-	items?: LinkItems[];
+	children?: LinkChildren[];
 };
-export type LinkItems = {
+export type LinkChildren = {
 	name: string;
 	url: string;
 };
@@ -26,57 +26,59 @@ type TSidebar = {
 };
 export const sidebars: TSidebar = {
 	admin: [
-		{ url: "", icon: LayoutDashboard, name: "Admin Dashboard" },
+		{ url: "/admin", icon: LayoutDashboard, name: "Admin Dashboard" },
 		{
 			name: "Course",
-			url: "#",
+			isActive: true,
 			icon: Book,
-			items: [
+			children: [
 				{
 					name: "Course List",
-					url: "course-list",
+					url: "/admin/course-list",
 				},
 				{
 					name: "Create Course",
-					url: "create-course",
+					url: "/admin/create-course",
 				},
 			],
 		},
 		{
 			name: "Module",
-			url: "#",
+
 			icon: ListFilter,
-			isActive: true,
-			items: [
+
+			children: [
 				{
 					name: "Module List",
-					url: "module-list",
+					url: "/admin/module-list",
 				},
 				{
 					name: "Create module",
-					url: "create-module",
+					url: "/admin/create-module",
 				},
 			],
 		},
 		{
 			name: "Lecture",
-			url: "#",
 			icon: TvMinimalPlay,
-			isActive: true,
-			items: [
+			children: [
 				{
 					name: "Lecture List",
-					url: "lecture-list",
+					url: "/admin/lecture-list",
 				},
 				{
 					name: "Create Lecture",
-					url: "create-lecture",
+					url: "/admin/create-lecture",
 				},
 			],
 		},
 
-		{ url: "users", icon: Users, name: "Manage Users" },
-		{ url: "instructors", icon: UserCheck, name: "Manage Instructors" },
+		{ url: "/admin/users", icon: Users, name: "Manage Users" },
+		{
+			url: "/admin/instructors",
+			icon: UserCheck,
+			name: "Manage Instructors",
+		},
 	],
 	student: [
 		{ url: "", icon: LayoutDashboard, name: "Student Dashboard" },
