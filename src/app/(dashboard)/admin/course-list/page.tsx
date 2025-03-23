@@ -1,5 +1,10 @@
 import React from "react";
+import CourseTable from "./course-table";
 
 export default function CourseListPage() {
-	return <div>CourseListPage</div>;
+	return (
+		<div>
+			<CourseTable />
+		</div>
+	);
 }

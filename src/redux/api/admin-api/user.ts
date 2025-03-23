@@ -1,3 +1,4 @@
+import { TInstructorResponse, TServerResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -11,7 +12,10 @@ const userApi = baseApi.injectEndpoints({
 			invalidatesTags: ["users"],
 		}),
 
-		getInstructors: builder.query({
+		getInstructors: builder.query<
+			TServerResponse<TInstructorResponse[]>,
+			void
+		>({
 			query: () => ({
 				url: "/users/instructors",
 				method: "GET",

@@ -17,8 +17,6 @@ import { Input } from "@/components/ui/input";
 import { createCourseSchema } from "@/form-schema";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-
-import { useCreateCourseMutation } from "@/redux/api/admin-api/course";
 import {
 	Select,
 	SelectContent,
@@ -26,50 +24,85 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {
+	useGetCourseByIdQuery,
+	useUpdateCourseMutation,
+} from "@/redux/api/admin-api/course";
+
+import { useEffect } from "react";
 import { useGetInstructorsQuery } from "@/redux/api/admin-api/user";
 
-export default function CreateCourse() {
+export default function UpdateCourse({ courseId }: { courseId: string }) {
+	//fetching course by id
+	const { data: course, isLoading: courseLoading } =
+		useGetCourseByIdQuery(courseId);
+
+	//fetching instructors
 	const { data: instructors, isLoading: instLoading } =
 		useGetInstructorsQuery();
-	const [createCourse, { isLoading: courseLoading }] =
-		useCreateCourseMutation();
+
+	const [updateCourse, { isLoading: updateLoading }] =
+		useUpdateCourseMutation();
 
 	const form = useForm<z.infer<typeof createCourseSchema>>({
 		resolver: zodResolver(createCourseSchema),
 		defaultValues: {
-			title: "",
-			description: "",
-			instructor: "",
-			thumbnail: "",
-			price: 100,
+			title: course?.result?.title || "",
+			thumbnail: course?.result?.thumbnail || "",
+			price: course?.result?.price || 100,
+			instructor: course?.result?.instructor?._id || "",
+			description: course?.result?.description || "",
 		},
 	});
 
-	const handleCourseSubmit = async (
+	//
+	const handleCourseUpdate = async (
 		values: z.infer<typeof createCourseSchema>
 	) => {
 		try {
-			const response = await createCourse(values).unwrap();
-			console.log(response);
-			if (response.success) {
-				toast.success("Course created successfully");
+			const res = await updateCourse({
+				id: courseId,
+				payload: values,
+			}).unwrap();
+
+			if (res.success) {
+				toast.success("Course updated successfully");
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
 	};
+
+	//updating default form values
+	useEffect(() => {
+		if (course?.result) {
+			form.reset({
+				title: course?.result?.title || "",
+				thumbnail: course?.result?.thumbnail || "",
+				price: course?.result?.price || 100,
+				instructor: course?.result?.instructor?._id || "",
+				description: course?.result?.description || "",
+			});
+		}
+	}, [form, course?.result]);
+
+	if (courseLoading) {
+		return <p>Loading...</p>;
+	}
+
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(handleCourseSubmit)}
+					onSubmit={form.handleSubmit(handleCourseUpdate)}
 					className="max-w-3xl w-full  mt-10"
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 						<FormField
 							control={form.control}
 							name="thumbnail"
+							defaultValue={course?.result?.thumbnail}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Thumbnail URL</FormLabel>
@@ -170,8 +203,8 @@ export default function CreateCourse() {
 							)}
 						/>
 					</div>
-					<Button type="submit" disabled={courseLoading}>
-						Create course
+					<Button type="submit" disabled={updateLoading}>
+						Update course
 					</Button>
 				</form>
 			</Form>

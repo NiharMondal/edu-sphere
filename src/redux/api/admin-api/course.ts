@@ -1,9 +1,13 @@
+import { TCourse, TCourseResponse, TServerResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const courseApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		// only admin can create course
-		createCourse: builder.mutation({
+		createCourse: builder.mutation<
+			TServerResponse<TCourseResponse[]>,
+			TCourse
+		>({
 			query: (payload) => ({
 				url: "/courses",
 				method: "POST",
@@ -12,14 +16,39 @@ const courseApi = baseApi.injectEndpoints({
 			invalidatesTags: ["courses"],
 		}),
 
-		getCourse: builder.query({
+		getCourse: builder.query<TServerResponse<TCourseResponse[]>, void>({
 			query: () => ({
 				url: "/courses",
 				method: "GET",
 			}),
 			providesTags: ["courses"],
 		}),
+		getCourseById: builder.query<TServerResponse<TCourseResponse>, string>({
+			query: (id) => ({
+				url: `/courses/${id}`,
+				method: "GET",
+			}),
+			providesTags: ["courses"],
+		}),
+
+		// only admin can create course
+		updateCourse: builder.mutation<
+			TServerResponse<TCourseResponse>,
+			{ id: string; payload: TCourse }
+		>({
+			query: ({ id, payload }) => ({
+				url: `/courses/${id}`,
+				method: "PATCH",
+				body: payload,
+			}),
+			invalidatesTags: ["courses"],
+		}),
 	}),
 });
 
-export const { useCreateCourseMutation, useGetCourseQuery } = courseApi;
+export const {
+	useCreateCourseMutation,
+	useGetCourseQuery,
+	useGetCourseByIdQuery,
+	useUpdateCourseMutation,
+} = courseApi;
