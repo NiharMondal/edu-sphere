@@ -48,14 +48,14 @@ export const loginSchema = z.object({
 		.trim(),
 });
 
-export const moduleSchema = z.object({
+export const createModuleSchema = z.object({
 	title: z
 		.string({ required_error: "Course title is required" })
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
 
-	course: z.string({ required_error: "Course ID is required" }).optional(),
+	course: z.string({ required_error: "Course ID is required" }),
 });
 
 export const lectureSchema = z.object({

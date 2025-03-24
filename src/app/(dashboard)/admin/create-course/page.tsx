@@ -18,7 +18,7 @@ import { createCourseSchema } from "@/form-schema";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-import { useCreateCourseMutation } from "@/redux/api/admin-api/course";
+import { useCreateCourseMutation } from "@/redux/api/admin-api/courseApi";
 import {
 	Select,
 	SelectContent,

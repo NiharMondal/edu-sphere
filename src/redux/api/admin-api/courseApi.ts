@@ -43,6 +43,17 @@ const courseApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["courses"],
 		}),
+
+		deleteCourse: builder.mutation<
+			TServerResponse<TCourseResponse>,
+			string
+		>({
+			query: (id) => ({
+				url: `/courses/${id}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["courses"],
+		}),
 	}),
 });
 
@@ -51,4 +62,5 @@ export const {
 	useGetCourseQuery,
 	useGetCourseByIdQuery,
 	useUpdateCourseMutation,
+	useDeleteCourseMutation,
 } = courseApi;

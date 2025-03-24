@@ -1,8 +1,5 @@
 "use client";
-import {
-	useDeleteCourseMutation,
-	useGetCourseQuery,
-} from "@/redux/api/admin-api/courseApi";
+import { useDeleteCourseMutation } from "@/redux/api/admin-api/courseApi";
 import React from "react";
 
 import {
@@ -27,9 +24,10 @@ import {
 } from "@/components/ui/dialog";
 import UpdateCourse from "@/components/admin-ui/UpdateCourse";
 import { toast } from "sonner";
+import { useAllModulesQuery } from "@/redux/api/admin-api/moduleApi";
 
-export default function CourseTable() {
-	const { data: courses } = useGetCourseQuery(); // fetching courses
+export default function ModuleTable() {
+	const { data: modules, isLoading } = useAllModulesQuery(); // fetching modules
 
 	const [deleteCourse, { isLoading: deleteLoading }] =
 		useDeleteCourseMutation();
@@ -46,27 +44,30 @@ export default function CourseTable() {
 			toast.error(error?.data?.message);
 		}
 	};
+
+	if (isLoading) {
+		return <p>Loading...</p>;
+	}
 	return (
 		<Table>
-			<TableCaption>A list of recently created courses.</TableCaption>
+			<TableCaption>A list of recently created modules.</TableCaption>
 			<TableHeader>
 				<TableRow>
 					<TableHead className="text-primary">Title</TableHead>
-					<TableHead className="text-primary">Price</TableHead>
-					<TableHead className="text-primary">Instructor</TableHead>
+					<TableHead className="text-primary">Course Name</TableHead>
+
 					<TableHead className="text-center text-primary">
 						Action
 					</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody className="text-muted-foreground">
-				{courses?.result?.map((course) => (
-					<TableRow key={course._id}>
+				{modules?.result?.map((module) => (
+					<TableRow key={module._id}>
 						<TableCell className="font-medium text-accent-foreground">
-							{course.title}
+							{module.title}
 						</TableCell>
-						<TableCell>{course.price}</TableCell>
-						<TableCell>{course.instructor.name}</TableCell>
+						<TableCell>{module?.course?.title}</TableCell>
 						<TableCell className="text-center space-y-1 space-x-1">
 							<EsModal>
 								<DialogTrigger asChild>
@@ -77,13 +78,13 @@ export default function CourseTable() {
 								</DialogTrigger>
 								<DialogContent className="w-full md:max-w-3xl">
 									<DialogHeader>
-										<DialogTitle>Update Course</DialogTitle>
+										<DialogTitle>Update Module</DialogTitle>
 										<DialogDescription className="sr-only">
-											Make changes to your profile here.
+											Make changes to your module here.
 										</DialogDescription>
 									</DialogHeader>
 
-									<UpdateCourse courseId={course._id} />
+									<UpdateCourse courseId={module._id} />
 								</DialogContent>
 							</EsModal>
 
@@ -91,7 +92,7 @@ export default function CourseTable() {
 								size={"sm"}
 								variant={"destructive"}
 								disabled={deleteLoading}
-								onClick={() => handleDelete(course?._id)}
+								onClick={() => handleDelete(module?._id)}
 							>
 								<Trash />
 								Delete

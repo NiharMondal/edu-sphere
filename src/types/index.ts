@@ -104,3 +104,8 @@ type TModuleCourse = {
 	_id: string;
 	title: string;
 };
+
+export type TModuleCreate = {
+	title: string;
+	course: string;
+};

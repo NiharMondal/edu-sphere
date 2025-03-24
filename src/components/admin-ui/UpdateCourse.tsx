@@ -27,7 +27,7 @@ import {
 import {
 	useGetCourseByIdQuery,
 	useUpdateCourseMutation,
-} from "@/redux/api/admin-api/course";
+} from "@/redux/api/admin-api/courseApi";
 
 import { useEffect } from "react";
 import { useGetInstructorsQuery } from "@/redux/api/admin-api/user";

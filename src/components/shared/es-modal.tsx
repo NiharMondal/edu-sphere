@@ -4,8 +4,6 @@ import React from "react";
 
 type TEsModalProps = {
 	children: React.ReactNode;
-	isOpen: boolean;
-	setIsOpen: () => void;
 };
 
 export default function EsModal({ children }: TEsModalProps) {

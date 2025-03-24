@@ -1,9 +1,10 @@
+import { TModule, TModuleCreate, TServerResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const moduleApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		//fetch all modules
-		allModules: builder.query({
+		allModules: builder.query<TServerResponse<TModule[]>, void>({
 			query: () => ({
 				url: "/modules",
 				method: "GET",
@@ -12,14 +13,16 @@ const moduleApi = baseApi.injectEndpoints({
 		}),
 
 		//create lecture
-		createModules: builder.mutation({
-			query: (payload) => ({
-				url: "/modules",
-				method: "POST",
-				body: payload,
-			}),
-			invalidatesTags: ["modules"],
-		}),
+		createModule: builder.mutation<TServerResponse<TModule>, TModuleCreate>(
+			{
+				query: (payload) => ({
+					url: `/modules/${payload.course}/create`,
+					method: "POST",
+					body: payload,
+				}),
+				invalidatesTags: ["modules"],
+			}
+		),
 
 		//fetch single lecture
 		singleModules: builder.query({
@@ -54,7 +57,7 @@ const moduleApi = baseApi.injectEndpoints({
 export const {
 	useAllModulesQuery,
 	useSingleModulesQuery,
-	useCreateModulesMutation,
+	useCreateModuleMutation,
 	useUpdateModulesMutation,
 	useDeleteModulesMutation,
 } = moduleApi;
