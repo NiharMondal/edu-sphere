@@ -7,24 +7,25 @@ export const createCourseSchema = z.object({
 		.trim(),
 	title: z
 		.string({ required_error: "Name is required" })
-		.min(3, "Should be more than 3 charactes")
-		.max(50, "Should be less than 30 charactes"),
+		.min(3, "Should be more than 3 characters")
+		.max(50, "Should be less than 30 characters"),
 	price: z.coerce
 		.number({ required_error: "Name is required" })
-		.positive({ message: "Price can not be negetive" })
-		.max(2000, "Should be less than 30 charactes"),
+		.positive({ message: "Price can not be negative" })
+		.max(2000, "Should be less than 30 characters"),
 	description: z
 		.string({ required_error: "Description is required" })
 		.min(20, { message: "Min characters is 20" })
 		.max(1000, { message: "Max character is 1000" })
 		.trim(),
+	instructor: z.string({ required_error: "Instructor is required" }).trim(),
 });
 
 export const registrationSchema = z.object({
 	name: z
 		.string({ required_error: "Name is required" })
-		.min(3, "Should be more than 3 charactes")
-		.max(30, "Should be less than 30 charactes"),
+		.min(3, "Should be more than 3 characters")
+		.max(30, "Should be less than 30 characters"),
 	email: z
 		.string({ required_error: "Email is required" })
 		.email({ message: "Enter a valid email" })
@@ -47,14 +48,14 @@ export const loginSchema = z.object({
 		.trim(),
 });
 
-export const moduleSchema = z.object({
+export const createModuleSchema = z.object({
 	title: z
 		.string({ required_error: "Course title is required" })
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
 
-	course: z.string({ required_error: "Course ID is required" }).optional(),
+	course: z.string({ required_error: "Course ID is required" }),
 });
 
 export const lectureSchema = z.object({

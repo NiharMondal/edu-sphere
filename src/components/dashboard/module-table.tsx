@@ -72,7 +72,7 @@ export default function ModuleTable() {
 	});
 
 	if (isPending) return "Please wait...";
-	if (isError) return "An error occured!";
+	if (isError) return "An error occurred!";
 	return (
 		<Table>
 			<TableCaption>A list of recent modules.</TableCaption>

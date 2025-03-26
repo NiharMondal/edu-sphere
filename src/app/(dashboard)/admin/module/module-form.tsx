@@ -103,7 +103,7 @@ export default function ModuleForm() {
 							</FormControl>
 							<FormMessage />
 						</FormItem>
-					)}
+					)} 
 				/>
 				<FormField
 					control={form.control}
