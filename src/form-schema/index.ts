@@ -50,12 +50,23 @@ export const loginSchema = z.object({
 
 export const createModuleSchema = z.object({
 	title: z
-		.string({ required_error: "Course title is required" })
+		.string({ required_error: "Module title is required" })
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
 
-	course: z.string({ required_error: "Course ID is required" }),
+	course: z
+		.string({
+			required_error: "Course ID is required",
+		})
+		.nonempty({ message: "Course can not be empty" }),
+});
+export const updateModuleSchema = z.object({
+	title: z
+		.string({ required_error: "Module title is required" })
+		.min(5, "Min length is 6")
+		.max(40, "Max length is 40")
+		.trim(),
 });
 
 export const lectureSchema = z.object({

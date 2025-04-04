@@ -1,6 +1,16 @@
 import { TModule, TModuleCreate, TServerResponse } from "@/types";
 import { baseApi } from "../baseApi";
+type TModuleRequest = {
+	courseId: string;
+	payload: TModuleCreate;
+};
 
+type TModuleUpdateRequest = {
+	id: string;
+	payload: {
+		title: string;
+	};
+};
 const moduleApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		//fetch all modules
@@ -13,19 +23,20 @@ const moduleApi = baseApi.injectEndpoints({
 		}),
 
 		//create lecture
-		createModule: builder.mutation<TServerResponse<TModule>, TModuleCreate>(
-			{
-				query: (payload) => ({
-					url: `/modules/${payload.course}/create`,
-					method: "POST",
-					body: payload,
-				}),
-				invalidatesTags: ["modules"],
-			}
-		),
+		createModule: builder.mutation<
+			TServerResponse<TModule>,
+			TModuleRequest
+		>({
+			query: ({ courseId, payload }) => ({
+				url: `/modules/${courseId}/create`,
+				method: "POST",
+				body: payload,
+			}),
+			invalidatesTags: ["modules"],
+		}),
 
 		//fetch single lecture
-		singleModules: builder.query({
+		singleModule: builder.query<TServerResponse<TModule>, string>({
 			query: (id: string) => ({
 				url: `/modules/${id}`,
 				method: "GET",
@@ -34,18 +45,21 @@ const moduleApi = baseApi.injectEndpoints({
 		}),
 
 		//delete single lecture
-		deleteModules: builder.mutation({
+		deleteModule: builder.mutation<TServerResponse<TModule>, string>({
 			query: (id: string) => ({
-				url: `/modules/${id}`,
+				url: `/modules/admin/${id}`,
 				method: "DELETE",
 			}),
 			invalidatesTags: ["modules"],
 		}),
 
 		//update single lecture by ID
-		updateModules: builder.mutation({
+		updateModule: builder.mutation<
+			TServerResponse<TModule>,
+			TModuleUpdateRequest
+		>({
 			query: ({ id, payload }) => ({
-				url: `/modules/${id}`,
+				url: `/modules/admin/${id}`,
 				method: "PATCH",
 				body: payload,
 			}),
@@ -56,8 +70,8 @@ const moduleApi = baseApi.injectEndpoints({
 
 export const {
 	useAllModulesQuery,
-	useSingleModulesQuery,
+	useSingleModuleQuery,
 	useCreateModuleMutation,
-	useUpdateModulesMutation,
-	useDeleteModulesMutation,
+	useUpdateModuleMutation,
+	useDeleteModuleMutation,
 } = moduleApi;

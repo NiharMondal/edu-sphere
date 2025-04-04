@@ -102,7 +102,6 @@ export default function UpdateCourse({ courseId }: { courseId: string }) {
 						<FormField
 							control={form.control}
 							name="thumbnail"
-							defaultValue={course?.result?.thumbnail}
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Thumbnail URL</FormLabel>

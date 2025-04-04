@@ -1,5 +1,4 @@
 "use client";
-import { useDeleteCourseMutation } from "@/redux/api/admin-api/courseApi";
 import React from "react";
 
 import {
@@ -22,21 +21,24 @@ import {
 	DialogTitle,
 	DialogDescription,
 } from "@/components/ui/dialog";
-import UpdateCourse from "@/components/admin-ui/UpdateCourse";
 import { toast } from "sonner";
-import { useAllModulesQuery } from "@/redux/api/admin-api/moduleApi";
+import {
+	useAllModulesQuery,
+	useDeleteModuleMutation,
+} from "@/redux/api/admin-api/moduleApi";
+import UpdateModule from "@/components/admin-ui/UpdateModule";
 
 export default function ModuleTable() {
 	const { data: modules, isLoading } = useAllModulesQuery(); // fetching modules
 
-	const [deleteCourse, { isLoading: deleteLoading }] =
-		useDeleteCourseMutation();
+	const [deleteModule, { isLoading: deleteLoading }] =
+		useDeleteModuleMutation();
 
 	const handleDelete = async (id: string) => {
 		try {
-			const res = await deleteCourse(id).unwrap();
+			const res = await deleteModule(id).unwrap();
 			if (res.success) {
-				toast.success("Course deleted successfully");
+				toast.success("Module deleted successfully");
 			}
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,6 +56,7 @@ export default function ModuleTable() {
 			<TableHeader>
 				<TableRow>
 					<TableHead className="text-primary">Title</TableHead>
+					<TableHead className="text-primary">Index</TableHead>
 					<TableHead className="text-primary">Course Name</TableHead>
 
 					<TableHead className="text-center text-primary">
@@ -67,6 +70,7 @@ export default function ModuleTable() {
 						<TableCell className="font-medium text-accent-foreground">
 							{module.title}
 						</TableCell>
+						<TableCell>{module.index}</TableCell>
 						<TableCell>{module?.course?.title}</TableCell>
 						<TableCell className="text-center space-y-1 space-x-1">
 							<EsModal>
@@ -84,7 +88,7 @@ export default function ModuleTable() {
 										</DialogDescription>
 									</DialogHeader>
 
-									<UpdateCourse courseId={module._id} />
+									<UpdateModule moduleId={module._id} />
 								</DialogContent>
 							</EsModal>
 

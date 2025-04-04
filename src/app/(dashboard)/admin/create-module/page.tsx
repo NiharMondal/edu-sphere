@@ -27,25 +27,29 @@ import {
 import { useCreateModuleMutation } from "@/redux/api/admin-api/moduleApi";
 import { createModuleSchema } from "@/form-schema";
 
-export default function CreateCourse() {
+export default function CreateModulePage() {
 	const { data: courses, isLoading: courseLoading } = useGetCourseQuery();
-
 	const [createModule, { isLoading: moduleLoading }] =
 		useCreateModuleMutation();
 
 	const form = useForm<z.infer<typeof createModuleSchema>>({
 		resolver: zodResolver(createModuleSchema),
 		defaultValues: {
-			title: "",
 			course: "",
+			title: "",
 		},
 	});
+
+	const selectedCourse = form.watch("course");
 
 	const handleCourseSubmit = async (
 		values: z.infer<typeof createModuleSchema>
 	) => {
 		try {
-			const response = await createModule(values).unwrap();
+			const response = await createModule({
+				courseId: values.course,
+				payload: values,
+			}).unwrap();
 
 			if (response.success) {
 				toast.success("Module created successfully");
@@ -55,6 +59,7 @@ export default function CreateCourse() {
 			toast.error(error?.data?.message);
 		}
 	};
+
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
@@ -62,6 +67,7 @@ export default function CreateCourse() {
 					onSubmit={form.handleSubmit(handleCourseSubmit)}
 					className="max-w-3xl w-full mt-10 space-y-5"
 				>
+					{/* Course Select Field */}
 					<FormField
 						control={form.control}
 						name="course"
@@ -79,12 +85,12 @@ export default function CreateCourse() {
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										{courses?.result?.map((user) => (
+										{courses?.result?.map((course) => (
 											<SelectItem
-												key={user?._id}
-												value={user?._id}
+												key={course?._id}
+												value={course?._id}
 											>
-												{user?.title}
+												{course?.title}
 											</SelectItem>
 										))}
 									</SelectContent>
@@ -94,6 +100,7 @@ export default function CreateCourse() {
 						)}
 					/>
 
+					{/* Module Title Input Field */}
 					<FormField
 						control={form.control}
 						name="title"
@@ -101,12 +108,17 @@ export default function CreateCourse() {
 							<FormItem>
 								<FormLabel>Module title</FormLabel>
 								<FormControl>
-									<Input placeholder="Title" {...field} />
+									<Input
+										placeholder="Title"
+										{...field}
+										disabled={!selectedCourse}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
+
 					<Button type="submit" disabled={moduleLoading}>
 						Create Module
 					</Button>
