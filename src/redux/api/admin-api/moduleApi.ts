@@ -44,6 +44,14 @@ const moduleApi = baseApi.injectEndpoints({
 			providesTags: ["modules"],
 		}),
 
+		moduleByCourseId: builder.query<TServerResponse<TModule[]>, string>({
+			query: (courseId: string) => ({
+				url: `/modules/courseId/${courseId}`,
+				method: "GET",
+			}),
+			providesTags: ["modules"],
+		}),
+
 		//delete single lecture
 		deleteModule: builder.mutation<TServerResponse<TModule>, string>({
 			query: (id: string) => ({
@@ -71,6 +79,7 @@ const moduleApi = baseApi.injectEndpoints({
 export const {
 	useAllModulesQuery,
 	useSingleModuleQuery,
+	useModuleByCourseIdQuery,
 	useCreateModuleMutation,
 	useUpdateModuleMutation,
 	useDeleteModuleMutation,

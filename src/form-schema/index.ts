@@ -18,7 +18,10 @@ export const createCourseSchema = z.object({
 		.min(20, { message: "Min characters is 20" })
 		.max(1000, { message: "Max character is 1000" })
 		.trim(),
-	instructor: z.string({ required_error: "Instructor is required" }).trim(),
+	instructor: z
+		.string({ required_error: "Instructor is required" })
+		.nonempty({ message: "Please select instructor" })
+		.trim(),
 });
 
 export const registrationSchema = z.object({
@@ -70,14 +73,19 @@ export const updateModuleSchema = z.object({
 });
 
 export const lectureSchema = z.object({
+	course: z.string({ required_error: "Course is required" }),
+
 	title: z
 		.string({ required_error: "Lecture title is required" })
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
-	type: z.string({ required_error: "Doc type is required" }).trim(),
-	module: z.string({ required_error: "Module ID is required" }),
-	url: z
+	type: z.string({ required_error: "File type is required" }),
+	module: z
+		.string({ required_error: "Module ID is required" })
+		.nonempty({ message: "Please select a module" }),
+	duration: z.string({ required_error: "Duration is required" }),
+	content: z
 		.string({ required_error: "URL is required" })
 		.url({ message: "Provide a valid URL" })
 		.trim(),

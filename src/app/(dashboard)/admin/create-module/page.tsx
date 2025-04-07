@@ -42,7 +42,7 @@ export default function CreateModulePage() {
 
 	const selectedCourse = form.watch("course");
 
-	const handleCourseSubmit = async (
+	const handleModuleSubmit = async (
 		values: z.infer<typeof createModuleSchema>
 	) => {
 		try {
@@ -64,7 +64,7 @@ export default function CreateModulePage() {
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(handleCourseSubmit)}
+					onSubmit={form.handleSubmit(handleModuleSubmit)}
 					className="max-w-3xl w-full mt-10 space-y-5"
 				>
 					{/* Course Select Field */}

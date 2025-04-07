@@ -38,7 +38,7 @@ export default function UpdateModule({ moduleId }: TUpdateModuleProps) {
 		},
 	});
 
-	const handleCourseSubmit = async (
+	const handleModuleUpdate = async (
 		values: z.infer<typeof updateModuleSchema>
 	) => {
 		try {
@@ -69,7 +69,7 @@ export default function UpdateModule({ moduleId }: TUpdateModuleProps) {
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(handleCourseSubmit)}
+					onSubmit={form.handleSubmit(handleModuleUpdate)}
 					className="max-w-3xl w-full mt-10 space-y-5"
 				>
 					{/* Module Title Input Field */}
