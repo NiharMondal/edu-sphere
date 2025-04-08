@@ -14,7 +14,7 @@ const lectureApi = baseApi.injectEndpoints({
 		//create lecture
 		createLecture: builder.mutation({
 			query: (payload) => ({
-				url: "/lectures",
+				url: `/lectures/${payload.module}/create`,
 				method: "POST",
 				body: payload,
 			}),
