@@ -1,5 +1,6 @@
 import React from "react";
+import UserTable from "./user-table";
 
 export default function AdminUsersPage() {
-	return <div>AdminUsersPage</div>;
+	return <UserTable />;
 }

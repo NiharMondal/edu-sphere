@@ -1,9 +1,10 @@
+import { TLectureRequest, TLectureResponse, TServerResponse } from "@/types";
 import { baseApi } from "../baseApi";
 
 const lectureApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		//fetch all lectures
-		allLectures: builder.query({
+		allLectures: builder.query<TServerResponse<TLectureResponse[]>, void>({
 			query: () => ({
 				url: "/lectures",
 				method: "GET",
@@ -12,7 +13,10 @@ const lectureApi = baseApi.injectEndpoints({
 		}),
 
 		//create lecture
-		createLecture: builder.mutation({
+		createLecture: builder.mutation<
+			TServerResponse<TLectureResponse>,
+			TLectureRequest
+		>({
 			query: (payload) => ({
 				url: `/lectures/${payload.module}/create`,
 				method: "POST",
@@ -22,16 +26,21 @@ const lectureApi = baseApi.injectEndpoints({
 		}),
 
 		//fetch single lecture
-		singleLecture: builder.query({
-			query: (id: string) => ({
-				url: `/lectures/${id}`,
-				method: "GET",
-			}),
-			providesTags: ["lectures"],
-		}),
+		singleLecture: builder.query<TServerResponse<TLectureResponse>, string>(
+			{
+				query: (id: string) => ({
+					url: `/lectures/${id}`,
+					method: "GET",
+				}),
+				providesTags: ["lectures"],
+			}
+		),
 
 		//delete single lecture
-		deleteLecture: builder.mutation({
+		deleteLecture: builder.mutation<
+			TServerResponse<TLectureResponse>,
+			string
+		>({
 			query: (id: string) => ({
 				url: `/lectures/${id}`,
 				method: "DELETE",
@@ -40,7 +49,10 @@ const lectureApi = baseApi.injectEndpoints({
 		}),
 
 		//update single lecture by ID
-		updateLecture: builder.mutation({
+		updateLecture: builder.mutation<
+			TServerResponse<TLectureResponse>,
+			{ id: string; payload: Partial<TLectureRequest> }
+		>({
 			query: ({ id, payload }) => ({
 				url: `/lectures/${id}`,
 				method: "PATCH",

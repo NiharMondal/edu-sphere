@@ -90,3 +90,16 @@ export const lectureSchema = z.object({
 		.url({ message: "Provide a valid URL" })
 		.trim(),
 });
+export const lectureUpdateSchema = z.object({
+	title: z
+		.string({ required_error: "Lecture title is required" })
+		.min(5, "Min length is 6")
+		.max(40, "Max length is 40")
+		.trim(),
+	type: z.string({ required_error: "File type is required" }),
+	duration: z.string({ required_error: "Duration is required" }).optional(),
+	content: z
+		.string({ required_error: "URL is required" })
+		.url({ message: "Provide a valid URL" })
+		.trim(),
+});
