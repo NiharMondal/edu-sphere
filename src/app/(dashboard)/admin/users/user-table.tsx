@@ -6,7 +6,6 @@ import {
 	TableBody,
 	TableCaption,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -21,8 +20,42 @@ import {
 	DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
+import { Edit, Info } from "lucide-react";
 import UserDetails from "@/components/admin-ui/UserDetails";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const userRole = [
+	{
+		value: "admin",
+		level: "Admin",
+	},
+	{
+		value: "instructor",
+		level: "Instructor",
+	},
+	{
+		value: "student",
+		level: "Student",
+	},
+];
+
 export default function UserTable() {
 	const { data: users, isLoading } = useAllUsersQuery();
 
@@ -53,6 +86,26 @@ export default function UserTable() {
 						<TableCell className="text-center space-y-1 space-x-1">
 							<EsModal>
 								<DialogTrigger asChild>
+									<Button>
+										<Edit />
+										Update Role
+									</Button>
+								</DialogTrigger>
+								<DialogContent>
+									<DialogHeader>
+										<DialogTitle>
+											Update user role
+										</DialogTitle>
+										<DialogDescription className="sr-only">
+											Make changes to your profile here.
+										</DialogDescription>
+									</DialogHeader>
+
+									<UpdateUserRole uRole={user?.role} />
+								</DialogContent>
+							</EsModal>
+							<EsModal>
+								<DialogTrigger asChild>
 									<Button variant="outline">
 										<Info />
 										<span>Details</span>
@@ -75,12 +128,61 @@ export default function UserTable() {
 					</TableRow>
 				))}
 			</TableBody>
-			<TableFooter>
-				<TableRow>
-					<TableCell colSpan={3}>Total</TableCell>
-					<TableCell className="text-right">$2,500.00</TableCell>
-				</TableRow>
-			</TableFooter>
 		</Table>
 	);
 }
+
+const UpdateUserRole = ({ uRole }: { uRole: string }) => {
+	const userRoleSchema = z.object({
+		role: z.string(),
+	});
+	const form = useForm<z.infer<typeof userRoleSchema>>({
+		resolver: zodResolver(userRoleSchema),
+		defaultValues: {
+			role: uRole || "student",
+		},
+	});
+
+	const updateRole = async () => {};
+	return (
+		<Form {...form}>
+			<form
+				onSubmit={form.handleSubmit(updateRole)}
+				className="space-y-5"
+			>
+				<FormField
+					name="role"
+					control={form.control}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>User Role</FormLabel>
+							<Select
+								onValueChange={field.onChange}
+								defaultValue={uRole || field.value}
+							>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue placeholder="Select file type" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{userRole.map((value) => (
+										<SelectItem
+											key={value.value}
+											value={value.value}
+										>
+											{value.level}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<Button type="submit">Update Role</Button>
+			</form>
+		</Form>
+	);
+};

@@ -10,7 +10,7 @@ const userApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ["users"],
 		}),
-		singleUser: builder.query<TServerResponse<any>, string>({
+		singleUser: builder.query<TServerResponse<TUserDetails>, string>({
 			query: (id) => ({
 				url: `/users/${id}`,
 				method: "GET",

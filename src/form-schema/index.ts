@@ -80,7 +80,9 @@ export const lectureSchema = z.object({
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
-	type: z.string({ required_error: "File type is required" }),
+	type: z
+		.string({ required_error: "File type is required" })
+		.nonempty({ message: "File type is required" }),
 	module: z
 		.string({ required_error: "Module ID is required" })
 		.nonempty({ message: "Please select a module" }),

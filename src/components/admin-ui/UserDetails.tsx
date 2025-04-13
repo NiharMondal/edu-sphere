@@ -4,10 +4,10 @@ import React from "react";
 export default function UserDetails({ userId }: { userId: string }) {
 	const { data: user, isLoading } = useSingleUserQuery(userId);
 
-	console.log(user);
 	if (isLoading) {
 		return <p>Loading...</p>;
 	}
+
 	return (
 		<div className="divide-y divide-orange-400">
 			<div className="flex items-center justify-between flex-wrap py-2">
@@ -26,7 +26,7 @@ export default function UserDetails({ userId }: { userId: string }) {
 			</div>
 
 			<div className="py-2">
-				<h3>Enrolled Courses</h3>
+				<h5>Enrolled Courses</h5>
 				{user?.result?.enrolledCourses.map((course, idx) => (
 					<div key={idx} className="space-x-5">
 						<span>{course?.course?.title}</span>
@@ -36,7 +36,13 @@ export default function UserDetails({ userId }: { userId: string }) {
 				))}
 			</div>
 			<div className="py-2">
-				<h3>Created Courses</h3>
+				<h5>Created Courses</h5>
+				{user?.result?.createdCourses.map((course, idx) => (
+					<div key={idx} className="space-x-5">
+						<span>{course?.title}</span>
+						<span>{course?.price}</span>
+					</div>
+				))}
 			</div>
 		</div>
 	);

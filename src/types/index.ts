@@ -57,15 +57,6 @@ export type TUser = {
 	role: string;
 };
 
-export type TUserDetails = {
-	_id: string;
-	name: string;
-	email: string;
-	role: string;
-	createdCourses: TCourse[];
-	enrolledCourses: TCourse[];
-	createdAt: string;
-};
 export type TInstructorResponse = {
 	_id: string;
 	name: string;
@@ -113,4 +104,23 @@ type TModuleCourse = {
 export type TModuleCreate = {
 	title: string;
 	course: string;
+};
+
+export type TUserDetails = {
+	_id: string;
+	name: string;
+	email: string;
+	role: string;
+	enrolledCourses: TEnrolledCourse[];
+	createdCourses: TCourse[];
+	isDeleted: boolean;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
+};
+
+export type TEnrolledCourse = {
+	_id: string;
+	course: TCourse;
+	progress: number;
 };
