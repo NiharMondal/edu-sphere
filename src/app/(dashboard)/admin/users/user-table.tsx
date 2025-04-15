@@ -40,6 +40,8 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useUpdateUserRoleMutation } from "@/redux/api/admin-api/user";
+import { toast } from "sonner";
 
 const userRole = [
 	{
@@ -86,7 +88,7 @@ export default function UserTable() {
 						<TableCell className="text-center space-y-1 space-x-1">
 							<EsModal>
 								<DialogTrigger asChild>
-									<Button>
+									<Button variant={"destructive"}>
 										<Edit />
 										Update Role
 									</Button>
@@ -101,7 +103,10 @@ export default function UserTable() {
 										</DialogDescription>
 									</DialogHeader>
 
-									<UpdateUserRole uRole={user?.role} />
+									<UpdateUserRole
+										uRole={user?.role}
+										userId={user._id}
+									/>
 								</DialogContent>
 							</EsModal>
 							<EsModal>
@@ -132,7 +137,14 @@ export default function UserTable() {
 	);
 }
 
-const UpdateUserRole = ({ uRole }: { uRole: string }) => {
+const UpdateUserRole = ({
+	uRole,
+	userId,
+}: {
+	uRole: string;
+	userId: string;
+}) => {
+	const [updateUserRole] = useUpdateUserRoleMutation();
 	const userRoleSchema = z.object({
 		role: z.string(),
 	});
@@ -143,7 +155,21 @@ const UpdateUserRole = ({ uRole }: { uRole: string }) => {
 		},
 	});
 
-	const updateRole = async () => {};
+	const updateRole = async (values: z.infer<typeof userRoleSchema>) => {
+		try {
+			const res = await updateUserRole({
+				id: userId,
+				payload: values,
+			}).unwrap();
+
+			if (res.success) {
+				toast.success("Role updated successfully");
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
+	};
 	return (
 		<Form {...form}>
 			<form

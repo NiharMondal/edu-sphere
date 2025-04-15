@@ -3,7 +3,6 @@ import {
 	LayoutDashboard,
 	ListFilter,
 	TvMinimalPlay,
-	Users,
 	UserCheck,
 	type LucideIcon,
 } from "lucide-react";
@@ -73,12 +72,7 @@ export const sidebars: TSidebar = {
 			],
 		},
 
-		{ url: "/admin/users", icon: Users, name: "Manage Users" },
-		{
-			url: "/admin/instructors",
-			icon: UserCheck,
-			name: "Manage Instructors",
-		},
+		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
 	],
 	student: [
 		{ url: "", icon: LayoutDashboard, name: "Student Dashboard" },

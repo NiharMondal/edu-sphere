@@ -22,7 +22,20 @@ const userApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ["users"],
 		}),
+
+		updateUserRole: builder.mutation({
+			query: ({ id, payload }) => ({
+				url: `/users/update-role/${id}`,
+				method: "PATCH",
+				body: payload,
+			}),
+			invalidatesTags: ["users"],
+		}),
 	}),
 });
 
-export const { useCreateInstructorMutation, useGetInstructorsQuery } = userApi;
+export const {
+	useCreateInstructorMutation,
+	useGetInstructorsQuery,
+	useUpdateUserRoleMutation,
+} = userApi;
