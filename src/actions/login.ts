@@ -14,7 +14,7 @@ export const login = async (payload: TLogin) => {
 	});
 
 	if (!res.ok) {
-		throw new Error("Something went wrong");
+		throw new Error("Invalid Credentials");
 	}
 
 	const data = await res.json();

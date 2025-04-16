@@ -105,3 +105,26 @@ export const lectureUpdateSchema = z.object({
 		.url({ message: "Provide a valid URL" })
 		.trim(),
 });
+
+export const changePasswordSchema = z
+	.object({
+		oldPassword: z
+			.string({ required_error: "Provide your old password" })
+			.min(6, { message: "Min length is 6" })
+			.max(30, { message: "Max length is 30" })
+			.nonempty({ message: "Old password is required" })
+			.trim(),
+		newPassword: z
+			.string({ required_error: "New password is required" })
+			.min(6, { message: "Min length is 6" })
+			.max(30, { message: "Max length is 30" })
+			.nonempty({ message: "New password is required" })
+			.trim(),
+		confirmPassword: z
+			.string({ required_error: "Confirm password is required" })
+			.trim(),
+	})
+	.refine((data) => data.newPassword === data.confirmPassword, {
+		message: "Passwords do not match",
+		path: ["confirmPassword"],
+	});

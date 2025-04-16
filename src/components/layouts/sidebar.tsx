@@ -1,19 +1,6 @@
 "use client";
 
-import {
-	AudioWaveform,
-	BookOpen,
-	Bot,
-	Command,
-	Frame,
-	GalleryVerticalEnd,
-	Map,
-	PieChart,
-	SquareTerminal,
-} from "lucide-react";
-
 import { NavMain } from "./nav-main";
-import { NavUser } from "./nav-user";
 import {
 	Sidebar,
 	SidebarContent,
@@ -23,123 +10,17 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { sidebars } from "./nav-links";
-
-// This is sample data.
-const data = {
-	user: {
-		name: "shadcn",
-		email: "m@example.com",
-		avatar: "/avatars/shadcn.jpg",
-	},
-	teams: [
-		{
-			name: "Acme Inc",
-			logo: GalleryVerticalEnd,
-			plan: "Enterprise",
-		},
-		{
-			name: "Acme Corp.",
-			logo: AudioWaveform,
-			plan: "Startup",
-		},
-		{
-			name: "Evil Corp.",
-			logo: Command,
-			plan: "Free",
-		},
-	],
-	navMain: [
-		{
-			role: "student",
-			title: "Playground",
-			url: "#",
-			icon: SquareTerminal,
-			isActive: true,
-			items: [
-				{
-					title: "History",
-					url: "#",
-				},
-				{
-					title: "Starred",
-					url: "#",
-				},
-				{
-					title: "Settings",
-					url: "#",
-				},
-			],
-		},
-		{
-			role: "admin",
-			title: "Courses",
-			url: "#",
-			icon: Bot,
-			items: [
-				{
-					title: "Create course",
-					url: "#",
-				},
-				{
-					title: "Course list",
-					url: "#",
-				},
-				{
-					title: "Quantum",
-					url: "#",
-				},
-			],
-		},
-		{
-			role: "instructor",
-			title: "Documentation",
-			url: "#",
-			icon: BookOpen,
-			items: [
-				{
-					title: "Introduction",
-					url: "#",
-				},
-				{
-					title: "Get Started",
-					url: "#",
-				},
-				{
-					title: "Tutorials",
-					url: "#",
-				},
-				{
-					title: "Changelog",
-					url: "#",
-				},
-			],
-		},
-	],
-	projects: [
-		{
-			name: "Design Engineering",
-			url: "#",
-			icon: Frame,
-		},
-		{
-			name: "Sales & Marketing",
-			url: "#",
-			icon: PieChart,
-		},
-		{
-			name: "Travel",
-			url: "#",
-			icon: Map,
-		},
-	],
-};
+import { useAppSelector } from "@/hooks";
+import { selectedUser } from "@/redux/slice/authSlice";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const [role, _setRole] = useState<string>("admin");
+	const user = useAppSelector(selectedUser);
 
-	const menuItems = role ? sidebars["admin"] : [];
+	const role = user?.role || "student";
+
+	const menuItems = role ? sidebars[role] : [];
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader className="flex items-center ">
@@ -155,9 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarContent>
 				<NavMain items={menuItems} role={role} />
 			</SidebarContent>
-			<SidebarFooter>
-				<NavUser user={data.user} />
-			</SidebarFooter>
+			<SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
 	);

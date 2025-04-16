@@ -2,8 +2,10 @@ import {
 	Book,
 	LayoutDashboard,
 	ListFilter,
+	LockKeyhole,
 	TvMinimalPlay,
 	UserCheck,
+	UserPen,
 	type LucideIcon,
 } from "lucide-react";
 
@@ -75,8 +77,13 @@ export const sidebars: TSidebar = {
 		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
 	],
 	student: [
-		{ url: "", icon: LayoutDashboard, name: "Student Dashboard" },
-		{ url: "my-courses", icon: Book, name: "My Courses" },
+		{ url: "/student", icon: Book, name: "My Courses" },
+		{ url: "/student/profile", icon: UserPen, name: "Profile" },
+		{
+			url: "/student/change-password",
+			icon: LockKeyhole,
+			name: "Change Password",
+		},
 	],
 	instructor: [
 		{ url: "", icon: LayoutDashboard, name: "Instructor Dashboard" },

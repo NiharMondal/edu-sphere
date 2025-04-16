@@ -18,8 +18,12 @@ import { Input } from "@/components/ui/input";
 import { login, setCookie } from "@/actions/login";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/hooks";
+import { setCredentials } from "@/redux/slice/authSlice";
+import { decodeToken } from "@/lib/decodeToken";
 
 export default function LoginForm() {
+	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
@@ -32,11 +36,20 @@ export default function LoginForm() {
 	async function onSubmit(values: z.infer<typeof loginSchema>) {
 		try {
 			const res = await login(values);
-			setCookie(res?.result?.accessToken);
+
 			toast("Logged in successfully");
-			router.push("/dashboard");
+			await setCookie(res?.result?.accessToken);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const user: any = decodeToken(res?.result?.accessToken);
+			dispatch(
+				setCredentials({
+					user: user,
+					token: res?.result?.accessToken,
+				})
+			);
+			router.push(`/${user?.role}`);
 		} catch (error) {
-			toast("Something went wrong!");
+			toast("Invalid credentials");
 			console.log(error);
 		}
 	}
