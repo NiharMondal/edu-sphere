@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { changePasswordSchema } from "@/form-schema";
-import { useChangePasswordMutation } from "@/redux/api/user-api/userApi";
+import { useChangePasswordMutation } from "@/redux/api/authApi";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,11 +31,12 @@ export default function ChangePasswordForm() {
 	const handleChangePassword = async (
 		values: z.infer<typeof changePasswordSchema>
 	) => {
-		const res = await changePassword({ id: "", payload: values }).unwrap();
-		if (res?.success) {
-			toast.success("Password changed successfully");
-		}
 		try {
+			const res = await changePassword(values).unwrap();
+			console.log(res);
+			if (res?.success) {
+				toast.success("Password changed successfully");
+			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error?.data?.message);
