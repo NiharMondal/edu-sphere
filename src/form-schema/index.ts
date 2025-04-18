@@ -132,3 +132,14 @@ export const changePasswordSchema = z
 		message: "New password must be different from the old password",
 		path: ["newPassword"],
 	});
+
+export const userUpdateSchema = z.object({
+	name: z
+		.string({ required_error: "Name is required" })
+		.nonempty({ message: "Name can not be empty" })
+		.optional(),
+	email: z
+		.string()
+		.email({ message: "Provide a valid information" })
+		.optional(),
+});

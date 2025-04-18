@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export type TUserState = {
-	_id: string;
+	id: string;
 	name: string;
 	email: string;
 	role: "student" | "instructor" | "admin";
