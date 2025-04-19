@@ -15,30 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { registrationSchema } from "@/form-schema";
-import { config } from "@/config";
-import { TRegister } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useCreateAccountMutation } from "@/redux/api/authApi";
 
-const register = async (payload: TRegister) => {
-	const res = await fetch(`${config.backend_url}/auth/register`, {
-		method: "POST",
-		body: JSON.stringify(payload),
-		headers: {
-			"Content-type": "application/json",
-		},
-	});
-
-	if (!res.ok) {
-		throw new Error("Something went wrong");
-	}
-
-	const data = await res.json();
-	return data;
-};
 export default function RegisterForm() {
 	const router = useRouter();
+	const [createAccount] = useCreateAccountMutation();
 	const form = useForm<z.infer<typeof registrationSchema>>({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
@@ -48,21 +32,18 @@ export default function RegisterForm() {
 		},
 	});
 
-	const mutation = useMutation({
-		mutationFn: register,
-		onSuccess: () => {
-			// queryClient.invalidateQueries("user");
-			toast("Successfully registered an account");
-			router.push("/login");
-		},
-		onError: (error) => {
-			toast("Something went wrong!");
-			console.log(error);
-		},
-	});
+	const handleSubmit = async (values: z.infer<typeof registrationSchema>) => {
+		try {
+			const res = await createAccount(values).unwrap();
 
-	const handleSubmit = (values: z.infer<typeof registrationSchema>) => {
-		mutation.mutate(values);
+			if (res?.success) {
+				toast.success("Account created Successfully");
+				router.push("/login");
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			toast.error(error?.data?.message);
+		}
 	};
 
 	return (

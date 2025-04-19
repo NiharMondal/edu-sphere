@@ -9,6 +9,7 @@ const authApi = baseApi.injectEndpoints({
 				method: "POST",
 				body: payload,
 			}),
+			invalidatesTags: ["users"],
 		}),
 
 		// login

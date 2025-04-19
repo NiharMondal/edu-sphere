@@ -26,6 +26,12 @@ const userApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["users"],
 		}),
+
+		enrolledCourses: builder.query({
+			query: () => ({
+				url: `/enrolled`,
+			}),
+		}),
 	}),
 });
 

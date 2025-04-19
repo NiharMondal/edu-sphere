@@ -124,3 +124,15 @@ export type TEnrolledCourse = {
 	course: TCourse;
 	progress: number;
 };
+
+export type TEnrolledCourseResponse = {
+	_id: string;
+	student: string;
+	progress: number;
+	course: {
+		_id: string;
+		slug: string;
+		title: string;
+		thumbnail: string;
+	};
+};
