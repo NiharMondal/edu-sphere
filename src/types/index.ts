@@ -21,12 +21,12 @@ export type TCourseResponse = {
 	price: number;
 	isDeleted: boolean;
 	instructor: {
-		_id: string;
 		name: string;
-		email: string;
+		avatar: string;
 	};
 	modules: TModule[];
-	students: TUser[];
+	totalModules: number;
+	totalLectures: number;
 	createdAt: string;
 	updatedAt: string;
 };
