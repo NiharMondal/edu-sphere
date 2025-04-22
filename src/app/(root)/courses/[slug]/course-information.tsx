@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useGetCourseBySlugQuery } from "@/redux/api/admin-api/courseApi";
 import { TCourseResponse } from "@/types";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Book } from "lucide-react";
+
 import Image from "next/image";
 import React from "react";
 import {
@@ -31,7 +31,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 		<div>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-5">
-					<h4>{title}</h4>
+					<h4 className="hidden md:block">{title}</h4>
 					<p className="text-sm">{description}</p>
 					<Button>Purchase Course</Button>
 
@@ -44,7 +44,8 @@ export default function CourseInformation({ slug }: { slug: string }) {
 						<span>{name}</span>
 					</div>
 				</div>
-				<div className="">
+				<div className="order-first md:order-last">
+					<h4 className="md:hidden block mb-2">{title}</h4>
 					<Image
 						src={thumbnail}
 						height={200}
