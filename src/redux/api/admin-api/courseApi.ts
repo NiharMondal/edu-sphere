@@ -31,6 +31,18 @@ const courseApi = baseApi.injectEndpoints({
 			providesTags: ["courses"],
 		}),
 
+		//course by slug
+		getCourseBySlug: builder.query<
+			TServerResponse<TCourseResponse>,
+			string
+		>({
+			query: (id) => ({
+				url: `/courses/by-slug/${id}`,
+				method: "GET",
+			}),
+			providesTags: ["courses"],
+		}),
+
 		// only admin can create course
 		updateCourse: builder.mutation<
 			TServerResponse<TCourseResponse>,
@@ -61,6 +73,7 @@ export const {
 	useCreateCourseMutation,
 	useGetCourseQuery,
 	useGetCourseByIdQuery,
+	useGetCourseBySlugQuery,
 	useUpdateCourseMutation,
 	useDeleteCourseMutation,
 } = courseApi;

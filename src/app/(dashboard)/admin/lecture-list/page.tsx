@@ -1,5 +1,5 @@
-import React from "react";
+import LectureTable from "./lecture-table";
 
 export default function LectureList() {
-	return <div>LectureList</div>;
+	return <LectureTable />;
 }

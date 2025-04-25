@@ -9,7 +9,7 @@ export default function RootLayout({
 	return (
 		<section>
 			<Navbar />
-			<div className="container py-10">{children}</div>
+			<div className="container mx-auto py-10">{children}</div>
 		</section>
 	);
 }

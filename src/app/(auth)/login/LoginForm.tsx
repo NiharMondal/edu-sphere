@@ -15,12 +15,19 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { login, setCookie } from "@/actions/login";
+import { setCookie } from "@/actions/login";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/hooks";
+import { setCredentials } from "@/redux/slice/authSlice";
+import { decodeToken } from "@/lib/decodeToken";
+import { useLoginToAccountMutation } from "@/redux/api/authApi";
 
 export default function LoginForm() {
+	const dispatch = useAppDispatch();
 	const router = useRouter();
+	const [loginToAccount, { isLoading }] = useLoginToAccountMutation();
+
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
@@ -29,20 +36,38 @@ export default function LoginForm() {
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof loginSchema>) {
+	const handleLogin = async (values: z.infer<typeof loginSchema>) => {
 		try {
-			const res = await login(values);
-			setCookie(res?.result?.accessToken);
-			toast("Logged in successfully");
-			router.push("/dashboard");
-		} catch (error) {
-			toast("Something went wrong!");
-			console.log(error);
+			const res = await loginToAccount(values).unwrap(); // server action
+
+			if (res.success) {
+				toast.success("Logged in successfully");
+				await setCookie(res?.result?.accessToken); // setting cookie
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const user: any = decodeToken(res?.result?.accessToken);
+				dispatch(
+					setCredentials({
+						user: user,
+						token: res?.result?.accessToken,
+					})
+				);
+				router.push(`/${user?.role}`);
+			} else {
+				toast.error("Invalid credentials");
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			toast(error?.data?.message);
 		}
-	}
+	};
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form
+				onSubmit={form.handleSubmit(handleLogin)}
+				className="space-y-8"
+			>
 				<FormField
 					control={form.control}
 					name="email"
@@ -63,13 +88,19 @@ export default function LoginForm() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="Password" {...field} />
+								<Input
+									placeholder="Password"
+									{...field}
+									type="password"
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">Login</Button>
+				<Button type="submit" disabled={isLoading}>
+					Login
+				</Button>
 			</form>
 		</Form>
 	);

@@ -9,6 +9,7 @@ const authApi = baseApi.injectEndpoints({
 				method: "POST",
 				body: payload,
 			}),
+			invalidatesTags: ["users"],
 		}),
 
 		// login
@@ -19,7 +20,21 @@ const authApi = baseApi.injectEndpoints({
 				body: payload,
 			}),
 		}),
+
+		//change password
+		changePassword: builder.mutation({
+			query: (payload) => ({
+				url: `/auth/change-password`,
+				method: "POST",
+				body: payload,
+			}),
+			invalidatesTags: ["users"],
+		}),
 	}),
 });
 
-export const { useCreateAccountMutation, useLoginToAccountMutation } = authApi;
+export const {
+	useCreateAccountMutation,
+	useLoginToAccountMutation,
+	useChangePasswordMutation,
+} = authApi;

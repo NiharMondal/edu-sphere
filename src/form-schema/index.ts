@@ -80,7 +80,9 @@ export const lectureSchema = z.object({
 		.min(5, "Min length is 6")
 		.max(40, "Max length is 40")
 		.trim(),
-	type: z.string({ required_error: "File type is required" }),
+	type: z
+		.string({ required_error: "File type is required" })
+		.nonempty({ message: "File type is required" }),
 	module: z
 		.string({ required_error: "Module ID is required" })
 		.nonempty({ message: "Please select a module" }),
@@ -89,4 +91,55 @@ export const lectureSchema = z.object({
 		.string({ required_error: "URL is required" })
 		.url({ message: "Provide a valid URL" })
 		.trim(),
+});
+export const lectureUpdateSchema = z.object({
+	title: z
+		.string({ required_error: "Lecture title is required" })
+		.min(5, "Min length is 6")
+		.max(40, "Max length is 40")
+		.trim(),
+	type: z.string({ required_error: "File type is required" }),
+	duration: z.string({ required_error: "Duration is required" }).optional(),
+	content: z
+		.string({ required_error: "URL is required" })
+		.url({ message: "Provide a valid URL" })
+		.trim(),
+});
+
+export const changePasswordSchema = z
+	.object({
+		oldPassword: z
+			.string({ required_error: "Provide your old password" })
+			.min(6, { message: "Min length is 6" })
+			.max(30, { message: "Max length is 30" })
+			.nonempty({ message: "Old password is required" })
+			.trim(),
+		newPassword: z
+			.string({ required_error: "New password is required" })
+			.min(6, { message: "Min length is 6" })
+			.max(30, { message: "Max length is 30" })
+			.nonempty({ message: "New password is required" })
+			.trim(),
+		confirmPassword: z
+			.string({ required_error: "Confirm password is required" })
+			.trim(),
+	})
+	.refine((data) => data.newPassword === data.confirmPassword, {
+		message: "Passwords do not match",
+		path: ["confirmPassword"],
+	})
+	.refine((data) => data.oldPassword !== data.newPassword, {
+		message: "New password must be different from the old password",
+		path: ["newPassword"],
+	});
+
+export const userUpdateSchema = z.object({
+	name: z
+		.string({ required_error: "Name is required" })
+		.nonempty({ message: "Name can not be empty" })
+		.optional(),
+	email: z
+		.string()
+		.email({ message: "Provide a valid information" })
+		.optional(),
 });

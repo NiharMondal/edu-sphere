@@ -21,27 +21,22 @@ export type TCourseResponse = {
 	price: number;
 	isDeleted: boolean;
 	instructor: {
-		_id: string;
 		name: string;
-		email: string;
+		avatar: string;
 	};
 	modules: TModule[];
-	students: TUser[];
+	totalModules: number;
+	totalLectures: number;
 	createdAt: string;
 	updatedAt: string;
 };
 
-export type TLectureResponse = {
-	_id: string;
+export type TLectureRequest = {
 	title: string;
 	type: string;
-	module: {
-		title: string;
-		_id: string;
-	};
-	url: string;
-	createdAt: string;
-	updatedAt: string;
+	module: string;
+	content: string;
+	duration: string;
 };
 
 export type TRegister = {
@@ -59,7 +54,9 @@ export type TUser = {
 	_id: string;
 	name: string;
 	email: string;
+	role: string;
 };
+
 export type TInstructorResponse = {
 	_id: string;
 	name: string;
@@ -67,14 +64,13 @@ export type TInstructorResponse = {
 	role: string;
 };
 
-export type TLecture = {
+export type TLectureResponse = {
 	_id: string;
 	title: string;
 	slug: string;
 	type: string;
-	videoUrl: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	attachments: any[];
+	content: string;
+	duration: string;
 	module: TLectureModule;
 	isDeleted: boolean;
 	createdAt: string;
@@ -94,7 +90,7 @@ export type TModule = {
 	index: number;
 	isDeleted: boolean;
 	course: TModuleCourse;
-	lectures: TLecture[];
+	lectures: TLectureResponse[];
 	createdAt: string;
 	updatedAt: string;
 	__v: number;
@@ -108,4 +104,35 @@ type TModuleCourse = {
 export type TModuleCreate = {
 	title: string;
 	course: string;
+};
+
+export type TUserDetails = {
+	_id: string;
+	name: string;
+	email: string;
+	role: string;
+	enrolledCourses: TEnrolledCourse[];
+	createdCourses: TCourse[];
+	isDeleted: boolean;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
+};
+
+export type TEnrolledCourse = {
+	_id: string;
+	course: TCourse;
+	progress: number;
+};
+
+export type TEnrolledCourseResponse = {
+	_id: string;
+	student: string;
+	progress: number;
+	course: {
+		_id: string;
+		slug: string;
+		title: string;
+		thumbnail: string;
+	};
 };

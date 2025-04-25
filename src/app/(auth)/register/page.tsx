@@ -1,17 +1,23 @@
 import Link from "next/link";
 import React from "react";
 import RegisterForm from "./RegisterForm";
+import Image from "next/image";
 
 export default function Register() {
 	return (
 		<section className="container">
 			<div className="w-full md:max-w-[500px] mx-auto flex items-center justify-center h-screen">
 				<div className="border rounded-md p-10 space-y-5 w-full md:min-w-[500px]">
-					<p className="text-center" title="Logo">
-						<Link href={"/"} className="text-2xl">
-							LMS
+					<div className="flex justify-center">
+						<Link href={"/"}>
+							<Image
+								src={"/logo.svg"}
+								width={100}
+								height={100}
+								alt="Logo"
+							/>
 						</Link>
-					</p>
+					</div>
 					<RegisterForm />
 					<p>
 						<Link href={"/login"} className="underline mt-10">
