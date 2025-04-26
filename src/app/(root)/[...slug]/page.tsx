@@ -8,7 +8,10 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-const fetchCourseData = async (slug: string) => {
+import { TCourseResponse, TServerResponse } from "@/types";
+const fetchCourseData = async (
+	slug: string
+): Promise<TServerResponse<TCourseResponse>> => {
 	const res = await fetch(
 		`http://localhost:5000/api/v1/courses/by-slug/${slug}`,
 		{
@@ -53,7 +56,7 @@ export default async function WatchLecture({
 				</div>
 
 				<div className="bg-white px-4 py-2 rounded-md">
-					{data?.result?.modules.map((mod, index) => (
+					{data?.result?.modules.map((mod) => (
 						<Accordion
 							type="single"
 							collapsible

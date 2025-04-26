@@ -36,7 +36,7 @@ export type TLectureRequest = {
 	type: string;
 	module: string;
 	content: string;
-	duration: string;
+	duration: number;
 };
 
 export type TRegister = {

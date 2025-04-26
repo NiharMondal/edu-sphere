@@ -59,7 +59,7 @@ export default function CreateLectureForm() {
 			content: "",
 			module: "",
 			title: "",
-			duration: "",
+			duration: 0,
 			type: "",
 		},
 	});
@@ -71,7 +71,6 @@ export default function CreateLectureForm() {
 	const handleLectureSubmit = async (
 		values: z.infer<typeof lectureSchema>
 	) => {
-		console.log(values);
 		try {
 			const response = await createLecture(values).unwrap();
 			console.log(response);
@@ -231,6 +230,7 @@ export default function CreateLectureForm() {
 											placeholder="Ex: 10 min"
 											{...field}
 											disabled={!showDuration}
+											type="number"
 										/>
 									</FormControl>
 									<FormMessage />

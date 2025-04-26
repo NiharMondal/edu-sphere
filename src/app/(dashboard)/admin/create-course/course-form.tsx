@@ -50,7 +50,7 @@ export default function CourseForm() {
 	) => {
 		try {
 			const response = await createCourse(values).unwrap();
-			console.log(response);
+
 			if (response.success) {
 				toast.success("Course created successfully");
 			}
