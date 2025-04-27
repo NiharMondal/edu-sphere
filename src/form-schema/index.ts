@@ -77,8 +77,8 @@ export const lectureSchema = z.object({
 
 	title: z
 		.string({ required_error: "Lecture title is required" })
-		.min(5, "Min length is 6")
-		.max(40, "Max length is 40")
+		.min(10, "Min length is 6")
+		.max(60, "Max length is 60")
 		.trim(),
 	type: z
 		.string({ required_error: "File type is required" })
@@ -86,7 +86,10 @@ export const lectureSchema = z.object({
 	module: z
 		.string({ required_error: "Module ID is required" })
 		.nonempty({ message: "Please select a module" }),
-	duration: z.string({ required_error: "Duration is required" }),
+	duration: z.coerce
+		.number({ required_error: "Duration is required" })
+		.positive({ message: "Duration can not be negative" })
+		.max(30, "Should be less than 30 characters"),
 	content: z
 		.string({ required_error: "URL is required" })
 		.url({ message: "Provide a valid URL" })
@@ -95,8 +98,8 @@ export const lectureSchema = z.object({
 export const lectureUpdateSchema = z.object({
 	title: z
 		.string({ required_error: "Lecture title is required" })
-		.min(5, "Min length is 6")
-		.max(40, "Max length is 40")
+		.min(10, "Min length is 6")
+		.max(60, "Max length is 60")
 		.trim(),
 	type: z.string({ required_error: "File type is required" }),
 	duration: z.string({ required_error: "Duration is required" }).optional(),
