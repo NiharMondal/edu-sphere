@@ -35,3 +35,12 @@ export const setCookie = async (token: string) => {
 		console.log(error);
 	}
 };
+
+export const removeCookie = async () => {
+	try {
+		const cookieStore = await cookies();
+		cookieStore.delete("accessToken");
+	} catch (error) {
+		console.log(error);
+	}
+};
