@@ -46,7 +46,7 @@ export default function MyEnrolledCourses() {
 
 						<Button>
 							<Link
-								href={`/${course?.course?._id}/video/${course?.progress?.lastWatchedLecture?._id}`}
+								href={`/${course?.course?._id}/${course.progress?.lastWatchedLecture?.type}/${course?.progress?.lastWatchedLecture?._id}`}
 							>
 								Continue Course
 							</Link>

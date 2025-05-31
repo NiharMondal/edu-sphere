@@ -139,7 +139,7 @@ export type TEnrolledCourseResponse = {
 		progress: number;
 		lastWatchedLecture: {
 			_id: string;
-			slug: string;
+			type: string;
 		};
 	};
 };

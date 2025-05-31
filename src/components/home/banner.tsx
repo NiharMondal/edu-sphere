@@ -27,7 +27,7 @@ export default function Banner() {
 					</div>
 					<div data-aos="fade-up">
 						<Link href={"/courses"}>
-							<Button size={"lg"}>Browse Courses</Button>
+							<Button size={"lg"}>Explore All Courses</Button>
 						</Link>
 					</div>
 				</div>
