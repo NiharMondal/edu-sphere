@@ -18,6 +18,7 @@ export default function MyEnrolledCourses() {
 	);
 
 	if (isLoading) return <p>Loading...</p>;
+
 	return (
 		<div className="grid grid-cols-6 gap-8 mt-5 bg-gray-200 rounded-md p-5">
 			{enrolledCourses?.result?.map((course) => (
@@ -36,15 +37,17 @@ export default function MyEnrolledCourses() {
 						<h4>{course?.course?.title}</h4>
 						<div className="flex items-center justify-between gap-x-10">
 							<Progress
-								value={course.progress}
+								value={course?.progress?.progress}
 								max={100}
 								className="w-full"
 							/>
-							<span>{course.progress}% </span>
+							<span>{course?.progress?.progress}% </span>
 						</div>
 
 						<Button>
-							<Link href={`/${course?.course?.slug}/video/abc`}>
+							<Link
+								href={`/${course?.course?._id}/${course.progress?.lastWatchedLecture?.type}/${course?.progress?.lastWatchedLecture?._id}`}
+							>
 								Continue Course
 							</Link>
 						</Button>
