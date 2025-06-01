@@ -1,8 +1,12 @@
+"use client";
 import React from "react";
 import Container from "../shared/Container";
 import { Button } from "../ui/button";
+import { useAllCourseQuery } from "@/redux/api/course/courseApi";
 
 export default function PopularCourses() {
+	const { data: courses, isLoading } = useAllCourseQuery();
+	console.log(courses);
 	return (
 		<div className="bg-white">
 			<Container>

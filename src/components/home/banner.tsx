@@ -9,7 +9,7 @@ export default function Banner() {
 			<div className="grid grid-cols-1 md:grid-cols-2 h-[550px] place-items-center gap-10">
 				<div className="space-y-5 order-last md:order-first">
 					<div className="space-y-2">
-						<h1 data-aos="fade-up">
+						<h1 data-aos="fade-down">
 							Unlock Your Potential <br />
 							Learn, Grow, Succeed!
 						</h1>

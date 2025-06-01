@@ -18,7 +18,7 @@ export default function Navbar() {
 		}
 	};
 	return (
-		<nav className="container mx-auto border-b">
+		<nav className="container mx-auto border-b" data-aos="fade-down">
 			<div className="flex items-center justify-between w-full p-5">
 				{/* logo  with search menu*/}
 				<div className="flex items-center justify-between w-1/3">
@@ -57,7 +57,7 @@ export default function Navbar() {
 						<Link href={"/"}>Home</Link>
 					</li>
 					<li>
-						<Link href={"/about"}>About Us</Link>
+						<Link href={"/about-us"}>About Us</Link>
 					</li>
 					<li>
 						<Link href={"/contact"}>Contact</Link>
