@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 type TWrapperProps = {
 	data: {
 		courseId: string;
+		type: string;
 		lectureId: string;
 	};
 };

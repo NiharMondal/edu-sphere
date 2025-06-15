@@ -1,13 +1,14 @@
 import React from "react";
 import CourseInformation from "./course-information";
 
-export default function CourseDetails({
+export default async function CourseDetails({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }) {
-	const slug = params.slug;
+	const { slug } = await params;
 
+	console.log(slug);
 	return (
 		<div>
 			<CourseInformation slug={slug} />

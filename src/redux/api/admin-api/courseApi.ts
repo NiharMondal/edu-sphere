@@ -36,8 +36,8 @@ const courseApi = baseApi.injectEndpoints({
 			TServerResponse<TCourseResponse>,
 			string
 		>({
-			query: (id) => ({
-				url: `/courses/by-slug/${id}`,
+			query: (slug) => ({
+				url: `/courses/by-slug/${slug}`,
 				method: "GET",
 			}),
 			providesTags: ["courses"],

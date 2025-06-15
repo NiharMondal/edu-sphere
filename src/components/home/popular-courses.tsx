@@ -3,10 +3,14 @@ import React from "react";
 import Container from "../shared/Container";
 import { Button } from "../ui/button";
 import { useAllCourseQuery } from "@/redux/api/course/courseApi";
+import Image from "next/image";
+import AppLoading from "@/app/loading";
+import Link from "next/link";
 
 export default function PopularCourses() {
-	const { data: courses, isLoading } = useAllCourseQuery();
-	console.log(courses);
+	const { data: courses, isLoading } = useAllCourseQuery({});
+
+	if (isLoading) return <AppLoading />;
 	return (
 		<div className="bg-white">
 			<Container>
@@ -14,25 +18,32 @@ export default function PopularCourses() {
 					<h2 className="text-3xl font-bold mb-10">
 						Popular Courses
 					</h2>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-						{[1, 2, 3].map((course) => (
+					<div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+						{courses?.result?.map((course, index) => (
 							<div
-								key={course}
+								key={course._id}
+								data-aos="fade-right"
+								data-aos-delay={index * 30}
 								className="border rounded-2xl p-4 shadow-sm"
 							>
-								<img
-									src="/course-thumbnail.jpg"
-									alt="Course Thumbnail"
-									className="rounded-xl mb-4"
+								<Image
+									src={course.thumbnail}
+									alt={course.title}
+									width={200}
+									height={200}
+									className="rounded-xl w-full h-[200px] mb-4"
 								/>
 								<h3 className="text-xl font-semibold">
-									Course Title
+									{course.title}
 								</h3>
 								<p className="text-sm text-gray-600">
-									Instructor Name • 12 hours • ⭐️ 4.8
+									{course.instructor?.name} • ⭐️
+									{course.rating}
 								</p>
 								<Button className="mt-4 w-full">
-									Enroll Now
+									<Link href={`/courses/${course.slug}`}>
+										See Details
+									</Link>
 								</Button>
 							</div>
 						))}

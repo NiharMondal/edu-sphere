@@ -19,7 +19,7 @@ export type TCourseResponse = {
 	thumbnail: string;
 	description: string;
 	price: number;
-	isDeleted: boolean;
+	rating: number;
 	instructor: {
 		name: string;
 		avatar: string;
@@ -27,6 +27,7 @@ export type TCourseResponse = {
 	modules: TModule[];
 	totalModules: number;
 	totalLectures: number;
+	isDeleted: boolean;
 	createdAt: string;
 	updatedAt: string;
 };

@@ -15,7 +15,10 @@ const courseApi = baseApi.injectEndpoints({
 			invalidatesTags: ["courses"],
 		}),
 
-		allCourse: builder.query<TServerResponse<TCourseResponse[]>, void>({
+		allCourse: builder.query<
+			TServerResponse<TCourseResponse[]>,
+			Record<string, string>
+		>({
 			query: () => {
 				return {
 					url: "/courses",
@@ -40,6 +43,18 @@ const courseApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ["courses"],
 		}),
+
+		popularCourses: builder.query<TServerResponse<TCourseResponse[]>, void>(
+			{
+				query: () => {
+					return {
+						url: "/courses/popular-courses",
+						method: "GET",
+					};
+				},
+				providesTags: ["courses"],
+			}
+		),
 	}),
 });
 

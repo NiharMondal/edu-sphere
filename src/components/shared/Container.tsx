@@ -1,5 +1,14 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
-export default function Container({ children }: { children: React.ReactNode }) {
-	return <section className="container mx-auto">{children}</section>;
+type TContainerProps = {
+	children: React.ReactNode;
+	className?: string;
+};
+export default function Container({ children, className }: TContainerProps) {
+	return (
+		<section className={cn(className, "container mx-auto")}>
+			{children}
+		</section>
+	);
 }

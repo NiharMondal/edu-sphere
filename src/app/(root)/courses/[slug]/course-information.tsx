@@ -14,6 +14,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import Container from "@/components/shared/Container";
 export default function CourseInformation({ slug }: { slug: string }) {
 	const { data: singleCourse, isLoading } = useGetCourseBySlugQuery(slug);
 
@@ -22,13 +23,13 @@ export default function CourseInformation({ slug }: { slug: string }) {
 		title,
 		description,
 		thumbnail,
-		instructor: { name, avatar },
+		instructor,
 		totalLectures,
 		totalModules,
 		modules,
 	} = singleCourse?.result as TCourseResponse;
 	return (
-		<div>
+		<Container>
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-5">
 					<h4 className="hidden md:block">{title}</h4>
@@ -38,10 +39,13 @@ export default function CourseInformation({ slug }: { slug: string }) {
 					<h5>Instructor</h5>
 					<div className="flex items-center gap-x-2">
 						<Avatar className="ring-1 ring-accent-foreground overflow-hidden">
-							<AvatarImage src={avatar} alt="instructor" />
-							<AvatarFallback>{name}</AvatarFallback>
+							<AvatarImage
+								src={instructor?.avatar}
+								alt="instructor"
+							/>
+							<AvatarFallback>{instructor?.name}</AvatarFallback>
 						</Avatar>
-						<span>{name}</span>
+						<span>{instructor?.name}</span>
 					</div>
 				</div>
 				<div className="order-first md:order-last">
@@ -105,6 +109,6 @@ export default function CourseInformation({ slug }: { slug: string }) {
 					))}
 				</div>
 			</div>
-		</div>
+		</Container>
 	);
 }
