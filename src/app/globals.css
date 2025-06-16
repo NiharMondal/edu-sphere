@@ -13,9 +13,15 @@
 		--absolute-white: 0, 0%, 100%;
 		--absolute-black: 0, 0%, 3%;
 		--primary: 35, 100%, 50%;
+		--orange-shade-50: 35, 100%, 50%
 		--orange-shade-70: 35, 100%, 70%;
 		--orange-shade-75: 35, 100%, 75%;
 		--orange-shade-80: 35, 100%, 80%;
+		--orange-shade-90: 35, 100%, 90%;
+		--orange-shade-95: 35, 100%, 95%;
+		--orange-shade-97: 35, 100%, 97%;
+		--orange-shade-99: 35, 100%, 99%;
+
 		--primary-foreground: 0 0% 98%;
 		--secondary: 0, 0%, 100%;
 		--white-shade-90: 240, 6%, 90%;

@@ -21,7 +21,10 @@ export default function Navbar() {
 		}
 	};
 	return (
-		<nav className="px-2 sm:px-4 lg:px-10 xl:px-24" data-aos="fade-down">
+		<nav
+			className="px-2 sm:px-4 lg:px-10 xl:px-[70px]"
+			data-aos="fade-down"
+		>
 			{/* desktop view  */}
 			<div className="hidden lg:flex items-center justify-between w-full p-5">
 				{/* logo  with search menu*/}

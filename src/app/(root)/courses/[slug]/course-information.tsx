@@ -15,22 +15,24 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import Container from "@/components/shared/Container";
+import img from "../../../../assets/web-design.png";
+import { Clock } from "lucide-react";
 export default function CourseInformation({ slug }: { slug: string }) {
-	const { data: singleCourse, isLoading } = useGetCourseBySlugQuery(slug);
+	// const { data: singleCourse, isLoading } = useGetCourseBySlugQuery(slug);
 
-	if (isLoading) return <p>Loading...</p>;
-	const {
-		title,
-		description,
-		thumbnail,
-		instructor,
-		totalLectures,
-		totalModules,
-		modules,
-	} = singleCourse?.result as TCourseResponse;
+	// if (isLoading) return <p>Loading...</p>;
+	// const {
+	// 	title,
+	// 	description,
+	// 	thumbnail,
+	// 	instructor,
+	// 	totalLectures,
+	// 	totalModules,
+	// 	modules,
+	// } = singleCourse?.result as TCourseResponse;
 	return (
 		<Container>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+			{/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 				<div className="space-y-5">
 					<h4 className="hidden md:block">{title}</h4>
 					<p className="text-sm">{description}</p>
@@ -107,6 +109,123 @@ export default function CourseInformation({ slug }: { slug: string }) {
 							</AccordionItem>
 						</Accordion>
 					))}
+				</div>
+			</div> */}
+			<div className="grid grid-cols-1 md:grid-cols-2 place-content-center gap-5 py-20">
+				<h2>Advanced Javascript</h2>
+				<p className="text-gray-shade-35 text-lg">
+					Welcome to our UI/UX Design course! This comprehensive
+					program will equip you with the knowledge and skills to
+					create exceptional user interfaces (UI) and enhance user
+					experiences (UX). Dive into the world of design thinking,
+					wireframing, prototyping, and usability testing. Below is an
+					overview of the curriculum
+				</p>
+			</div>
+			<div className="rounded-md overflow-hidden">
+				<Image
+					src={img}
+					height={500}
+					width={1200}
+					alt="advanced-Javascript"
+					className="w-full h-full rounded-md overflow-hidden"
+				/>
+			</div>
+
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+				<div className="bg-white p-5 md:p-12 rounded-md">
+					<p className="text-right font-bold text-gray-shade-15 text-2xl">
+						01
+					</p>
+					<p className="text-2xl font-semibold py-4">
+						Introduction to UI/UX Design
+					</p>
+
+					<div className="space-y-5">
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+					</div>
+				</div>
+				<div className="bg-white p-12 rounded-md">
+					<p className="text-right font-bold text-gray-shade-15 text-2xl">
+						01
+					</p>
+					<p className="text-2xl font-semibold py-4">
+						Introduction to UI/UX Design
+					</p>
+
+					<div className="space-y-5">
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+						<div className="px-4 py-5 bg-white border flex items-center justify-between rounded-md  hover:ring-orange-shade-80 hover:ring-2 group">
+							<div>
+								<p className="font-medium text-xl text-gray-shade-20">
+									Understanding UI/UX Design Principles
+								</p>
+								<p className="text-gray-shade-35">Lesson 1</p>
+							</div>
+							<Button className="bg-white-shade-97 px-3 py-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30">
+								<Clock />
+								45 minutes
+							</Button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</Container>

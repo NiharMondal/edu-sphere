@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import img from "../../assets/web-design.png";
 import { Button } from "../ui/button";
+import Link from "next/link";
 const data = {
 	title: "Our Courses",
 	description:
@@ -50,12 +51,14 @@ export default function Courses() {
 							<p className="text-gray-shade-30 mt-1.5">
 								{course.description}
 							</p>
-							<Button
-								className="inline-block mt-5 w-full bg-white-shade-97"
-								variant={"outline"}
-							>
-								Get it now
-							</Button>
+							<Link href={`/courses/${course.slug}`}>
+								<Button
+									className="inline-block mt-5 w-full bg-white-shade-97"
+									variant={"outline"}
+								>
+									Get it now
+								</Button>
+							</Link>
 						</div>
 					</div>
 				))}

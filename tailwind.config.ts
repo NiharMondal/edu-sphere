@@ -37,6 +37,14 @@ export default {
 				"gray-shade-40": "hsl(var(--gray-shade-40))",
 				"gray-shade-60": "hsl(var(--gray-shade-60))",
 				"gray-shade-70": "hsl(var(--gray-shade-70))",
+				"orange-shade-50": "hsl(var(--orange-shade-50))",
+				"orange-shade-70": "hsl(var(--orange-shade-70))",
+				"orange-shade-75": "hsl(var(--orange-shade-75))",
+				"orange-shade-80": "hsl(var(--orange-shade-80))",
+				"orange-shade-90": "hsl(var(--orange-shade-90))",
+				"orange-shade-97": "hsl(var(--orange-shade-97))",
+				"orange-shade-99": "hsl(var(--orange-shade-99))",
+
 				card: {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",

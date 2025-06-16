@@ -8,7 +8,6 @@ export default async function CourseDetails({
 }) {
 	const { slug } = await params;
 
-	console.log(slug);
 	return (
 		<div>
 			<CourseInformation slug={slug} />

@@ -40,9 +40,8 @@ export default function HeroSection() {
 					</span>
 				</p>
 
-				<div className="flex justify-center items-center gap-x-5 mt-10">
+				<div className="flex justify-center  mt-10">
 					<Button>Explore Courses</Button>
-					<Button variant={"outline"}>View Pricing</Button>
 				</div>
 			</div>
 
