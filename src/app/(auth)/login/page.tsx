@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Login() {
 	return (
 		<section className="container">
-			<div className="w-full md:max-w-[500px] mx-auto flex items-center justify-center h-screen">
+			<div className="w-full md:max-w-[500px] mx-auto flex items-center justify-center">
 				<div className="border rounded-md p-10 space-y-5 w-full md:min-w-[500px]">
 					<div className="flex justify-center">
 						<Link href={"/"}>

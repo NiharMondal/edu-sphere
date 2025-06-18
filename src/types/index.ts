@@ -18,6 +18,9 @@ export type TCourseResponse = {
 	slug: string;
 	thumbnail: string;
 	description: string;
+	level: string;
+	duration: string;
+	shortVideo: string;
 	price: number;
 	rating: number;
 	instructor: {

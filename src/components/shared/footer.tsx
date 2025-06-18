@@ -7,8 +7,8 @@ import { Button } from "../ui/button";
 
 export default function Footer() {
 	return (
-		<Container className="bg-white pt-16 mt-20">
-			<footer className="p-5 md:p-0">
+		<footer className="bg-white pt-16 mt-20">
+			<Container>
 				<div className="grid grid-cols-2  lg:grid-cols-5 gap-5">
 					<div className="col-span-full lg:col-span-2">
 						<Image
@@ -111,7 +111,7 @@ export default function Footer() {
 					&copy; {new Date().getFullYear()} EduSphere. All rights
 					reserved.
 				</p>
-			</footer>
-		</Container>
+			</Container>
+		</footer>
 	);
 }

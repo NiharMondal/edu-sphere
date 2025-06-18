@@ -1,5 +1,6 @@
 import { baseApi } from "../baseApi";
 import { TCourse, TCourseResponse, TServerResponse } from "@/types";
+
 const courseApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		//create course --- only admin can create course

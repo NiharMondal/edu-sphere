@@ -146,3 +146,10 @@ export const userUpdateSchema = z.object({
 		.email({ message: "Provide a valid information" })
 		.optional(),
 });
+
+export const categorySchema = z.object({
+	name: z
+		.string({ required_error: "Name is required" })
+		.nonempty({ message: "Name can not be empty" }),
+	icon: z.string().trim().optional(),
+});
