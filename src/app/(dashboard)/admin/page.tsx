@@ -1,17 +1,17 @@
 import EduCard from "@/components/dashboard/edu-card";
-import { Book, HandCoins, Users } from "lucide-react";
+import { Book, GraduationCap, HandCoins, Speech } from "lucide-react";
 
 export default function Dashboard() {
 	return (
 		<section>
-			<h5>
+			<h5 className="mt-5">
 				Here is a short view about this website, that includes analytics
 				and other information
 			</h5>
 
-			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-5">
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5 bg-white-shade-99 rounded-md p-5 lg:p-10">
 				<EduCard
-					icon={<Users />}
+					icon={<GraduationCap />}
 					count={570}
 					className="bg-blue-200"
 					tag="Total Students"
@@ -29,10 +29,10 @@ export default function Dashboard() {
 					tag="Total Earnings"
 				/>
 				<EduCard
-					icon={<Users />}
+					icon={<Speech />}
 					count={4}
 					className="bg-amber-200"
-					tag="Total Users"
+					tag="Total Instructor"
 				/>
 			</div>
 		</section>

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { CldUploadWidget } from "next-cloudinary";
 import { config } from "@/config";
+import Image from "next/image";
 
 export default function Upload() {
 	const form = useForm<z.infer<typeof categorySchema>>({
@@ -84,8 +85,10 @@ export default function Upload() {
 									</CldUploadWidget>
 
 									{field.value && (
-										<img
+										<Image
 											src={field.value}
+											width={100}
+											height={100}
 											alt="Uploaded"
 											className="mt-2 h-32 rounded-lg"
 										/>

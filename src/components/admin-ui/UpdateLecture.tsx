@@ -5,60 +5,58 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { lectureUpdateSchema } from "@/form-schema";
 
 import { toast } from "sonner";
 
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import {
-	useSingleLectureQuery,
-	useUpdateLectureMutation,
-} from "@/redux/api/admin-api/lectureApi";
 import { useEffect } from "react";
+import {
+	useLectureByIdQuery,
+	useUpdateLectureMutation,
+} from "@/redux/api/lectureApi";
+import ESInput from "../form/ESInput";
+import ESSelect from "../form/ESSelect";
+
+type UpdateLectureProps = {
+	lectureId: string;
+	closeModal: () => void;
+};
 
 const fileType = [
 	{
 		value: "video",
-		level: "Video",
+		label: "Video",
 	},
 	{
 		value: "pdf",
-		level: "PDF",
+		label: "PDF",
 	},
 	{
 		value: "text",
-		level: "Text",
+		label: "Text",
 	},
 ];
-export default function UpdateLecture({ lectureId }: { lectureId: string }) {
-	const { data: lectureDetails, isLoading } =
-		useSingleLectureQuery(lectureId);
 
+type LectureUpdateForm = z.infer<typeof lectureUpdateSchema>;
+
+export default function UpdateLecture({
+	lectureId,
+	closeModal,
+}: UpdateLectureProps) {
+	const { data: lectureDetails, isLoading } = useLectureByIdQuery(lectureId);
+
+	console.log(lectureDetails);
 	const [updateLecture, { isLoading: updateLoading }] =
 		useUpdateLectureMutation();
 
-	const form = useForm<z.infer<typeof lectureUpdateSchema>>({
+	const form = useForm<LectureUpdateForm>({
 		resolver: zodResolver(lectureUpdateSchema),
 		defaultValues: {
-			title: lectureDetails?.result?.title || "",
-			content: lectureDetails?.result?.content || "",
-			type: lectureDetails?.result?.type || "",
-			duration: lectureDetails?.result?.duration || "",
+			title: "",
+			content: "",
+			duration: 0,
+			type: "video",
 		},
 	});
 
@@ -74,6 +72,7 @@ export default function UpdateLecture({ lectureId }: { lectureId: string }) {
 
 			if (response.success) {
 				toast.success("Lecture updated successfully");
+				closeModal();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
@@ -87,8 +86,10 @@ export default function UpdateLecture({ lectureId }: { lectureId: string }) {
 			form.reset({
 				title: lectureDetails?.result?.title || "",
 				content: lectureDetails?.result?.content || "",
-				type: lectureDetails?.result?.type || "",
-				duration: lectureDetails?.result?.duration || "",
+				type:
+					(lectureDetails?.result
+						?.type as LectureUpdateForm["type"]) || "video",
+				duration: lectureDetails?.result?.duration || 0,
 			});
 		}
 	}, [form, lectureDetails]);
@@ -104,87 +105,24 @@ export default function UpdateLecture({ lectureId }: { lectureId: string }) {
 					className="max-w-3xl w-full  mt-10"
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-						<FormField
-							control={form.control}
-							name="title"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Lecture Title</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Lecture Title"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
+						<ESInput form={form} name="title" label="Title" />
+						<ESInput
+							form={form}
 							name="content"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>URL</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Content URL"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label="Content URL"
 						/>
-						<FormField
-							control={form.control}
+						<ESSelect
+							form={form}
 							name="type"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>File Type</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={
-											lectureDetails?.result?.type ||
-											field.value
-										}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Select file type" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{fileType.map((value) => (
-												<SelectItem
-													key={value.value}
-													value={value.value}
-												>
-													{value.level}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
+							label="Select type"
+							options={fileType}
 						/>
 
-						<FormField
-							control={form.control}
+						<ESInput
+							form={form}
+							type="number"
 							name="duration"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Duration</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Ex: 10 min"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label="Duration"
 						/>
 					</div>
 					<Button type="submit" disabled={updateLoading}>

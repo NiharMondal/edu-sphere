@@ -5,30 +5,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 
-import { useGetCourseQuery } from "@/redux/api/admin-api/courseApi";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { useCreateModuleMutation } from "@/redux/api/admin-api/moduleApi";
 import { createModuleSchema } from "@/form-schema";
+import { useCreateModuleMutation } from "@/redux/api/moduleApi";
+import { useAllCourseQuery } from "@/redux/api/courseApi";
+import ESInput from "@/components/form/ESInput";
+import ESSelect from "@/components/form/ESSelect";
 
 export default function CreateModulePage() {
-	const { data: courses, isLoading: courseLoading } = useGetCourseQuery();
+	const { data: courses, isLoading: courseLoading } = useAllCourseQuery({});
 	const [createModule, { isLoading: moduleLoading }] =
 		useCreateModuleMutation();
 
@@ -39,8 +26,10 @@ export default function CreateModulePage() {
 			title: "",
 		},
 	});
-
-	const selectedCourse = form.watch("course");
+	const courseOptions = courses?.result?.map((course) => ({
+		value: course._id,
+		label: course.title,
+	}));
 
 	const handleModuleSubmit = async (
 		values: z.infer<typeof createModuleSchema>
@@ -53,6 +42,7 @@ export default function CreateModulePage() {
 
 			if (response.success) {
 				toast.success("Module created successfully");
+				form.reset();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
@@ -60,6 +50,7 @@ export default function CreateModulePage() {
 		}
 	};
 
+	if (courseLoading) return <p>Loading...</p>;
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
@@ -68,55 +59,13 @@ export default function CreateModulePage() {
 					className="max-w-3xl w-full mt-10 space-y-5"
 				>
 					{/* Course Select Field */}
-					<FormField
-						control={form.control}
-						name="course"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Course title</FormLabel>
-								<Select
-									onValueChange={field.onChange}
-									defaultValue={field.value}
-									disabled={courseLoading}
-								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Select course" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{courses?.result?.map((course) => (
-											<SelectItem
-												key={course?._id}
-												value={course?._id}
-											>
-												{course?.title}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<ESInput form={form} name="title" label="Title" />
 
-					{/* Module Title Input Field */}
-					<FormField
-						control={form.control}
-						name="title"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Module title</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="Title"
-										{...field}
-										disabled={!selectedCourse}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
+					<ESSelect
+						form={form}
+						name="course"
+						label="Course"
+						options={courseOptions}
 					/>
 
 					<Button type="submit" disabled={moduleLoading}>

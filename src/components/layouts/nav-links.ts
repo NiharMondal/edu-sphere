@@ -6,6 +6,7 @@ import {
 	TvMinimalPlay,
 	UserCheck,
 	UserPen,
+	BadgeDollarSign,
 	type LucideIcon,
 } from "lucide-react";
 
@@ -25,9 +26,14 @@ type TSidebar = {
 	student: TLink[];
 	instructor: TLink[];
 };
-export const sidebars: TSidebar = {
+
+export const sidebar: TSidebar = {
 	admin: [
-		{ url: "/admin", icon: LayoutDashboard, name: "Admin Dashboard" },
+		{
+			url: "/admin",
+			icon: LayoutDashboard,
+			name: "Admin Dashboard",
+		},
 		{
 			name: "Course",
 			isActive: true,
@@ -74,6 +80,11 @@ export const sidebars: TSidebar = {
 			],
 		},
 
+		{
+			url: "/admin/transaction",
+			icon: BadgeDollarSign,
+			name: "Transactions",
+		},
 		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
 	],
 	student: [

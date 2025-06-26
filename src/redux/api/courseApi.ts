@@ -1,12 +1,14 @@
-import { baseApi } from "../baseApi";
-import { TCourse, TCourseResponse, TServerResponse } from "@/types";
+import { TServerResponse } from "@/types";
+import { baseApi } from "./baseApi";
+
+import { TCourseResponse, TCourseRequest } from "@/types/course.types";
 
 const courseApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		//create course --- only admin can create course
 		createCourse: builder.mutation<
 			TServerResponse<TCourseResponse[]>,
-			TCourse
+			TCourseRequest
 		>({
 			query: (payload) => ({
 				url: "/courses",
@@ -20,10 +22,11 @@ const courseApi = baseApi.injectEndpoints({
 			TServerResponse<TCourseResponse[]>,
 			Record<string, string>
 		>({
-			query: () => {
+			query: (params) => {
 				return {
 					url: "/courses",
 					method: "GET",
+					params,
 				};
 			},
 			providesTags: ["courses"],
@@ -34,6 +37,7 @@ const courseApi = baseApi.injectEndpoints({
 				url: `/courses/by-slug/${slug}`,
 				method: "GET",
 			}),
+
 			providesTags: ["courses"],
 		}),
 
@@ -56,6 +60,29 @@ const courseApi = baseApi.injectEndpoints({
 				providesTags: ["courses"],
 			}
 		),
+		//create course --- only admin can create course
+		updateCourse: builder.mutation<
+			TServerResponse<TCourseResponse[]>,
+			{ id: string; payload: Partial<TCourseRequest> }
+		>({
+			query: ({ id, payload }) => ({
+				url: `/courses/${id}`,
+				method: "PATCH",
+				body: payload,
+			}),
+			invalidatesTags: ["courses"],
+		}),
+
+		deleteCourse: builder.mutation<
+			TServerResponse<TCourseResponse>,
+			string
+		>({
+			query: (id) => ({
+				url: `/courses/${id}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["courses"],
+		}),
 	}),
 });
 
@@ -64,4 +91,6 @@ export const {
 	useAllCourseQuery,
 	useCourseByIdQuery,
 	useCourseBySlugQuery,
+	useUpdateCourseMutation,
+	useDeleteCourseMutation,
 } = courseApi;

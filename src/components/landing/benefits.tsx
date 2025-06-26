@@ -14,10 +14,12 @@ export default function Benefits() {
 		<Container className="py-20">
 			<SectionTitle data={data} />
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
-				{benefits.map((item) => (
+				{benefits.map((item, index) => (
 					<div
 						key={item.index}
 						className="rounded-md p-12 bg-white hover:shadow"
+						data-aos="fade-up"
+						data-aos-delay={index * 40}
 					>
 						<p className="text-right font-bold text-gray-shade-15 text-5xl">
 							{item.index}

@@ -21,7 +21,7 @@ export default function Login() {
 					<LoginForm />
 
 					<p>
-						<Link href={"/register"} className="underline">
+						<Link href={"/sign-up"} className="underline">
 							Don&apos;t have an account? Create one
 						</Link>
 					</p>

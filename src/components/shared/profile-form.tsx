@@ -1,45 +1,38 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Input } from "../ui/input";
-import {
-	useSingleUserQuery,
-	useUpdateInformationMutation,
-} from "@/redux/api/user-api/userApi";
+
 import { userUpdateSchema } from "@/form-schema";
 
 import { useAppSelector } from "@/hooks";
 import { selectedUser } from "@/redux/slice/authSlice";
 import { useEffect } from "react";
+import { useUpdateUserMutation, useUserByIdQuery } from "@/redux/api/userApi";
+import ESInput from "../form/ESInput";
+import ESImageUpload from "../form/ESUploadImage";
 
 export default function ProfileForm() {
 	const user = useAppSelector(selectedUser);
 
-	const { data: userDetails, isLoading } = useSingleUserQuery(
+	const { data: userDetails, isLoading } = useUserByIdQuery(
 		user?.id as string,
 		{
 			skip: !user?.id,
 		}
 	);
 
-	const [updateInformation, { isLoading: updateLoading }] =
-		useUpdateInformationMutation();
+	const [updateUser, { isLoading: updateLoading }] = useUpdateUserMutation();
+
 	const form = useForm<z.infer<typeof userUpdateSchema>>({
 		resolver: zodResolver(userUpdateSchema),
 		defaultValues: {
 			name: "",
-			email: "",
+			phone: "",
+			avatar: "",
 		},
 	});
 
@@ -47,8 +40,8 @@ export default function ProfileForm() {
 		values: z.infer<typeof userUpdateSchema>
 	) => {
 		try {
-			const res = await updateInformation({
-				id: user?.id,
+			const res = await updateUser({
+				id: user?.id as string,
 				payload: values,
 			}).unwrap();
 
@@ -58,15 +51,17 @@ export default function ProfileForm() {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error?.data?.message);
+			console.log(error);
 		}
 	};
 
-	//updating default form values
+	// updating default form values
 	useEffect(() => {
 		if (userDetails?.result) {
 			form.reset({
 				name: userDetails?.result?.name || "",
-				email: userDetails?.result?.email || "",
+				avatar: userDetails?.result?.avatar || "",
+				phone: userDetails?.result?.phone || "",
 			});
 		}
 	}, [form, userDetails?.result]);
@@ -77,38 +72,15 @@ export default function ProfileForm() {
 	return (
 		<Form {...form}>
 			<form
-				className="max-w-xl w-full mt-10 space-y-5 p-10 border"
+				className="max-w-xl w-full mt-10 space-y-5 p-10 bg-white-shade-99 border rounded-md"
 				onSubmit={form.handleSubmit(handleUserDetails)}
 			>
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Name</FormLabel>
-							<FormControl>
-								<Input placeholder="Name" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email Address</FormLabel>
-							<FormControl>
-								<Input placeholder="Email address" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<ESImageUpload form={form} name="avatar" label="Course Photo" />
+				<ESInput form={form} name="name" label="Name" />
+				<ESInput form={form} name="phone" label="Phone" />
 
 				<Button type="submit" disabled={updateLoading}>
-					Update
+					Update Information
 				</Button>
 			</form>
 		</Form>

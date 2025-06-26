@@ -1,5 +1,5 @@
 import { TServerResponse } from "@/types";
-import { baseApi } from "../baseApi";
+import { baseApi } from "./baseApi";
 
 type TCompleteLectureRequest = {
 	lecId: string;
@@ -20,8 +20,20 @@ const progressApi = baseApi.injectEndpoints({
 				method: "POST",
 				body: payload,
 			}),
+			invalidatesTags: ["progress"],
+		}),
+
+		getProgressByCourseIdAndStudentId: builder.query({
+			query: (courseId) => ({
+				url: `/progress/course/${courseId}`,
+				method: "GET",
+			}),
+			providesTags: ["progress"],
 		}),
 	}),
 });
 
-export const { useCompleteLectureMutation } = progressApi;
+export const {
+	useCompleteLectureMutation,
+	useGetProgressByCourseIdAndStudentIdQuery,
+} = progressApi;

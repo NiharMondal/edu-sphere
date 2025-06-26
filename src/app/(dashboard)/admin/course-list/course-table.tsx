@@ -1,16 +1,11 @@
 "use client";
-import {
-	useDeleteCourseMutation,
-	useGetCourseQuery,
-} from "@/redux/api/admin-api/courseApi";
+
 import React from "react";
 
 import {
 	Table,
 	TableBody,
-	TableCaption,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -18,18 +13,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import EsModal from "@/components/shared/es-modal";
-import {
-	DialogContent,
-	DialogTrigger,
-	DialogHeader,
-	DialogTitle,
-	DialogDescription,
-} from "@/components/ui/dialog";
+
 import UpdateCourse from "@/components/admin-ui/UpdateCourse";
 import { toast } from "sonner";
+import {
+	useAllCourseQuery,
+	useDeleteCourseMutation,
+} from "@/redux/api/courseApi";
 
 export default function CourseTable() {
-	const { data: courses } = useGetCourseQuery(); // fetching courses
+	const { data: courses } = useAllCourseQuery({}); // fetching courses
 
 	const [deleteCourse, { isLoading: deleteLoading }] =
 		useDeleteCourseMutation();
@@ -46,17 +39,17 @@ export default function CourseTable() {
 			toast.error(error?.data?.message);
 		}
 	};
+
 	return (
-		<Table>
-			<TableCaption>A list of recently created courses.</TableCaption>
+		<Table className="bg-white p-5 rounded-md mt-5">
 			<TableHeader>
 				<TableRow>
-					<TableHead className="text-primary">Title</TableHead>
-					<TableHead className="text-primary">Price</TableHead>
-					<TableHead className="text-primary">Instructor</TableHead>
-					<TableHead className="text-center text-primary">
-						Action
-					</TableHead>
+					<TableHead>Title</TableHead>
+					<TableHead>Price</TableHead>
+					<TableHead>Instructor</TableHead>
+					<TableHead>Course Type</TableHead>
+					<TableHead>Level</TableHead>
+					<TableHead className="text-center">Action</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody className="text-muted-foreground">
@@ -67,24 +60,24 @@ export default function CourseTable() {
 						</TableCell>
 						<TableCell>{course.price}</TableCell>
 						<TableCell>{course.instructor.name}</TableCell>
+						<TableCell>{course.pricingType}</TableCell>
+						<TableCell>{course.level}</TableCell>
 						<TableCell className="text-center space-y-1 space-x-1">
-							<EsModal>
-								<DialogTrigger asChild>
+							<EsModal
+								title="Update Course"
+								trigger={
 									<Button variant="outline">
-										<Edit />
+										<Edit className="mr-2 h-4 w-4" />
 										<span>Edit</span>
 									</Button>
-								</DialogTrigger>
-								<DialogContent className="w-full md:max-w-3xl">
-									<DialogHeader>
-										<DialogTitle>Update Course</DialogTitle>
-										<DialogDescription className="sr-only">
-											Make changes to your profile here.
-										</DialogDescription>
-									</DialogHeader>
-
-									<UpdateCourse courseId={course._id} />
-								</DialogContent>
+								}
+							>
+								{(closeModal) => (
+									<UpdateCourse
+										courseId={course._id}
+										closeModal={closeModal}
+									/>
+								)}
 							</EsModal>
 
 							<Button
@@ -92,6 +85,7 @@ export default function CourseTable() {
 								variant={"destructive"}
 								disabled={deleteLoading}
 								onClick={() => handleDelete(course?._id)}
+								className="border border-orange-shade-50 bg-orange-shade-97 text-orange-shade-50"
 							>
 								<Trash />
 								Delete
@@ -100,12 +94,6 @@ export default function CourseTable() {
 					</TableRow>
 				))}
 			</TableBody>
-			<TableFooter>
-				<TableRow>
-					<TableCell colSpan={3}>Total</TableCell>
-					<TableCell className="text-right">$2,500.00</TableCell>
-				</TableRow>
-			</TableFooter>
 		</Table>
 	);
 }

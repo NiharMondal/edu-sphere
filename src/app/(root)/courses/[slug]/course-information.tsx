@@ -9,8 +9,8 @@ import React from "react";
 import Container from "@/components/shared/Container";
 import { Clock } from "lucide-react";
 import AppLoading from "@/app/loading";
-import { useCourseBySlugQuery } from "@/redux/api/course/courseApi";
-import { useMakePaymentMutation } from "@/redux/api/enrollment/enrollmentApi";
+import { useCourseBySlugQuery } from "@/redux/api/courseApi";
+import { useMakePaymentMutation } from "@/redux/api/enrollmentApi";
 import { useAppSelector } from "@/hooks";
 import { selectedUser } from "@/redux/slice/authSlice";
 import { toast } from "sonner";
@@ -31,11 +31,12 @@ export default function CourseInformation({ slug }: { slug: string }) {
 		};
 		try {
 			const res = await makePayment(data).unwrap();
-			if (res?.result) {
+			console.log(res);
+			if (res?.result?.url) {
 				window.location.href = res?.result?.url;
 				toast.message("Redirecting to checkout page...");
 			} else {
-				toast.error("Something went wrong!");
+				toast.success("Enrolled successfully");
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
@@ -48,7 +49,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 			<div className="grid grid-cols-1 md:grid-cols-2 place-content-center gap-10 py-20">
 				<div className="space-y-2">
 					<h2 className="font-semibold text-gray-shade-15">
-						{course?.result.title}
+						{course?.result?.title}
 					</h2>
 
 					<p className="text-gray-shade-35 text-base lg:text-lg">
@@ -59,7 +60,9 @@ export default function CourseInformation({ slug }: { slug: string }) {
 						<div className=" data-[slot=avatar]:ring-2 data-[slot=avatar]:ring-orange-shade-50">
 							<Avatar>
 								<AvatarImage
-									src={course?.result?.instructor?.avatar}
+									src={
+										course?.result?.instructor?.avatar || ""
+									}
 									alt="instructor-photo"
 								/>
 								<AvatarFallback>AU</AvatarFallback>
@@ -79,7 +82,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 						height={500}
 						width={1200}
 						alt="advanced-Javascript"
-						className="w-full h-full rounded-md overflow-hidden"
+						className="w-full h-[230px] md:h-[320px] rounded-md overflow-hidden"
 					/>
 				</div>
 			</div>

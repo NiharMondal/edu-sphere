@@ -16,18 +16,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-import {
-	useSingleModuleQuery,
-	useUpdateModuleMutation,
-} from "@/redux/api/admin-api/moduleApi";
 import { updateModuleSchema } from "@/form-schema";
 import { useEffect } from "react";
+import {
+	useModuleByIdQuery,
+	useUpdateModuleMutation,
+} from "@/redux/api/moduleApi";
 
 type TUpdateModuleProps = {
 	moduleId: string;
+	closeModal: () => void;
 };
-export default function UpdateModule({ moduleId }: TUpdateModuleProps) {
-	const { data: moduleDetails } = useSingleModuleQuery(moduleId);
+export default function UpdateModule({
+	moduleId,
+	closeModal,
+}: TUpdateModuleProps) {
+	const { data: moduleDetails } = useModuleByIdQuery(moduleId);
 	const [updateModule, { isLoading: moduleLoading }] =
 		useUpdateModuleMutation();
 
@@ -48,7 +52,8 @@ export default function UpdateModule({ moduleId }: TUpdateModuleProps) {
 			}).unwrap();
 
 			if (response.success) {
-				toast.success("Module created successfully");
+				toast.success("Module updated successfully");
+				closeModal();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {

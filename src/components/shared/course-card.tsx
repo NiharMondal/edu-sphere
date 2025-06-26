@@ -1,8 +1,8 @@
-import { TCourseResponse } from "@/types";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { TCourseResponse } from "@/types/course.types";
 type CourseCardProps = {
 	course: TCourseResponse;
 };
@@ -14,18 +14,20 @@ export default function CourseCard({ course }: CourseCardProps) {
 				height={200}
 				width={200}
 				alt={course.title}
-				className="h-[230px] w-full rounded overflow-hidden object-center"
+				className="h-auto md:h-[250px] w-full rounded overflow-hidden object-center object-contain"
 			/>
-			<div className="flex items-center justify-between md:flex-col 2xl:flex-row gap-3">
-				<div className="grid grid-cols-2 gap-x-3">
+			<div className="">
+				<div className="flex items-center justify-between">
 					<span className="border rounded py-1 px-2">
 						{course.duration}
 					</span>
 					<span className="border rounded py-1 px-2">
 						{course.level}
 					</span>
+
+					<span>&#x09F3; {course?.price}</span>
 				</div>
-				<div className="col-span-full xl:col-span-1 font-medium text-gray-shade-15">
+				<div className="col-span-full xl:col-span-1 font-medium text-gray-shade-15 mt-2">
 					By {course.instructor.name}
 				</div>
 			</div>

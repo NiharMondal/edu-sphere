@@ -1,4 +1,4 @@
-import { RootState } from "./../store";
+import { RootState } from "../store";
 import { config } from "@/config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -19,5 +19,14 @@ export const baseApi = createApi({
 		},
 	}),
 	endpoints: () => ({}),
-	tagTypes: ["users", "lectures", "courses", "modules"],
+	tagTypes: [
+		"users",
+		"lectures",
+		"courses",
+		"modules",
+		"categories",
+		"enrollments",
+		"transactions",
+		"progress",
+	],
 });

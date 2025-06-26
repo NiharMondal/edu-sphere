@@ -5,7 +5,7 @@ export type TUserState = {
 	id: string;
 	name: string;
 	email: string;
-	role: "student" | "instructor" | "admin";
+	role: string;
 };
 
 export type TAuthState = {

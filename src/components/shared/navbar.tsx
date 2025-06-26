@@ -8,17 +8,31 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { MobileNavbar } from "./mobile-navbar";
 import UserAvatar from "./user-avatar";
+import { useUserByIdQuery } from "@/redux/api/userApi";
+import { useAppSelector } from "@/hooks";
+import { selectedUser } from "@/redux/slice/authSlice";
+
 export default function Navbar() {
-	const [loggedIn, setLoggedIn] = useState(true);
+	const user = useAppSelector(selectedUser);
 	const router = useRouter();
 	const [search, setSearch] = useState("");
 
 	const handleSearch = () => {
-		if (search.length) {
-			router.push(`/courses?search=${search}`);
+		if (search.trim().length) {
+			router.push(`/courses?search=${encodeURIComponent(search)}`);
 		} else {
 			router.push(`/courses`);
 		}
+	};
+
+	const { data: userData, isLoading } = useUserByIdQuery(user?.id as string, {
+		skip: !user?.id,
+	});
+
+	const data = {
+		name: userData?.result?.name,
+		avatar: userData?.result?.avatar,
+		role: userData?.result?.role,
 	};
 	return (
 		<nav
@@ -48,12 +62,19 @@ export default function Navbar() {
 							className="w-full outline-none rounded-full py-2 px-4 ring-1 ring-muted-foreground focus:ring-1 focus:ring-accent-foreground focus:min-w-40"
 							onChange={(e) => setSearch(e.target.value)}
 							value={search}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									e.preventDefault();
+									handleSearch();
+								}
+							}}
 						/>
 						<span
-							className="absolute right-3 top-1/2 transform -translate-y-1/2"
+							title="Click to search"
+							className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer "
 							onClick={handleSearch}
 						>
-							<Search />
+							<Search className="text-gray-shade-35 hover:text-gray-shade-10 scale-90 hover:scale-100 transition-all duration-200" />
 						</span>
 					</div>
 				</div>
@@ -76,16 +97,20 @@ export default function Navbar() {
 				</ul>
 
 				{/**Login button */}
-				<div className="flex items-center gap-x-3">
-					<Link href={"/sign-up"}>
-						<Button variant={"outline"} size={"lg"}>
-							Sign Up
-						</Button>
-					</Link>
-					<Link href={"/login"}>
-						<Button size={"lg"}>Login</Button>
-					</Link>
-				</div>
+				{userData?.result ? (
+					<UserAvatar data={data} isLoading={isLoading} />
+				) : (
+					<div className="flex items-center gap-x-3">
+						<Link href={"/sign-up"}>
+							<Button variant={"outline"} size={"lg"}>
+								Sign Up
+							</Button>
+						</Link>
+						<Link href={"/login"}>
+							<Button size={"lg"}>Login</Button>
+						</Link>
+					</div>
+				)}
 			</div>
 
 			{/* mobile view  */}
@@ -98,18 +123,25 @@ export default function Navbar() {
 						className="w-full outline-none rounded-full py-2 px-4 ring-1 ring-muted-foreground focus:ring-1 focus:ring-accent-foreground focus:min-w-40"
 						onChange={(e) => setSearch(e.target.value)}
 						value={search}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								handleSearch();
+							}
+						}}
 					/>
 					<span
-						className="absolute right-3 top-1/2 transform -translate-y-1/2"
+						title="Click to search"
+						className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer "
 						onClick={handleSearch}
 					>
-						<Search />
+						<Search className="text-gray-shade-35 hover:text-gray-shade-10 scale-90 hover:scale-100 transition-all duration-200" />
 					</span>
 				</div>
 
 				<div>
-					{loggedIn ? (
-						<UserAvatar />
+					{userData?.result ? (
+						<UserAvatar data={data} isLoading={isLoading} />
 					) : (
 						<Link href={"/login"}>
 							<Button>Login</Button>

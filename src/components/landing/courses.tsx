@@ -3,7 +3,7 @@ import React from "react";
 import Container from "../shared/Container";
 import SectionTitle from "../shared/Section-Title";
 
-import { useAllCourseQuery } from "@/redux/api/course/courseApi";
+import { useAllCourseQuery } from "@/redux/api/courseApi";
 import AppLoading from "@/app/loading";
 import CourseCard from "../shared/course-card";
 const data = {

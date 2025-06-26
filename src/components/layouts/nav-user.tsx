@@ -19,7 +19,7 @@ import {
 import { useAppDispatch } from "@/hooks";
 import { logout } from "@/redux/slice/authSlice";
 import { useRouter } from "next/navigation";
-import { removeCookie } from "@/actions/login";
+import { removeCookie } from "@/actions/auth-action";
 import { toast } from "sonner";
 import { TProfile } from "@/redux/api/user-api/myProfileApi";
 

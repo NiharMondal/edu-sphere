@@ -1,14 +1,7 @@
 "use client";
+import ESInput from "@/components/form/ESInput";
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { changePasswordSchema } from "@/form-schema";
 import { useChangePasswordMutation } from "@/redux/api/authApi";
 
@@ -45,59 +38,26 @@ export default function ChangePasswordForm() {
 	return (
 		<Form {...form}>
 			<form
-				className="max-w-xl w-full mt-10 space-y-5 p-10 border"
+				className="max-w-xl w-full mt-10 space-y-5 p-10 border bg-white-shade-99  rounded-md"
 				onSubmit={form.handleSubmit(handleChangePassword)}
 			>
-				<FormField
-					control={form.control}
+				<ESInput
+					form={form}
 					name="oldPassword"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Old Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="Old password"
-									{...field}
-									type="password"
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label="Old Password"
+					type="password"
 				/>
-				<FormField
-					control={form.control}
+				<ESInput
+					form={form}
 					name="newPassword"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>New Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="New password"
-									{...field}
-									type="password"
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label="New Password"
+					type="password"
 				/>
-				<FormField
-					control={form.control}
+				<ESInput
+					form={form}
 					name="confirmPassword"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Confirm Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="Confirm password"
-									{...field}
-									type="password"
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label="Confirm Password"
+					type="password"
 				/>
 
 				<Button type="submit">Change Password</Button>

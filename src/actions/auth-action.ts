@@ -1,25 +1,8 @@
 "use server";
 
 import { config } from "@/config";
-import { TLogin } from "@/types";
+
 import { cookies } from "next/headers";
-
-export const login = async (payload: TLogin) => {
-	const res = await fetch(`${config.backend_url}/auth/login`, {
-		method: "POST",
-		body: JSON.stringify(payload),
-		headers: {
-			"Content-type": "application/json",
-		},
-	});
-
-	if (!res.ok) {
-		throw new Error("Invalid Credentials");
-	}
-
-	const data = await res.json();
-	return data;
-};
 
 export const setCookie = async (token: string) => {
 	try {

@@ -6,7 +6,4 @@ export const config = {
 	cloud_upload_preset: process.env.NEXT_PUBLIC_UPLOAD_PRESET,
 	cloud_api_key: process.env.CLOUDINARY_API_KEY,
 	cloud_api_secret: process.env.CLOUDINARY_API_SECRET,
-
-	//stripe
-	stripe_public_key: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
 };
