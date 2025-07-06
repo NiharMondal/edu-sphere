@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
-import { sidebar } from "./nav-links";
+import { commonRoutes, sidebar } from "./nav-links";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { logout, selectedUser } from "@/redux/slice/authSlice";
 
@@ -32,7 +32,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const user = useAppSelector(selectedUser);
 
 	const role: UserRole = isValidRole(user?.role) ? user?.role : "student";
-	const menuItems = sidebar[role];
+	const roleBasedRoutes = sidebar[role];
+	const menuItems = [...roleBasedRoutes, ...commonRoutes];
 
 	const handleLogout = async () => {
 		dispatch(logout());

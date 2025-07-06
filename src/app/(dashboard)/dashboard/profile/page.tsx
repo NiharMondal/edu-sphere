@@ -1,5 +1,5 @@
-import ProfileForm from "@/components/shared/profile-form";
 import React from "react";
+import ProfileForm from "./profile-form";
 
 export default function ProfilePage() {
 	return <ProfileForm />;

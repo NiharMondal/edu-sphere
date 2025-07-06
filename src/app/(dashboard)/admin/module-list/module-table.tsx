@@ -7,7 +7,7 @@ import EsModal from "@/components/shared/es-modal";
 
 import { toast } from "sonner";
 
-import UpdateModule from "@/components/admin-ui/UpdateModule";
+import UpdateModule from "@/components/shared/@module/UpdateModule";
 import {
 	useAllModulesQuery,
 	useDeleteModuleMutation,

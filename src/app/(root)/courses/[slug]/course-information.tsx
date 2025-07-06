@@ -23,7 +23,12 @@ export default function CourseInformation({ slug }: { slug: string }) {
 
 	if (isLoading) return <AppLoading />;
 
-	const handleClick = async () => {
+	const handleEnrollment = async () => {
+		//checking user logged-in or not
+		if (!user?.id) {
+			return toast.warning("Please login first");
+		}
+		//collecting data that is used to enroll course
 		const data = {
 			course: course?.result._id,
 			student: user?.id,
@@ -31,7 +36,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 		};
 		try {
 			const res = await makePayment(data).unwrap();
-			console.log(res);
+
 			if (res?.result?.url) {
 				window.location.href = res?.result?.url;
 				toast.message("Redirecting to checkout page...");
@@ -41,9 +46,10 @@ export default function CourseInformation({ slug }: { slug: string }) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			console.log(error);
-			toast.warning(error?.data?.message);
+			toast.error(error?.data?.message);
 		}
 	};
+
 	return (
 		<Container>
 			<div className="grid grid-cols-1 md:grid-cols-2 place-content-center gap-10 py-20">
@@ -72,7 +78,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 							By {course?.result?.instructor?.name}
 						</span>
 					</div>
-					<Button size={"lg"} onClick={handleClick}>
+					<Button size={"lg"} onClick={handleEnrollment}>
 						{paymentLoading ? "Loading" : "Enroll Now"}
 					</Button>
 				</div>

@@ -12,12 +12,13 @@ import { useAppSelector } from "@/hooks";
 import { selectedUser } from "@/redux/slice/authSlice";
 import { useEffect } from "react";
 import { useUpdateUserMutation, useUserByIdQuery } from "@/redux/api/userApi";
-import ESInput from "../form/ESInput";
-import ESImageUpload from "../form/ESUploadImage";
+import ESInput from "../../../../components/form/ESInput";
+import ESImageUpload from "../../../../components/form/ESUploadImage";
 
 export default function ProfileForm() {
 	const user = useAppSelector(selectedUser);
 
+	console.log(user);
 	const { data: userDetails, isLoading } = useUserByIdQuery(
 		user?.id as string,
 		{
@@ -75,7 +76,11 @@ export default function ProfileForm() {
 				className="max-w-xl w-full mt-10 space-y-5 p-10 bg-white-shade-99 border rounded-md"
 				onSubmit={form.handleSubmit(handleUserDetails)}
 			>
-				<ESImageUpload form={form} name="avatar" label="Course Photo" />
+				<ESImageUpload
+					form={form}
+					name="avatar"
+					label="Profile Picture"
+				/>
 				<ESInput form={form} name="name" label="Name" />
 				<ESInput form={form} name="phone" label="Phone" />
 

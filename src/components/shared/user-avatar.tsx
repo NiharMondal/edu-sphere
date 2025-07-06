@@ -50,7 +50,7 @@ export default function UserAvatar({ data, isLoading }: UserAvatarProps) {
 	const handleLogout = async () => {
 		dispatch(logout());
 		await removeCookie();
-		router.refresh();
+		router.replace("/");
 	};
 	return (
 		<DropdownMenu>
@@ -77,7 +77,7 @@ export default function UserAvatar({ data, isLoading }: UserAvatarProps) {
 					/>
 					<p className="text-xl font-semibold mt-2">{data?.name}</p>
 
-					<Link href={`/${data?.role}/profile`}>
+					<Link href="/dashboard/profile">
 						<Button className="mt-2" size="sm">
 							View Profile
 						</Button>

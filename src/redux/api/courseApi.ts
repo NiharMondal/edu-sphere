@@ -83,6 +83,17 @@ const courseApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["courses"],
 		}),
+
+		courseByInstructor: builder.query<
+			TServerResponse<TCourseResponse[]>,
+			void
+		>({
+			query: () => ({
+				url: "/courses/instructor/assigned-course",
+				method: "GET",
+			}),
+			providesTags: ["courses"],
+		}),
 	}),
 });
 
@@ -93,4 +104,6 @@ export const {
 	useCourseBySlugQuery,
 	useUpdateCourseMutation,
 	useDeleteCourseMutation,
+
+	useCourseByInstructorQuery,
 } = courseApi;

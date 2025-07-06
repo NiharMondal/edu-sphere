@@ -5,7 +5,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { lectureUpdateSchema } from "@/form-schema";
 
 import { toast } from "sonner";
@@ -15,8 +22,9 @@ import {
 	useLectureByIdQuery,
 	useUpdateLectureMutation,
 } from "@/redux/api/lectureApi";
-import ESInput from "../form/ESInput";
-import ESSelect from "../form/ESSelect";
+import ESInput from "../../form/ESInput";
+import ESSelect from "../../form/ESSelect";
+import ESTiptapEditor from "@/components/form/ESTipTabEditor";
 
 type UpdateLectureProps = {
 	lectureId: string;
@@ -29,12 +37,8 @@ const fileType = [
 		label: "Video",
 	},
 	{
-		value: "pdf",
-		label: "PDF",
-	},
-	{
-		value: "text",
-		label: "Text",
+		value: "post",
+		label: "Post",
 	},
 ];
 
@@ -56,7 +60,7 @@ export default function UpdateLecture({
 			title: "",
 			content: "",
 			duration: 0,
-			type: "video",
+			type: undefined,
 		},
 	});
 
@@ -85,11 +89,11 @@ export default function UpdateLecture({
 		if (lectureDetails?.result) {
 			form.reset({
 				title: lectureDetails?.result?.title || "",
-				content: lectureDetails?.result?.content || "",
+				duration: lectureDetails?.result?.duration || 0,
 				type:
 					(lectureDetails?.result
-						?.type as LectureUpdateForm["type"]) || "video",
-				duration: lectureDetails?.result?.duration || 0,
+						?.type as LectureUpdateForm["type"]) || "post",
+				content: lectureDetails?.result?.content || "",
 			});
 		}
 	}, [form, lectureDetails]);
@@ -105,28 +109,53 @@ export default function UpdateLecture({
 					className="max-w-3xl w-full  mt-10"
 				>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-						<ESInput form={form} name="title" label="Title" />
 						<ESInput
 							form={form}
-							name="content"
-							label="Content URL"
-						/>
-						<ESSelect
-							form={form}
-							name="type"
-							label="Select type"
-							options={fileType}
+							name="title"
+							label="Lecture Title"
 						/>
 
 						<ESInput
-							form={form}
 							type="number"
+							form={form}
 							name="duration"
-							label="Duration"
+							label="Lecture Duration"
+							placeholder="Ex: 10"
+							description="Duration counts in minutes"
+						/>
+						<ESSelect
+							name="type"
+							label="File Type"
+							form={form}
+							options={fileType}
+						/>
+						<FormField
+							control={form.control}
+							name="content"
+							render={({ field }) =>
+								form.watch("type") === "post" ? (
+									<FormItem className="md:col-span-2">
+										<FormLabel>Post Content</FormLabel>
+										<FormControl>
+											<ESTiptapEditor
+												value={field.value}
+												onChange={field.onChange}
+											/>
+										</FormControl>
+										<FormMessage className="text-red-500" />
+									</FormItem>
+								) : (
+									<ESInput
+										form={form}
+										name="content"
+										label="Video URL"
+									/>
+								)
+							}
 						/>
 					</div>
 					<Button type="submit" disabled={updateLoading}>
-						Update Lecture
+						{updateLoading ? "Updating" : "Update Lecture"}
 					</Button>
 				</form>
 			</Form>

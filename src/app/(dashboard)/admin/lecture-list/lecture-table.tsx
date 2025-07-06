@@ -7,7 +7,7 @@ import { Edit, Trash } from "lucide-react";
 
 import { toast } from "sonner";
 
-import UpdateLecture from "@/components/admin-ui/UpdateLecture";
+import UpdateLecture from "@/components/shared/@lecture/update-lecture";
 import {
 	useAllLecturesQuery,
 	useDeleteLectureMutation,
@@ -97,6 +97,7 @@ export default function LectureTable() {
 		},
 	];
 	if (isLoading) return <p>Loading...</p>;
+
 	return (
 		<div>
 			{lectures?.result.length ? (

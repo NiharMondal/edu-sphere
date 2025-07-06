@@ -7,10 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { MobileNavbar } from "./mobile-navbar";
-import UserAvatar from "./user-avatar";
+
 import { useUserByIdQuery } from "@/redux/api/userApi";
 import { useAppSelector } from "@/hooks";
 import { selectedUser } from "@/redux/slice/authSlice";
+import UserAvatar from "./user-avatar";
 
 export default function Navbar() {
 	const user = useAppSelector(selectedUser);
@@ -97,7 +98,7 @@ export default function Navbar() {
 				</ul>
 
 				{/**Login button */}
-				{userData?.result ? (
+				{user ? (
 					<UserAvatar data={data} isLoading={isLoading} />
 				) : (
 					<div className="flex items-center gap-x-3">
@@ -140,7 +141,7 @@ export default function Navbar() {
 				</div>
 
 				<div>
-					{userData?.result ? (
+					{user ? (
 						<UserAvatar data={data} isLoading={isLoading} />
 					) : (
 						<Link href={"/login"}>

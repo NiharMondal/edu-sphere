@@ -8,6 +8,7 @@ import {
 	UserPen,
 	BadgeDollarSign,
 	type LucideIcon,
+	MessageSquareMore,
 } from "lucide-react";
 
 export type TLink = {
@@ -26,6 +27,15 @@ type TSidebar = {
 	student: TLink[];
 	instructor: TLink[];
 };
+
+export const commonRoutes = [
+	{ url: "/dashboard/profile", icon: UserPen, name: "Profile" },
+	{
+		url: "/dashboard/change-password",
+		icon: LockKeyhole,
+		name: "Change Password",
+	},
+];
 
 export const sidebar: TSidebar = {
 	admin: [
@@ -51,9 +61,7 @@ export const sidebar: TSidebar = {
 		},
 		{
 			name: "Module",
-
 			icon: ListFilter,
-
 			children: [
 				{
 					name: "Module List",
@@ -79,26 +87,52 @@ export const sidebar: TSidebar = {
 				},
 			],
 		},
-
 		{
 			url: "/admin/transaction",
 			icon: BadgeDollarSign,
 			name: "Transactions",
 		},
+		{
+			url: "/admin/reviews",
+			icon: MessageSquareMore,
+			name: "Manage Reviews",
+		},
 		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
 	],
-	student: [
-		{ url: "/student", icon: Book, name: "My Courses" },
-		{ url: "/student/profile", icon: UserPen, name: "Profile" },
-		{
-			url: "/student/change-password",
-			icon: LockKeyhole,
-			name: "Change Password",
-		},
-	],
+	student: [{ url: "/student", icon: Book, name: "My Courses" }],
 	instructor: [
-		{ url: "", icon: LayoutDashboard, name: "Instructor Dashboard" },
-		{ url: "classes", icon: Book, name: "My Classes" },
-		{ url: "reviews", name: "Reviews" },
+		{
+			url: "/instructor",
+			icon: LayoutDashboard,
+			name: "Dashboard",
+		},
+		{
+			name: "Module",
+			icon: ListFilter,
+			children: [
+				{
+					name: "Module List",
+					url: "/instructor/module-list",
+				},
+				{
+					name: "Create module",
+					url: "/instructor/create-module",
+				},
+			],
+		},
+		{
+			name: "Lecture",
+			icon: TvMinimalPlay,
+			children: [
+				{
+					name: "Lecture List",
+					url: "/instructor/lecture-list",
+				},
+				{
+					name: "Create Lecture",
+					url: "/instructor/create-lecture",
+				},
+			],
+		},
 	],
 };
