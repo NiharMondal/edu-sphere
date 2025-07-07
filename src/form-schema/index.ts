@@ -4,13 +4,13 @@ import { z } from "zod";
 export const createCourseSchema = z.object({
 	title: z
 		.string({ required_error: "Title is required" })
-		.min(3, "Title should be more than 3 characters")
+		.min(10, "Title should be more than 10 characters")
 		.max(50, "Title should be less than 50 characters")
 		.trim(),
 	price: z.coerce
 		.number({ required_error: "Price is required" })
 		.positive({ message: "Price can not be negative" })
-		.max(2000, "Should be less than 30 characters"),
+		.max(15000, "Should be less than 15000 Taka"),
 	pricingType: z.enum(["paid", "free"]),
 	shortVideo: z
 		.string()

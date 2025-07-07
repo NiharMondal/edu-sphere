@@ -1,10 +1,15 @@
+import { TServerResponse } from "@/types";
 import { baseApi } from "./baseApi";
+import { TPaymentResponseForTable } from "@/types/payment.types";
 
 const transactionApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
-		allTransaction: builder.query({
+		allTransaction: builder.query<
+			TServerResponse<TPaymentResponseForTable[]>,
+			void
+		>({
 			query: () => ({
-				url: "/transactions",
+				url: "/payments",
 				method: "GET",
 			}),
 		}),
