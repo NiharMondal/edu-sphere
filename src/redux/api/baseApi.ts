@@ -1,5 +1,6 @@
 import { RootState } from "../store";
 import { config } from "@/config";
+import { apiTags } from "@/constants";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = config.backend_url; // backend url
@@ -19,14 +20,5 @@ export const baseApi = createApi({
 		},
 	}),
 	endpoints: () => ({}),
-	tagTypes: [
-		"users",
-		"lectures",
-		"courses",
-		"modules",
-		"categories",
-		"enrollments",
-		"transactions",
-		"progress",
-	],
+	tagTypes: apiTags,
 });

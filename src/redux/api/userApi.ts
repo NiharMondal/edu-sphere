@@ -16,6 +16,15 @@ const userApi = baseApi.injectEndpoints({
 			providesTags: ["users"],
 		}),
 
+		myProfile: builder.query<
+			TServerResponse<Pick<TUserResponse, "name" | "role" | "avatar">>,
+			void
+		>({
+			query: () => ({
+				url: "/users/my-profile",
+				method: "GET",
+			}),
+		}),
 		userById: builder.query<TServerResponse<TUserResponse>, string>({
 			query: (id) => ({
 				url: `/users/${id}`,
@@ -60,5 +69,6 @@ export const {
 	useUpdateUserMutation,
 	useUserByIdQuery,
 
+	useMyProfileQuery,
 	useUpdateUserRoleMutation,
 } = userApi;

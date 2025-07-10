@@ -26,6 +26,9 @@ export default function CreateModulePage() {
 			title: "",
 		},
 	});
+
+	const selectedCourse = form.watch("course");
+
 	const courseOptions = courses?.result?.map((course) => ({
 		value: course._id,
 		label: course.title,
@@ -58,17 +61,25 @@ export default function CreateModulePage() {
 					onSubmit={form.handleSubmit(handleModuleSubmit)}
 					className="max-w-3xl w-full mt-10 space-y-5"
 				>
-					{/* Course Select Field */}
-					<ESInput form={form} name="title" label="Title" />
-
 					<ESSelect
 						form={form}
 						name="course"
 						label="Course"
 						options={courseOptions}
 					/>
+					{/* Course Select Field */}
+					<ESInput
+						form={form}
+						name="title"
+						label="Title"
+						disabled={!selectedCourse}
+						placeholder="Enter Module title"
+					/>
 
-					<Button type="submit" disabled={moduleLoading}>
+					<Button
+						type="submit"
+						disabled={moduleLoading && courseOptions?.length === 0}
+					>
 						Create Module
 					</Button>
 				</form>

@@ -120,6 +120,7 @@ export const createModuleSchema = z.object({
 		})
 		.nonempty({ message: "Course can not be empty" }),
 });
+
 export const updateModuleSchema = z.object({
 	title: z
 		.string({ required_error: "Module title is required" })

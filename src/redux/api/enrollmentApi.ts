@@ -34,10 +34,10 @@ const enrollmentApi = baseApi.injectEndpoints({
 
 		myEnrollments: builder.query<
 			TServerResponse<TMyEnrollmentResponse[]>,
-			string
+			void
 		>({
-			query: (userId) => ({
-				url: `/enrollments/my-enrollment/${userId}`,
+			query: () => ({
+				url: `/enrollments/my-enrollment`,
 				method: "GET",
 			}),
 		}),
