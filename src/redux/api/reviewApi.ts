@@ -50,6 +50,14 @@ const reviewApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["reviews"],
 		}),
+
+		undoAccept: builder.mutation<TServerResponse<TReviewResponse>, string>({
+			query: (id) => ({
+				url: `/reviews/${id}/undo-accept`,
+				method: "PATCH",
+			}),
+			invalidatesTags: ["reviews"],
+		}),
 	}),
 });
 
@@ -58,4 +66,5 @@ export const {
 	useCreateReviewMutation,
 	useDeleteReviewMutation,
 	useAcceptReviewMutation,
+	useUndoAcceptMutation,
 } = reviewApi;

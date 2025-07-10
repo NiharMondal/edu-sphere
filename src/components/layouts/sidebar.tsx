@@ -23,7 +23,7 @@ import { toast } from "sonner";
 type UserRole = keyof typeof sidebar;
 
 const isValidRole = (role: string | undefined): role is UserRole => {
-	return ["admin", "student", "instructor"].includes(role as string);
+	return ["admin", "student", "instructor", "guest"].includes(role as string);
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -31,7 +31,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const router = useRouter();
 	const user = useAppSelector(selectedUser);
 
-	const role: UserRole = isValidRole(user?.role) ? user?.role : "student";
+	const role: UserRole = isValidRole(user?.role) ? user?.role : "guest";
 	const roleBasedRoutes = sidebar[role];
 	const menuItems = [...roleBasedRoutes, ...commonRoutes];
 

@@ -9,6 +9,7 @@ import {
 	BadgeDollarSign,
 	type LucideIcon,
 	MessageSquareMore,
+	ChartBarStacked,
 } from "lucide-react";
 
 export type TLink = {
@@ -26,6 +27,7 @@ type TSidebar = {
 	admin: TLink[];
 	student: TLink[];
 	instructor: TLink[];
+	guest: TLink[];
 };
 
 export const commonRoutes = [
@@ -59,6 +61,7 @@ export const sidebar: TSidebar = {
 				},
 			],
 		},
+
 		{
 			name: "Module",
 			icon: ListFilter,
@@ -84,6 +87,21 @@ export const sidebar: TSidebar = {
 				{
 					name: "Create Lecture",
 					url: "/admin/create-lecture",
+				},
+			],
+		},
+
+		{
+			name: "Course Category",
+			icon: ChartBarStacked,
+			children: [
+				{
+					name: "Category List",
+					url: "/admin/category-list",
+				},
+				{
+					name: "Create Category",
+					url: "/admin/create-category",
 				},
 			],
 		},
@@ -133,6 +151,14 @@ export const sidebar: TSidebar = {
 					url: "/instructor/create-lecture",
 				},
 			],
+		},
+	],
+
+	guest: [
+		{
+			url: "/guest",
+			icon: LayoutDashboard,
+			name: "Dashboard",
 		},
 	],
 };

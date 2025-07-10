@@ -117,12 +117,16 @@ export default function ReviewTable() {
 	if (isLoading) return <p>Loading...</p>;
 	return (
 		<div>
-			<div className="flex items-center justify-between mt-10 gap-10">
+			<h4>Here is a full review list</h4>
+			<p>
+				Admin can accept from this review and those review will be shown
+				in home page
+			</p>
+			<div className="flex items-center justify-between  mt-3 gap-10">
 				<div className="flex-1">
 					<Input
 						onChange={(e) => setSearch(e.target.value)}
 						placeholder="Search by message..."
-						className="hover:ring-2"
 					/>
 				</div>
 

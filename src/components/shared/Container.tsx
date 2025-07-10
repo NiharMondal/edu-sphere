@@ -7,7 +7,7 @@ type TContainerProps = {
 };
 export default function Container({ children, className }: TContainerProps) {
 	return (
-		<section className={cn(className, "container mx-auto")}>
+		<section className={cn("container mx-auto", className)}>
 			{children}
 		</section>
 	);

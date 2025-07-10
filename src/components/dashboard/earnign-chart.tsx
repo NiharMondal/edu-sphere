@@ -65,33 +65,40 @@ export default function EarningChart() {
 		],
 	};
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-			<div className="space-y-5 bg-white p-5 lg:p-8 rounded-md">
-				<h5>Last 12 Months</h5>
+		<div className="space-y-3">
+			<h4>Revenue</h4>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
+				<div className="space-y-5 bg-white p-5 lg:p-8 rounded-md">
+					<h5>Last 12 Months</h5>
 
-				<div>
-					<Chart
-						options={{
-							xaxis: { categories: monthlyChartData.categories },
-						}}
-						series={monthlyChartData.series}
-						type="bar"
-						height={350}
-					/>
+					<div>
+						<Chart
+							options={{
+								xaxis: {
+									categories: monthlyChartData.categories,
+								},
+							}}
+							series={monthlyChartData.series}
+							type="bar"
+							height={350}
+						/>
+					</div>
 				</div>
-			</div>
-			<div className="space-y-5 bg-white p-5 lg:p-8 rounded-md">
-				<h5>Yearly Revenue</h5>
+				<div className="space-y-5 bg-white p-5 lg:p-8 rounded-md">
+					<h5>Yearly Revenue</h5>
 
-				<div>
-					<Chart
-						options={{
-							xaxis: { categories: yearlyChartData.categories },
-						}}
-						series={yearlyChartData.series}
-						type="bar"
-						height={350}
-					/>
+					<div>
+						<Chart
+							options={{
+								xaxis: {
+									categories: yearlyChartData.categories,
+								},
+							}}
+							series={yearlyChartData.series}
+							type="bar"
+							height={350}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

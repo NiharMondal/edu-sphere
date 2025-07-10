@@ -28,7 +28,7 @@ export default function Navbar() {
 	};
 
 	return (
-		<nav className="px-5 h-20 border-b" data-aos="fade-down">
+		<nav className="h-20 border-b" data-aos="fade-down">
 			<Container className="h-full">
 				{/* desktop view  */}
 				<div className="hidden h-full w-full lg:grid grid-cols-4 content-center">

@@ -257,9 +257,19 @@ export const userUpdateSchema = z.object({
 		.optional(),
 });
 
-export const categorySchema = z.object({
-	name: z
-		.string({ required_error: "Name is required" })
-		.nonempty({ message: "Name can not be empty" }),
-	icon: z.string().trim().optional(),
+export const createCategorySchema = z.object({
+	name: z.string({ required_error: "Category name is required" }).trim(),
+	icon: z
+		.string()
+		.url({ message: "Icon should be valid URL" })
+		.trim()
+		.optional(),
+});
+export const updateCategorySchema = z.object({
+	name: z.string({ required_error: "Category name is required" }).trim(),
+	icon: z
+		.string()
+		.url({ message: "Icon should be valid URL" })
+		.trim()
+		.optional(),
 });
