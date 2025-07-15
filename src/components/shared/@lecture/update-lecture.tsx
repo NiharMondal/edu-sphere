@@ -50,7 +50,6 @@ export default function UpdateLecture({
 }: UpdateLectureProps) {
 	const { data: lectureDetails, isLoading } = useLectureByIdQuery(lectureId);
 
-	console.log(lectureDetails);
 	const [updateLecture, { isLoading: updateLoading }] =
 		useUpdateLectureMutation();
 
@@ -67,7 +66,6 @@ export default function UpdateLecture({
 	const handleLectureSubmit = async (
 		values: z.infer<typeof lectureUpdateSchema>
 	) => {
-		console.log(values);
 		try {
 			const response = await updateLecture({
 				id: lectureId,

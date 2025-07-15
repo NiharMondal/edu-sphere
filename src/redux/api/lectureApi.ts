@@ -50,6 +50,17 @@ const lectureApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["lectures"],
 		}),
+
+		assignedLectures: builder.query<
+			TServerResponse<TLectureResponse[]>,
+			Record<string, string>
+		>({
+			query: () => ({
+				url: "/lectures/assigned-lectures",
+				method: "GET",
+			}),
+			providesTags: ["lectures"],
+		}),
 	}),
 });
 
@@ -59,4 +70,6 @@ export const {
 	useLectureByIdQuery,
 	useDeleteLectureMutation,
 	useUpdateLectureMutation,
+
+	useAssignedLecturesQuery,
 } = lectureApi;

@@ -63,6 +63,17 @@ const moduleApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["modules"],
 		}),
+
+		assignedCourseModule: builder.query<
+			TServerResponse<TModuleResponse[]>,
+			Record<string, string>
+		>({
+			query: () => ({
+				url: "/modules/assigned-modules",
+				method: "GET",
+			}),
+			providesTags: ["modules"],
+		}),
 	}),
 });
 
@@ -73,4 +84,6 @@ export const {
 	useUpdateModuleMutation,
 	useModuleByIdQuery,
 	useModuleByCourseIdQuery,
+
+	useAssignedCourseModuleQuery,
 } = moduleApi;

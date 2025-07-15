@@ -61,7 +61,7 @@ export default function ESSelect<T extends FieldValues>({
 										</SelectItem>
 									))
 								) : (
-									<SelectItem value="" disabled>
+									<SelectItem value="a" disabled>
 										No options available
 									</SelectItem>
 								)}

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import EsModal from "@/components/shared/es-modal";
 
-import UpdateCourse from "@/components/shared/@course/UpdateCourse";
+import UpdateCourse from "@/components/shared/@course/update-course";
 import { toast } from "sonner";
 import {
 	useAllCourseQuery,

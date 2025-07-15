@@ -7,7 +7,7 @@ import EsModal from "@/components/shared/es-modal";
 
 import { toast } from "sonner";
 
-import UpdateModule from "@/components/shared/@module/UpdateModule";
+import UpdateModule from "@/components/shared/@module/update-module";
 import {
 	useAllModulesQuery,
 	useDeleteModuleMutation,
@@ -20,6 +20,7 @@ export default function ModuleTable() {
 
 	const [deleteModule, { isLoading: deleteLoading }] =
 		useDeleteModuleMutation();
+
 	const columns = [
 		{
 			key: "title",

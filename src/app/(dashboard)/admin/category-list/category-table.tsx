@@ -1,5 +1,5 @@
 "use client";
-import UpdateCategory from "@/components/shared/@category/UpdateCategory";
+import UpdateCategory from "@/components/shared/@category/update-category";
 import EsModal from "@/components/shared/es-modal";
 import { ESTable } from "@/components/shared/es-table";
 import { Button } from "@/components/ui/button";
