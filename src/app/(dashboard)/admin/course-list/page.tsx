@@ -1,6 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import CourseTable from "./course-table";
+import AppLoading from "@/app/loading";
 
 export default function CourseListPage() {
-	return <CourseTable />;
+	return (
+		<Suspense fallback={<AppLoading />}>
+			<CourseTable />
+		</Suspense>
+	);
 }

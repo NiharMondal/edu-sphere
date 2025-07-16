@@ -13,7 +13,6 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { lectureSchema } from "@/form-schema";
 
 import { toast } from "sonner";
@@ -25,55 +24,57 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useCreateLectureMutation } from "@/redux/api/admin-api/lectureApi";
 import { useState } from "react";
-import { useGetCourseQuery } from "@/redux/api/admin-api/courseApi";
-import { useModuleByCourseIdQuery } from "@/redux/api/admin-api/moduleApi";
+import { useAllCourseQuery } from "@/redux/api/courseApi";
+import { useModuleByCourseIdQuery } from "@/redux/api/moduleApi";
+import { useCreateLectureMutation } from "@/redux/api/lectureApi";
+import ESSelect from "@/components/form/ESSelect";
+import ESInput from "@/components/form/ESInput";
+import ESTiptapEditor from "@/components/form/ESTipTabEditor";
+
 const fileType = [
 	{
 		value: "video",
-		level: "Video",
+		label: "Video",
 	},
 	{
-		value: "pdf",
-		level: "PDF",
-	},
-	{
-		value: "text",
-		level: "Text",
+		value: "post",
+		label: "Post",
 	},
 ];
 export default function CreateLectureForm() {
 	const [courseId, setCourseId] = useState("");
 
-	const { data: courses, isLoading: courseLoading } = useGetCourseQuery();
-	const { data: modules } = useModuleByCourseIdQuery(courseId, {
-		skip: !courseId,
-	});
-	const [createLecture, { isLoading: cLoading }] = useCreateLectureMutation();
+	const { data: courses, isLoading: courseLoading } = useAllCourseQuery({});
+	const { data: modules, isLoading: moduleLoading } =
+		useModuleByCourseIdQuery(courseId, {
+			skip: !courseId,
+		});
+	const [createLecture, { isLoading: createLectureLoading }] =
+		useCreateLectureMutation();
 
 	const form = useForm<z.infer<typeof lectureSchema>>({
 		resolver: zodResolver(lectureSchema),
 		defaultValues: {
 			course: "",
-			content: "",
 			module: "",
-			title: "",
 			duration: 0,
-			type: "",
+			title: "",
+			content: "",
+			type: "video",
 		},
 	});
 
-	// watching type and then rendering duration field
-	const type = form.watch("type");
-	const showDuration = type === "video";
 	const selectedModule = form.watch("course");
 	const handleLectureSubmit = async (
 		values: z.infer<typeof lectureSchema>
 	) => {
 		try {
-			const response = await createLecture(values).unwrap();
-			console.log(response);
+			const response = await createLecture({
+				moduleId: values.module,
+				payload: values,
+			}).unwrap();
+
 			if (response.success) {
 				toast.success("Lecture created successfully");
 			}
@@ -83,6 +84,8 @@ export default function CreateLectureForm() {
 		}
 	};
 
+	if (courseLoading) return <p>Loading...</p>;
+	if (moduleLoading) return <p>Loading...</p>;
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
@@ -121,10 +124,11 @@ export default function CreateLectureForm() {
 											))}
 										</SelectContent>
 									</Select>
-									<FormMessage />
+									<FormMessage className="text-red-500" />
 								</FormItem>
 							)}
 						/>
+
 						<FormField
 							control={form.control}
 							name="module"
@@ -152,93 +156,56 @@ export default function CreateLectureForm() {
 											))}
 										</SelectContent>
 									</Select>
-									<FormMessage />
+									<FormMessage className="text-red-500" />
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
+						<ESInput
+							form={form}
 							name="title"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Lecture Title</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Lecture Title"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							label="Lecture Title"
+						/>
+
+						<ESInput
+							type="number"
+							form={form}
+							name="duration"
+							label="Lecture Duration"
+							placeholder="Ex: 10"
+							description="Duration counts in minutes"
+						/>
+						<ESSelect
+							name="type"
+							label="File Type"
+							form={form}
+							options={fileType}
 						/>
 						<FormField
 							control={form.control}
 							name="content"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>URL</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Content URL"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="type"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>File Type</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
+							render={({ field }) =>
+								form.watch("type") === "post" ? (
+									<FormItem className="md:col-span-2">
+										<FormLabel>Post Content</FormLabel>
 										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Select file type" />
-											</SelectTrigger>
+											<ESTiptapEditor
+												value={field.value}
+												onChange={field.onChange}
+											/>
 										</FormControl>
-										<SelectContent>
-											{fileType.map((value) => (
-												<SelectItem
-													key={value.value}
-													value={value.value}
-												>
-													{value.level}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="duration"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Duration</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="Ex: 10 min"
-											{...field}
-											disabled={!showDuration}
-											type="number"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+										<FormMessage className="text-red-500" />
+									</FormItem>
+								) : (
+									<ESInput
+										form={form}
+										name="content"
+										label="Video URL"
+									/>
+								)
+							}
 						/>
 					</div>
-					<Button type="submit" disabled={cLoading}>
+					<Button type="submit" disabled={createLectureLoading}>
 						Create Lecture
 					</Button>
 				</form>

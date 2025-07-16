@@ -5,7 +5,7 @@ export type TUserState = {
 	id: string;
 	name: string;
 	email: string;
-	role: "student" | "instructor" | "admin";
+	role: string;
 };
 
 export type TAuthState = {
@@ -30,6 +30,7 @@ const authSlice = createSlice({
 			state.token = token;
 		},
 
+		tokenReceived: () => {},
 		logout: (state) => {
 			state.user = null;
 			state.token = null;

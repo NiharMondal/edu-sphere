@@ -1,12 +1,12 @@
 import React from "react";
 import CourseInformation from "./course-information";
 
-export default function CourseDetails({
+export default async function CourseDetails({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }) {
-	const slug = params.slug;
+	const { slug } = await params;
 
 	return (
 		<div>

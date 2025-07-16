@@ -5,171 +5,139 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { createCourseSchema } from "@/form-schema";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-import { useCreateCourseMutation } from "@/redux/api/admin-api/courseApi";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { useGetInstructorsQuery } from "@/redux/api/admin-api/user";
+import { useCreateCourseMutation } from "@/redux/api/courseApi";
+import ESInput from "@/components/form/ESInput";
+import ESSelect from "@/components/form/ESSelect";
+import ESImageUpload from "@/components/form/ESUploadImage";
+import ESTextarea from "@/components/form/ESTextArea";
+import { generateDefaultValues } from "@/utils/zod-defaults";
+import { useAllUsersQuery } from "@/redux/api/userApi";
+import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 
+const courseType = [
+	{ label: "Paid", value: "paid" },
+	{ label: "Free", value: "free" },
+];
+const courseLevel = [
+	{ label: "Beginner", value: "Beginner" },
+	{ label: "Intermediate", value: "Intermediate" },
+	{ label: "Expert", value: "Expert" },
+];
 export default function CourseForm() {
-	const { data: instructors, isLoading: instLoading } =
-		useGetInstructorsQuery();
+	const { data: instructor, isLoading } = useAllUsersQuery({
+		role: "instructor",
+		fields: "name",
+	});
+	const { data: categories } = useAllCategoriesQuery();
+
+	const instructorOptions = instructor?.result?.map((ins) => ({
+		value: ins._id,
+		label: ins.name,
+	}));
+
+	const categoryOptions = categories?.result?.map((cat) => ({
+		value: cat?._id,
+		label: cat?.name,
+	}));
 	const [createCourse, { isLoading: courseLoading }] =
 		useCreateCourseMutation();
 
-	const form = useForm<z.infer<typeof createCourseSchema>>({
+	type CourseFormType = z.infer<typeof createCourseSchema>;
+
+	const form = useForm<CourseFormType>({
 		resolver: zodResolver(createCourseSchema),
-		defaultValues: {
-			title: "",
-			description: "",
-			instructor: "",
-			thumbnail: "",
-			price: 100,
-		},
+		defaultValues: generateDefaultValues(createCourseSchema),
 	});
 
-	const handleCourseSubmit = async (
-		values: z.infer<typeof createCourseSchema>
-	) => {
+	const handleCourseSubmit = async (values: CourseFormType) => {
 		try {
 			const response = await createCourse(values).unwrap();
 
 			if (response.success) {
 				toast.success("Course created successfully");
+				form.reset();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error?.data?.message);
 		}
 	};
+
+	if (isLoading) return <p>Loading...</p>;
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(handleCourseSubmit)}
-					className="max-w-3xl w-full  mt-10"
+					className="max-w-3xl w-full  mt-10 space-y-4"
 				>
+					<ESImageUpload
+						form={form}
+						name="thumbnail"
+						label="Course Thumbnail"
+					/>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-						<FormField
-							control={form.control}
-							name="thumbnail"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Thumbnail URL</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="URL link"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
+						<ESInput
 							name="title"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Course title</FormLabel>
-									<FormControl>
-										<Input placeholder="Title" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							form={form}
+							placeholder="Title"
+							label="Course Title"
 						/>
-
-						<FormField
-							control={form.control}
+						<ESInput
+							form={form}
+							name="shortVideo"
+							label="Short Video (optional)"
+							placeholder="Video link"
+						/>
+						<ESInput
+							type="number"
 							name="price"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Price</FormLabel>
-									<FormControl>
-										<Input
-											placeholder="200"
-											{...field}
-											type="number"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							form={form}
+							placeholder="Price"
+							label="Course Price"
+						/>
+						<ESSelect
+							name="pricingType"
+							form={form}
+							label="Course Type"
+							options={courseType}
 						/>
 
-						<FormField
-							control={form.control}
+						<ESInput
+							name="duration"
+							form={form}
+							placeholder="Ex: 6 Weeks"
+							label="Duration"
+						/>
+						<ESSelect
+							name="category"
+							form={form}
+							label="Category"
+							options={categoryOptions}
+						/>
+						<ESSelect
+							name="level"
+							form={form}
+							label="Level"
+							options={courseLevel}
+						/>
+						<ESSelect
 							name="instructor"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Instructor</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-										disabled={instLoading}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Select Instructor" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{instructors?.result?.map(
-												(user) => (
-													<SelectItem
-														key={user?._id}
-														value={user?._id}
-													>
-														{user?.name}
-													</SelectItem>
-												)
-											)}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel htmlFor="description">
-										Course description
-									</FormLabel>
-
-									<FormControl>
-										<Textarea
-											placeholder="Write short description about this course"
-											id="description"
-											rows={5}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+							form={form}
+							label="Instructor"
+							options={instructorOptions}
 						/>
 					</div>
+					<ESTextarea
+						form={form}
+						name="description"
+						label="Description"
+						placeholder="Write description about this course"
+					/>
 					<Button type="submit" disabled={courseLoading}>
 						Create course
 					</Button>

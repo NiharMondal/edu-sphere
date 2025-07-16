@@ -5,12 +5,12 @@ import { store } from "./redux/store";
 
 import { persistStore } from "redux-persist";
 
-const persistor = persistStore(store);
+const persister = persistStore(store);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 	return (
 		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
+			<PersistGate loading={null} persistor={persister}>
 				{children}
 			</PersistGate>
 		</Provider>

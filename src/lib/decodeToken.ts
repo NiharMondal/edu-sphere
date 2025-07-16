@@ -1,9 +1,17 @@
 import { jwtDecode } from "jwt-decode";
 
-export const decodeToken = (token: string) => {
+type JwtPayload = {
+	id: string;
+	email: string;
+	name: string;
+	role: string;
+	iat: number;
+	exp: number;
+};
+export const decodeToken = (token?: string): JwtPayload | null => {
 	if (!token) return null;
 
-	const result = jwtDecode(token);
+	const result = jwtDecode<JwtPayload>(token);
 
 	return result;
 };

@@ -1,110 +1,135 @@
 "use client";
 
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useGetCourseBySlugQuery } from "@/redux/api/admin-api/courseApi";
-import { TCourseResponse } from "@/types";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 import Image from "next/image";
 import React from "react";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
+
+import Container from "@/components/shared/Container";
+import { Clock } from "lucide-react";
+import AppLoading from "@/app/loading";
+import { useCourseBySlugQuery } from "@/redux/api/courseApi";
+import { useMakePaymentMutation } from "@/redux/api/enrollmentApi";
+import { useAppSelector } from "@/hooks";
+import { selectedUser } from "@/redux/slice/authSlice";
+import { toast } from "sonner";
+
 export default function CourseInformation({ slug }: { slug: string }) {
-	const { data: singleCourse, isLoading } = useGetCourseBySlugQuery(slug);
+	const user = useAppSelector(selectedUser);
+	const [makePayment, { isLoading: paymentLoading }] =
+		useMakePaymentMutation();
+	const { data: course, isLoading } = useCourseBySlugQuery(slug);
 
-	if (isLoading) return <p>Loading...</p>;
-	const {
-		title,
-		description,
-		thumbnail,
-		instructor: { name, avatar },
-		totalLectures,
-		totalModules,
-		modules,
-	} = singleCourse?.result as TCourseResponse;
+	if (isLoading) return <AppLoading />;
+
+	const handleEnrollment = async () => {
+		//checking user logged-in or not
+		if (!user?.id) {
+			return toast.warning("Please login first");
+		}
+		//collecting data that is used to enroll course
+		const data = {
+			course: course?.result._id,
+			student: user?.id,
+			amount: course?.result?.price,
+		};
+		try {
+			const res = await makePayment(data).unwrap();
+
+			if (res?.result?.url) {
+				window.location.href = res?.result?.url;
+				toast.message("Redirecting to checkout page...");
+			} else {
+				toast.success("Enrolled successfully");
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			console.log(error);
+			toast.error(error?.data?.message);
+		}
+	};
+
 	return (
-		<div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-				<div className="space-y-5">
-					<h4 className="hidden md:block">{title}</h4>
-					<p className="text-sm">{description}</p>
-					<Button>Purchase Course</Button>
+		<Container>
+			<div className="grid grid-cols-1 md:grid-cols-2 place-content-center gap-10 py-20">
+				<div className="space-y-2">
+					<h2 className="font-semibold text-gray-shade-15">
+						{course?.result?.title}
+					</h2>
 
-					<h5>Instructor</h5>
-					<div className="flex items-center gap-x-2">
-						<Avatar className="ring-1 ring-accent-foreground overflow-hidden">
-							<AvatarImage src={avatar} alt="instructor" />
-							<AvatarFallback>{name}</AvatarFallback>
-						</Avatar>
-						<span>{name}</span>
+					<p className="text-gray-shade-35 text-base lg:text-lg">
+						{course?.result?.description}
+					</p>
+
+					<div className="flex items-center gap-x-3">
+						<div className=" data-[slot=avatar]:ring-2 data-[slot=avatar]:ring-orange-shade-50">
+							<Avatar>
+								<AvatarImage
+									src={
+										course?.result?.instructor?.avatar || ""
+									}
+									alt="instructor-photo"
+								/>
+								<AvatarFallback>AU</AvatarFallback>
+							</Avatar>
+						</div>
+						<span className="font-semibold text-gray-shade-30">
+							By {course?.result?.instructor?.name}
+						</span>
 					</div>
+					<Button size={"lg"} onClick={handleEnrollment}>
+						{paymentLoading ? "Loading" : "Enroll Now"}
+					</Button>
 				</div>
-				<div className="order-first md:order-last">
-					<h4 className="md:hidden block mb-2">{title}</h4>
+				<div className="rounded-md overflow-hidden">
 					<Image
-						src={thumbnail}
-						height={200}
-						width={200}
-						alt={`course-thumbnail-${title}`}
-						className="w-full h-[350px] rounded-md"
+						src={course?.result?.thumbnail || ""}
+						height={500}
+						width={1200}
+						alt="advanced-Javascript"
+						className="w-full h-[230px] md:h-[320px] rounded-md overflow-hidden"
 					/>
 				</div>
 			</div>
 
-			<div className="mt-10">
-				<div>
-					<h4>Curriculum</h4>
-					<span className="inline-block mr-5">
-						{totalModules} Modules
-					</span>
-					<span>{totalLectures} Lectures</span>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
-					{modules.map((mod, index) => (
-						<Accordion
-							type="single"
-							collapsible
-							key={mod._id}
-							className="w-full shadow-lg px-2 bg-white rounded-md"
-						>
-							<AccordionItem value={mod.title}>
-								<AccordionTrigger>
-									<div className="flex items-center justify-center gap-x-5 text-base font-semibold rounded-md no-underline">
-										<div className="flex flex-col justify-center p-2 bg-destructive rounded no-underline">
-											<span className="font-bold">
-												{index + 1}
-											</span>
-											<span className="text-xs font-medium">
-												Module
-											</span>
-										</div>
-										<span className="hover:no-underline">
-											{mod.title}
-										</span>
+			<h2 className="text-gray-shade-30 font-semibold">Curriculum</h2>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+				{course?.result?.modules.map((mod) => (
+					<div
+						className="bg-white p-5 md:p-8 xl:p-12 rounded-md max-h-fit"
+						key={mod._id}
+					>
+						<p className="text-right font-bold text-gray-shade-15 text-2xl">
+							{`0${mod.index}`}
+						</p>
+						<p className="text-2xl font-semibold py-4">
+							{mod.title}
+						</p>
+						<div className="space-y-5">
+							{mod.lectures.map((lec, index) => (
+								<div
+									className="px-4 py-5 bg-white border md:flex items-center justify-between space-y-3 rounded-md  hover:ring-orange-shade-80 hover:ring-2 group"
+									key={lec._id}
+								>
+									<div>
+										<p className="font-medium text-xl text-gray-shade-20">
+											{lec.title}
+										</p>
+										<p className="text-gray-shade-35">
+											Lesson {index + 1}
+										</p>
 									</div>
-								</AccordionTrigger>
-								<AccordionContent>
-									{mod.lectures.map((lec, idx) => (
-										<div key={lec._id}>
-											<p className="my-1">
-												<span className="mr-2">
-													Lecture {idx + 1}:
-												</span>
-												{lec.title}
-											</p>
-										</div>
-									))}
-								</AccordionContent>
-							</AccordionItem>
-						</Accordion>
-					))}
-				</div>
+									<span className="bg-white-shade-97 px-3 py-2 inline-flex gap-x-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30 rounded-md">
+										<Clock />
+										{lec.duration}
+									</span>
+								</div>
+							))}
+						</div>
+					</div>
+				))}
 			</div>
-		</div>
+		</Container>
 	);
 }

@@ -6,7 +6,10 @@ import {
 	TvMinimalPlay,
 	UserCheck,
 	UserPen,
+	BadgeDollarSign,
 	type LucideIcon,
+	MessageSquareMore,
+	ChartBarStacked,
 } from "lucide-react";
 
 export type TLink = {
@@ -24,10 +27,25 @@ type TSidebar = {
 	admin: TLink[];
 	student: TLink[];
 	instructor: TLink[];
+	guest: TLink[];
 };
-export const sidebars: TSidebar = {
+
+export const commonRoutes = [
+	{ url: "/dashboard/profile", icon: UserPen, name: "Profile" },
+	{
+		url: "/dashboard/change-password",
+		icon: LockKeyhole,
+		name: "Change Password",
+	},
+];
+
+export const sidebar: TSidebar = {
 	admin: [
-		{ url: "/admin", icon: LayoutDashboard, name: "Admin Dashboard" },
+		{
+			url: "/admin",
+			icon: LayoutDashboard,
+			name: "Admin Dashboard",
+		},
 		{
 			name: "Course",
 			isActive: true,
@@ -43,11 +61,10 @@ export const sidebars: TSidebar = {
 				},
 			],
 		},
+
 		{
 			name: "Module",
-
 			icon: ListFilter,
-
 			children: [
 				{
 					name: "Module List",
@@ -74,20 +91,74 @@ export const sidebars: TSidebar = {
 			],
 		},
 
+		{
+			name: "Course Category",
+			icon: ChartBarStacked,
+			children: [
+				{
+					name: "Category List",
+					url: "/admin/category-list",
+				},
+				{
+					name: "Create Category",
+					url: "/admin/create-category",
+				},
+			],
+		},
+		{
+			url: "/admin/transaction",
+			icon: BadgeDollarSign,
+			name: "Transactions",
+		},
+		{
+			url: "/admin/reviews",
+			icon: MessageSquareMore,
+			name: "Manage Reviews",
+		},
 		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
 	],
-	student: [
-		{ url: "/student", icon: Book, name: "My Courses" },
-		{ url: "/student/profile", icon: UserPen, name: "Profile" },
+	student: [{ url: "/student", icon: Book, name: "My Courses" }],
+	instructor: [
 		{
-			url: "/student/change-password",
-			icon: LockKeyhole,
-			name: "Change Password",
+			url: "/instructor",
+			icon: LayoutDashboard,
+			name: "Dashboard",
+		},
+		{
+			name: "Module",
+			icon: ListFilter,
+			children: [
+				{
+					name: "Module List",
+					url: "/instructor/module-list",
+				},
+				{
+					name: "Create module",
+					url: "/instructor/create-module",
+				},
+			],
+		},
+		{
+			name: "Lecture",
+			icon: TvMinimalPlay,
+			children: [
+				{
+					name: "Lecture List",
+					url: "/instructor/lecture-list",
+				},
+				{
+					name: "Create Lecture",
+					url: "/instructor/create-lecture",
+				},
+			],
 		},
 	],
-	instructor: [
-		{ url: "", icon: LayoutDashboard, name: "Instructor Dashboard" },
-		{ url: "classes", icon: Book, name: "My Classes" },
-		{ url: "reviews", name: "Reviews" },
+
+	guest: [
+		{
+			url: "/guest",
+			icon: LayoutDashboard,
+			name: "Dashboard",
+		},
 	],
 };

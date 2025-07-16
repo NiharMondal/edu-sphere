@@ -10,23 +10,37 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
-import { sidebars } from "./nav-links";
-import { useAppSelector } from "@/hooks";
-import { selectedUser } from "@/redux/slice/authSlice";
-import { NavUser } from "./nav-user";
-import { TProfile, useMyProfileQuery } from "@/redux/api/user-api/myProfileApi";
+import { commonRoutes, sidebar } from "./nav-links";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { logout, selectedUser } from "@/redux/slice/authSlice";
+
+import { LogOut } from "lucide-react";
+
+import { Button } from "../ui/button";
+import { removeCookie } from "@/actions/auth-action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+type UserRole = keyof typeof sidebar;
+
+const isValidRole = (role: string | undefined): role is UserRole => {
+	return ["admin", "student", "instructor", "guest"].includes(role as string);
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const user = useAppSelector(selectedUser);
 
-	const role = user?.role || "student";
+	const role: UserRole = isValidRole(user?.role) ? user?.role : "guest";
+	const roleBasedRoutes = sidebar[role];
+	const menuItems = [...roleBasedRoutes, ...commonRoutes];
 
-	const menuItems = role ? sidebars[role] : [];
-	const { data: profile, isLoading } = useMyProfileQuery();
-
-	if (isLoading) {
-		return <p>Wait...</p>;
-	}
+	const handleLogout = async () => {
+		dispatch(logout());
+		await removeCookie();
+		router.push("/");
+		toast.success("Logout successfully");
+	};
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader className="flex items-center ">
@@ -43,7 +57,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavMain items={menuItems} role={role} />
 			</SidebarContent>
 			<SidebarFooter>
-				{!isLoading && <NavUser data={profile?.result as TProfile} />}
+				<Button
+					variant={"secondary"}
+					className="text-primary"
+					onClick={handleLogout}
+				>
+					Logout <LogOut />{" "}
+				</Button>
 			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
