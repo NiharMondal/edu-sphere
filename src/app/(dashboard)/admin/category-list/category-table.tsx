@@ -14,7 +14,7 @@ import React from "react";
 import { toast } from "sonner";
 
 export default function CategoryTable() {
-	const { data: categories } = useAllCategoriesQuery();
+	const { data: categories } = useAllCategoriesQuery({});
 	const [deleteCategory, { isLoading: deleteLoading }] =
 		useDeleteCategoryMutation();
 

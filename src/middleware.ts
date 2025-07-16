@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { decodeToken } from "./lib/decodeToken";
 
 const authRoute = ["/student", "/admin", "/instructor"];
@@ -9,8 +9,11 @@ export function middleware(req: NextRequest) {
 	const pathName = req.nextUrl.pathname;
 	const token = req.cookies.get("accessToken")?.value;
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const decodedToken: any = decodeToken(token as string);
+	const decodedToken = decodeToken(token as string);
+
+	if (!decodedToken) {
+		return NextResponse.redirect(new URL("/", req.url));
+	}
 	const { role } = decodedToken;
 
 	if (!token) {

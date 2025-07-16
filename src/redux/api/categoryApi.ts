@@ -18,10 +18,14 @@ const categoryApi = baseApi.injectEndpoints({
 		}),
 
 		//get all categories
-		allCategories: builder.query<TServerResponse<TCategory[]>, void>({
-			query: () => ({
+		allCategories: builder.query<
+			TServerResponse<TCategory[]>,
+			Record<string, string>
+		>({
+			query: (params) => ({
 				url: "/categories",
 				method: "GET",
+				params: params,
 			}),
 			providesTags: ["categories"],
 		}),

@@ -32,13 +32,13 @@ export default function LoginForm() {
 	const handleLogin = async (values: z.infer<typeof loginSchema>) => {
 		try {
 			const res = await loginToAccount(values).unwrap(); // server action
-
-			if (res.success) {
+			console.log(res);
+			if (res?.success) {
 				toast.success("Logged in successfully");
 				await setCookie(res?.result?.accessToken); // setting cookie
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const user: any = decodeToken(res?.result?.accessToken);
+				const user = decodeToken(res?.result?.accessToken);
+
 				dispatch(
 					setCredentials({
 						user: user,

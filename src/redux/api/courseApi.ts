@@ -22,7 +22,13 @@ const courseApi = baseApi.injectEndpoints({
 			TServerResponse<TCourseResponse[]>,
 			Record<string, string>
 		>({
-			query: (params) => {
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				if (query.category) {
+					params.append("category", query.category);
+				}
+
 				return {
 					url: "/courses",
 					method: "GET",

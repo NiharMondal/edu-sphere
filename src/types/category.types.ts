@@ -4,4 +4,5 @@ export type TCategory = {
 	slug: string;
 	icon: string;
 	isDeleted: boolean;
+	courseCount: number;
 };
