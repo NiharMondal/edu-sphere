@@ -26,7 +26,7 @@ export default function ChangePasswordForm() {
 	) => {
 		try {
 			const res = await changePassword(values).unwrap();
-			console.log(res);
+
 			if (res?.success) {
 				toast.success("Password changed successfully");
 			}

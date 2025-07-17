@@ -4,7 +4,7 @@ import { ESTable } from "@/components/shared/es-table";
 import { useCourseByInstructorQuery } from "@/redux/api/courseApi";
 export default function AssignedCourseList() {
 	const { data: assignedCourses, isLoading } = useCourseByInstructorQuery();
-	console.log(assignedCourses);
+
 	const columns = [
 		{
 			key: "title",

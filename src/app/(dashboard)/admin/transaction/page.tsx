@@ -7,8 +7,6 @@ import { TPaymentResponseForTable } from "@/types/payment.types";
 export default function TransactionPage() {
 	const { data, isLoading } = useAllTransactionQuery(undefined);
 
-	console.log(data);
-
 	const columns = [
 		{
 			label: "Id",

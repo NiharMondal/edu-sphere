@@ -8,11 +8,11 @@ export const setCookie = async (token: string) => {
 	try {
 		const cookieStore = await cookies();
 		cookieStore.set("accessToken", token, {
-			secure: config.node_env === "production" ? true : false,
-			httpOnly: config.node_env === "production" ? true : false,
+			httpOnly: false, // readable by JS and middleware
+			secure: config.node_env === "production",
 			sameSite: "lax",
-			maxAge: 60 * 60 * 24 * 3,
 			path: "/",
+			maxAge: 60 * 15, // 15 min
 		});
 	} catch (error) {
 		console.log(error);

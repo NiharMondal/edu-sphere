@@ -18,7 +18,6 @@ import ESImageUpload from "../../../../components/form/ESUploadImage";
 export default function ProfileForm() {
 	const user = useAppSelector(selectedUser);
 
-	console.log(user);
 	const { data: userDetails, isLoading } = useUserByIdQuery(
 		user?.id as string,
 		{
@@ -52,7 +51,6 @@ export default function ProfileForm() {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error?.data?.message);
-			console.log(error);
 		}
 	};
 
