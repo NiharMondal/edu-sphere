@@ -49,7 +49,7 @@ export default function UpdateCourse({
 			role: "instructor",
 			fields: "name",
 		});
-	const { data: categoryData } = useAllCategoriesQuery();
+	const { data: categoryData } = useAllCategoriesQuery({});
 	const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
 
 	const instructorOptions = instructorData?.result?.map((ins) => ({
