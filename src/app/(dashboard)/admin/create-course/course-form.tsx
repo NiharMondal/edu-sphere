@@ -32,11 +32,11 @@ export default function CourseForm() {
 		role: "instructor",
 		fields: "name",
 	});
-	const { data: categories } = useAllCategoriesQuery();
+	const { data: categories } = useAllCategoriesQuery({});
 
 	const instructorOptions = instructor?.result?.map((ins) => ({
-		value: ins._id,
-		label: ins.name,
+		value: ins?._id,
+		label: ins?.name,
 	}));
 
 	const categoryOptions = categories?.result?.map((cat) => ({
