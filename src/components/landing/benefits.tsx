@@ -21,7 +21,7 @@ export default function Benefits() {
 						data-aos="fade-up"
 						data-aos-delay={index * 40}
 					>
-						<p className="text-right font-bold text-gray-shade-70 text-7xl">
+						<p className="text-right font-bold text-orange-shade-90 text-7xl">
 							{item.index}
 						</p>
 

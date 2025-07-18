@@ -12,7 +12,7 @@ export default function Footer() {
 				<div className="grid grid-cols-2  lg:grid-cols-5 gap-5">
 					<div className="col-span-full lg:col-span-2">
 						<Image
-							src={"/logo/logo-small.png"}
+							src={"/logo.png"}
 							width={54}
 							height={54}
 							alt="logo"
