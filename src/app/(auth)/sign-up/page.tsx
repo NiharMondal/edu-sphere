@@ -6,12 +6,12 @@ import Image from "next/image";
 export default function Register() {
 	return (
 		<section className="container">
-			<div className="w-full md:max-w-[500px] mx-auto flex items-center justify-center">
+			<div className="w-full md:max-w-[500px] mx-auto flex items-center justify-center pt-10">
 				<div className="border rounded-md p-10 space-y-5 w-full md:min-w-[500px]">
 					<div className="flex justify-center">
 						<Link href={"/"}>
 							<Image
-								src={"/logo.svg"}
+								src={"/logo.png"}
 								width={100}
 								height={100}
 								alt="Logo"

@@ -31,7 +31,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader className="flex items-center ">
 				<Link href={"/"}>
 					<Image
-						src={"/logo.svg"}
+						src={"/logo.png"}
 						width={100}
 						height={100}
 						alt="Logo"
