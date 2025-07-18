@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -12,8 +13,9 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { useAppDispatch } from "@/hooks";
 import { logout } from "@/redux/slice/authSlice";
-import { removeCookie } from "@/actions/auth-action";
 import { useRouter } from "next/navigation";
+import { useLoggedOutMutation } from "@/redux/api/authApi";
+import { toast } from "sonner";
 
 type UserAvatarProps = {
 	data: {
@@ -44,13 +46,22 @@ const getMenuItemsByRole = (role: string | undefined) => {
 
 export default function UserAvatar({ data, isLoading }: UserAvatarProps) {
 	const router = useRouter();
+	const [loggedOut] = useLoggedOutMutation();
 	const dispatch = useAppDispatch();
 	const menuItems = getMenuItemsByRole(data?.role);
 
 	const handleLogout = async () => {
-		dispatch(logout());
-		await removeCookie();
-		router.replace("/");
+		try {
+			const res = await loggedOut({}).unwrap();
+
+			if (res?.success) {
+				dispatch(logout());
+				router.push("/");
+				toast.success("Logged out successfully");
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	return (
 		<DropdownMenu>

@@ -5,16 +5,20 @@ import HeroSection from "@/components/landing/hero-section";
 import Testimonials from "@/components/landing/testimonials";
 
 import Footer from "@/components/shared/footer";
+import GeometricBackground from "@/components/shared/geometric-background";
 
 import Navbar from "@/components/shared/navbar";
 
 export default function Home() {
 	return (
 		<section>
-			<Navbar />
-			<HeroSection />
-			<Benefits />
+			<GeometricBackground>
+				<Navbar />
+				<HeroSection />
+			</GeometricBackground>
 			<Courses />
+			<Benefits />
+
 			<Testimonials />
 			<FAQs />
 			<Footer />

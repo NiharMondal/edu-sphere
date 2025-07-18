@@ -17,11 +17,11 @@ export default function Benefits() {
 				{benefits.map((item, index) => (
 					<div
 						key={item.index}
-						className="rounded-md p-12 bg-white hover:shadow"
+						className="rounded-md p-10 bg-white hover:shadow"
 						data-aos="fade-up"
 						data-aos-delay={index * 40}
 					>
-						<p className="text-right font-bold text-gray-shade-15 text-5xl">
+						<p className="text-right font-bold text-orange-shade-90 text-7xl">
 							{item.index}
 						</p>
 

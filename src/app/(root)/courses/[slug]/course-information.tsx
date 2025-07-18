@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
 import React from "react";
-
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 import Container from "@/components/shared/Container";
 import { Clock } from "lucide-react";
 import AppLoading from "@/app/loading";
@@ -94,23 +99,31 @@ export default function CourseInformation({ slug }: { slug: string }) {
 			</div>
 
 			<h2 className="text-gray-shade-30 font-semibold">Curriculum</h2>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+			<Accordion
+				type="single"
+				collapsible
+				className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5"
+			>
 				{course?.result?.modules.map((mod) => (
-					<div
-						className="bg-white p-5 md:p-8 xl:p-12 rounded-md max-h-fit"
+					<AccordionItem
 						key={mod._id}
+						value={mod._id}
+						className="p-5 bg-white rounded-md border"
 					>
-						<p className="text-right font-bold text-gray-shade-15 text-2xl">
-							{`0${mod.index}`}
-						</p>
-						<p className="text-2xl font-semibold py-4">
-							{mod.title}
-						</p>
-						<div className="space-y-5">
+						<AccordionTrigger className="hover:no-underline text-base font-medium p-0">
+							<div className="flex items-center gap-5">
+								<div className="flex flex-col items-center justify-center bg-orange-shade-80 p-2 rounded-md">
+									<span>Module</span>
+									<span>{mod.index}</span>
+								</div>
+								<p className="text-left">{mod.title}</p>
+							</div>
+						</AccordionTrigger>
+						<AccordionContent className="py-3 px-1 text-gray-shade-30 space-y-3">
 							{mod.lectures.map((lec, index) => (
 								<div
-									className="px-4 py-5 bg-white border md:flex items-center justify-between space-y-3 rounded-md  hover:ring-orange-shade-80 hover:ring-2 group"
 									key={lec._id}
+									className="px-4 py-5 bg-white border flex flex-col md:flex-row items-start md:items-center justify-between space-y-3 md:space-y-0 rounded-md hover:ring-orange-shade-80 hover:ring-1 group"
 								>
 									<div>
 										<p className="font-medium text-xl text-gray-shade-20">
@@ -120,16 +133,16 @@ export default function CourseInformation({ slug }: { slug: string }) {
 											Lesson {index + 1}
 										</p>
 									</div>
-									<span className="bg-white-shade-97 px-3 py-2 inline-flex gap-x-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30 rounded-md">
-										<Clock />
+									<span className="bg-white-shade-97 px-3 py-2 inline-flex items-center gap-x-2 text-gray-shade-35 cursor-default group-hover:bg-orange-shade-90 group-hover:text-gray-shade-30 rounded-md">
+										<Clock size={16} />
 										{lec.duration}
 									</span>
 								</div>
 							))}
-						</div>
-					</div>
+						</AccordionContent>
+					</AccordionItem>
 				))}
-			</div>
+			</Accordion>
 		</Container>
 	);
 }

@@ -6,7 +6,6 @@ import ideaIcon from "../../assets/idea-icon.svg";
 import abstractLine from "../../assets/abstract-line.svg";
 import { Button } from "../ui/button";
 
-import ReactPlayer from "react-player";
 import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
@@ -15,7 +14,7 @@ export default function HeroSection() {
 		router.push("/courses");
 	};
 	return (
-		<Container className="py-20 space-y-14">
+		<Container className="py-20 space-y-14 h-[calc(100vh-80px)] flex items-center justify-center">
 			<div className="w-full max-w-[950px] mx-auto text-center relative">
 				<Image
 					src={abstractLine}
@@ -55,46 +54,6 @@ export default function HeroSection() {
 				<div className="flex justify-center  mt-10" data-aos="fade-up">
 					<Button onClick={gotoCoursePage}>Explore Courses</Button>
 				</div>
-			</div>
-
-			{/* partner grid */}
-			<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-5 p-5 rounded-md bg-white mt-10">
-				<div className="px-5 py-4">
-					<p>zapier</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>Spotify</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>zoom</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>amazon</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>Adobe</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>Notion</p>
-				</div>
-				<div className="px-5 py-4">
-					<p>NETFLIX</p>
-				</div>
-			</div>
-
-			<div
-				className=" max-h-[700px] h-[400px] md:h-[700px] m-0 p-0 rounded-md overflow-hidden w-auto"
-				data-aos="fade-up"
-			>
-				<ReactPlayer
-					url={
-						"https://media.istockphoto.com/id/2156675608/video/hispanic-latin-american-couple-software-engineer-developer-use-computer-work-on-program.mp4?s=mp4-640x640-is&k=20&c=CHzdhPE9Y2wEdr0zqltlfhgLpGB9AU1mGnuo0AU91jk="
-					}
-					style={{ borderRadius: "20px" }}
-					height={"100%"}
-					width={"100%"}
-					controls={true}
-				/>
 			</div>
 		</Container>
 	);

@@ -19,7 +19,6 @@ import { TLectureResponse } from "@/types/lecture.types";
 export default function InstructorLectureTable() {
 	const { data: lectures, isLoading } = useAssignedLecturesQuery({}); // fetching lectures
 
-	console.log(lectures);
 	const [deleteLecture, { isLoading: deleteLoading }] =
 		useDeleteLectureMutation();
 

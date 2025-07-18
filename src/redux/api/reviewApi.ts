@@ -20,7 +20,6 @@ const reviewApi = baseApi.injectEndpoints({
 			Record<string, string>
 		>({
 			query: (params) => {
-				console.log(params);
 				return {
 					url: "/reviews",
 					method: "GET",

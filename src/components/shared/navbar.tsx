@@ -28,7 +28,7 @@ export default function Navbar() {
 	};
 
 	return (
-		<nav className="h-20 border-b" data-aos="fade-down">
+		<nav className="h-20 border-b z-50" data-aos="fade-down">
 			<Container className="h-full">
 				{/* desktop view  */}
 				<div className="hidden h-full w-full lg:grid grid-cols-4 content-center">
@@ -36,7 +36,7 @@ export default function Navbar() {
 					<div className="flex items-center gap-x-3">
 						<Link href={"/"}>
 							<Image
-								src={"/logo/logo-small.png"}
+								src={"/logo.png"}
 								height={192}
 								width={192}
 								alt="website logo"
@@ -134,7 +134,7 @@ export default function Navbar() {
 
 const DesktopLoginSection = () => {
 	return (
-		<div className="flex items-center gap-x-3">
+		<div className="flex items-center gap-x-3 z-50">
 			<Link href={"/sign-up"}>
 				<Button variant={"outline"} size={"lg"}>
 					Sign Up

@@ -7,7 +7,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { loginSchema } from "@/form-schema";
 import { Form } from "@/components/ui/form";
-import { setCookie } from "@/actions/auth-action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/hooks";
@@ -19,6 +18,7 @@ import ESInput from "@/components/form/ESInput";
 export default function LoginForm() {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+
 	const [loginToAccount, { isLoading }] = useLoginToAccountMutation();
 
 	const form = useForm<z.infer<typeof loginSchema>>({
@@ -32,10 +32,9 @@ export default function LoginForm() {
 	const handleLogin = async (values: z.infer<typeof loginSchema>) => {
 		try {
 			const res = await loginToAccount(values).unwrap(); // server action
-			console.log(res);
+
 			if (res?.success) {
 				toast.success("Logged in successfully");
-				await setCookie(res?.result?.accessToken); // setting cookie
 
 				const user = decodeToken(res?.result?.accessToken);
 

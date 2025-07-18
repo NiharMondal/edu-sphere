@@ -54,14 +54,12 @@ export default function Wrapper({ data }: TWrapperProps) {
 		course?.result?._id,
 		{ skip: !course?.result?._id }
 	);
-
-	console.log({ courseProgress });
 	const completedLectures = Array.isArray(
 		courseProgress?.result?.completedLectures
 	)
 		? courseProgress.result.completedLectures
 		: [];
-	console.log({ completedLectures });
+
 	const [currentLecture, setCurrentLecture] = useState<TLectureResponse>(
 		{} as TLectureResponse
 	);
@@ -106,6 +104,7 @@ export default function Wrapper({ data }: TWrapperProps) {
 	};
 
 	const flatLectures = getFlatLectureList();
+
 	const currentIndex = flatLectures?.findIndex(
 		(lec) => lec._id === data.lectureId
 	);
@@ -139,7 +138,7 @@ export default function Wrapper({ data }: TWrapperProps) {
 			} else {
 				// ✅ Only go here if there's no valid nextLecture
 				toast.error("You have completed the course");
-				router.push(`/${data.courseId}/locked`);
+				router.push(`/watch/${data.courseId}/locked`);
 			}
 		} catch (error) {
 			alert("You have completed the course");
@@ -248,11 +247,10 @@ export default function Wrapper({ data }: TWrapperProps) {
 									const isCompleted =
 										completedLectures.includes(lec?._id);
 									return (
-										<>
-											{isCompleted && (
+										<div key={lec._id}>
+											{isCompleted ? (
 												<Link
-													key={lec._id}
-													href={`/${data.courseId}/${lec.type}/${lec._id}`}
+													href={`/watch/${data.courseId}/${lec.type}/${lec._id}`}
 													onClick={() => {
 														setSearchTerm("");
 														setSearchResults([]);
@@ -262,8 +260,12 @@ export default function Wrapper({ data }: TWrapperProps) {
 														{lec.title}
 													</p>
 												</Link>
+											) : (
+												<p className="py-2 px-4 hover:bg-gray-100 rounded-md">
+													{lec.title}
+												</p>
 											)}
-										</>
+										</div>
 									);
 								})
 							) : (
@@ -292,10 +294,7 @@ export default function Wrapper({ data }: TWrapperProps) {
 									{mod?.lectures?.map((lec) => {
 										const isCompleted =
 											completedLectures.includes(lec._id);
-										console.log({
-											lec: lec._id,
-											isCompleted,
-										});
+
 										return (
 											<div
 												key={lec._id}

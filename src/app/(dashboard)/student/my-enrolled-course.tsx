@@ -46,7 +46,7 @@ export default function MyEnrolledCourses() {
 							className="my-4 bg-gray-shade-70"
 						/>
 						<Link
-							href={`/${data?.course?._id}/${data?.progress?.lastWatchedLecture?.type}/${data?.progress?.lastWatchedLecture?._id}`}
+							href={`/watch/${data?.course?._id}/${data?.progress?.lastWatchedLecture?.type}/${data?.progress?.lastWatchedLecture?._id}`}
 						>
 							<Button>Continue Course</Button>
 						</Link>
