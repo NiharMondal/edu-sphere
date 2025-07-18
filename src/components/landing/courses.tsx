@@ -105,10 +105,13 @@ export default function Courses() {
 				<CarouselNext />
 			</Carousel>
 			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-				{!courses?.result?.length && <p>No data found!</p>}
-				{courses?.result?.map((course) => (
-					<CourseCard course={course} key={course._id} />
-				))}
+				{courses?.result?.length ? (
+					courses?.result?.map((course) => (
+						<CourseCard course={course} key={course?._id} />
+					))
+				) : (
+					<p>No data found!</p>
+				)}
 			</div>
 		</Container>
 	);

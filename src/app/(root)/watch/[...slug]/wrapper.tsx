@@ -247,7 +247,10 @@ export default function Wrapper({ data }: TWrapperProps) {
 									const isCompleted =
 										completedLectures.includes(lec?._id);
 									return (
-										<div key={lec._id}>
+										<div
+											key={lec._id}
+											className="flex items-center gap-x-2"
+										>
 											{isCompleted ? (
 												<Link
 													href={`/watch/${data.courseId}/${lec.type}/${lec._id}`}
@@ -255,13 +258,22 @@ export default function Wrapper({ data }: TWrapperProps) {
 														setSearchTerm("");
 														setSearchResults([]);
 													}}
+													className="min-w-full"
 												>
-													<p className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md">
+													<p className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md flex items-center gap-x-2">
+														<CircleCheck
+															className="text-green-500"
+															size={16}
+														/>
 														{lec.title}
 													</p>
 												</Link>
 											) : (
-												<p className="py-2 px-4 hover:bg-gray-100 rounded-md">
+												<p className="py-2 px-4 hover:bg-gray-100 rounded-md flex items-center gap-x-2 min-w-full">
+													<Lock
+														className="text-primary"
+														size={16}
+													/>
 													{lec.title}
 												</p>
 											)}
