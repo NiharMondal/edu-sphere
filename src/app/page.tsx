@@ -6,6 +6,7 @@ import Testimonials from "@/components/landing/testimonials";
 import Container from "@/components/shared/Container";
 
 import Footer from "@/components/shared/footer";
+import GeometricBackground from "@/components/shared/geometric-background";
 
 import Navbar from "@/components/shared/navbar";
 import VideoPlayer from "@/components/ui/video-player";
@@ -13,8 +14,10 @@ import VideoPlayer from "@/components/ui/video-player";
 export default function Home() {
 	return (
 		<section>
-			<Navbar />
-			<HeroSection />
+			<GeometricBackground>
+				<Navbar />
+				<HeroSection />
+			</GeometricBackground>
 			<Courses />
 			<Benefits />
 			<Container>

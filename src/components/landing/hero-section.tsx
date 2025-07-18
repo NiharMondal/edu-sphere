@@ -14,7 +14,7 @@ export default function HeroSection() {
 		router.push("/courses");
 	};
 	return (
-		<Container className="py-20 space-y-14">
+		<Container className="py-20 space-y-14 h-[calc(100vh-80px)] flex items-center justify-center">
 			<div className="w-full max-w-[950px] mx-auto text-center relative">
 				<Image
 					src={abstractLine}
