@@ -1,109 +1,129 @@
-# Minimal LMS System
+# 📚 E-Learning Platform
 
-## Overview
-
-The **Minimal LMS System** is a Learning Management System designed for course management and user learning progress tracking. It features two primary panels:
-
--   **Admin Dashboard**: For course content management.
--   **User Panel**: For course consumption and progress tracking.
-
-The project follows the **MODULE architecture** and ensures a **responsive UI** using modern design principles.
-
-## Tech Stack
-
--   **Frontend**: Next.js (TypeScript), Tailwind CSS
--   **Backend**: Express.js (MVC architecture)
--   **Database**: MongoDB (Mongoose ODM)
+A full-featured, role-based e-learning platform built with **Next.js**, **Node.js**, **MongoDB**, and **Stripe**. The platform enables students to purchase and learn from courses, instructors to manage course content, and admins to control the entire system.
 
 ---
 
-### Credentials for Admin
+## 🚀 Features
 
--   **Email:** nihar@gmail.com
--   **Password:** 123456
+### 👤 Role-Based Access
 
-## Features
+-   **Admin**
+    -   Create and manage courses, modules, and lectures.
+    -   Assign instructors to courses.
+    -   Create and manage categories.
+-   **Instructor**
+    -   Can only update existing courses assigned by admin.
+    -   Create and manage modules and lectures under assigned courses.
+-   **Student**
+    -   Browse available courses.
+    -   Purchase courses via Stripe.
+    -   Access lectures in sequential order.
+    -   Track learning progress.
 
-### **Admin Dashboard (Authentication Required)**
+### 💳 Payment Integration
 
-#### **1. Course Management**
+-   Integrated **Stripe** for secure course purchases.
+-   Webhooks handle payment confirmation and enrollment.
 
--   **Course Upload**:
-    -   Fields: Thumbnail (image), Title, Price, Description
-    -   Courses are displayed in a grid with thumbnails, titles, prices, and descriptions.
--   **Course CRUD Operations**:
-    -   Edit/Delete existing courses.
-    -   Dynamic routing: Clicking on a course navigates to its **Module & Lecture Management** page.
+### 🔐 Authentication & Authorization
 
-#### **2. Module & Lecture Management**
+-   JWT-based authentication.
+-   Refresh token and access token mechanism.
+-   Role-based route protection (frontend and backend).
 
--   **Module Creation**:
-    -   Add modules with a **Title** and **Module Number** (auto-incremented).
--   **Lecture Creation**:
-    -   Add lectures under modules with:
-        -   Title
-        -   Video Upload/URL (Embedded YouTube links for simplicity)
-        -   Multiple PDF notes (Upload)
-    -   CRUD operations: Edit/Delete modules and lectures.
--   **Lecture List View**:
-    -   Display all lectures in a table.
-    -   Filter lectures by **Course** and **Module**.
+### 📡 Real-Time Features
 
----
+-   **Live notifications** (new lecture uploads, announcements) using **Socket.IO**.
 
-### **User Panel**
+## 📈 Progress Tracking
 
-#### **1. Course Details Page**
+-   Students’ progress is tracked at the **lecture level**.
+-   Completion status saved per user per lecture.
+-   Students can only access **unlocked** lectures based on prior completion.
 
--   **Dynamic Content**:
-    -   Displays course details uploaded by the admin (Thumbnail, Title, Price, Description).
-    -   Uses static data for additional sections (Reviews, Instructor Info).
+### 📁 Course Structure
 
-#### **2. Lecture Page**
+-   Each course consists of:
+    -   One or more **Modules**
+    -   Each module contains multiple **Lectures**
+-   Lecture unlocking handled sequentially (can’t access next until previous completed).
 
--   **Structure**:
-    -   Numbered modules with expandable lecture lists.
-    -   Search bar for filtering lessons by title.
--   **Content Delivery**:
-    -   **Locked Lectures**: Users unlock lectures sequentially (Next button unlocks subsequent lectures).
-    -   **Video Player**: Streams uploaded videos (Embedded YouTube links for simplicity).
-    -   **PDF Notes**: Download/view multiple PDFs per lecture.
--   **Progress Tracking**:
-    -   Visual indicators (progress bar/checkmarks) for completed lectures.
+-   **Backend GitHub Link:** [edu-sphere-backend](https://github.com/NiharMondal/edu-sphere-backend)
 
 ---
 
-## Installation & Setup
+## 🧑‍💻 Tech Stack
 
-### **1. Clone the Repository**
+### Frontend
+
+-   **Next.js** (App Router)
+-   **React**
+-   **Tailwind CSS** for styling
+-   **shadcn/ui** for UI components
+-   **React Hook Form + Zod** for form validation
+-   **Redux Toolkit** for state management
+-   **RTK Query** for data fetching and caching
+-   **Socket.IO Client** for live updates
+
+### Backend
+
+-   **Node.js**, **Express.js**
+-   **MongoDB**, **Mongoose**
+-   **JWT** for authentication
+-   **Stripe API** for payments
+-   **Socket.IO Server** for real-time communication
+-   **CORS**, **cookie-parser**, etc. for security & middleware
+-   **Backend GitHub Link:** [edu-sphere-backend](https://github.com/NiharMondal/edu-sphere-backend)
+
+---
+
+## ⚙️ Installation & Setup
+
+### Run Locally
+
+Clone the project
 
 ```bash
-    git clone https://github.com/NiharMondal/lms-client
-    cd lms-client
+  git clone https://github.com/NiharMondal/edu-sphere
 ```
 
-### **2. Install Dependencies**
+Go to the project directory
 
 ```bash
-    npm install
-
+  cd edu-sphere
 ```
 
-### **3. Configure Environement Variables**
+Install dependencies
 
-Create a _.env.local_ file in the root directory and add the required environment variables
-
-```
-    NEXT_PUBLIC_SERVER_URL = "http://localhost:5000/api/v1"
-    # NEXT_PUBLIC_SERVER_URL = "your developed backend link"
-    NODE_ENV = developemnt
-
+```bash
+  npm install
 ```
 
-### **4. Run the application**
+Start the server
 
-```
-    npm run dev
+```bash
+  npm run dev
 ```
 
-Visit http://localhost:3000 in your browser.
+### 3. Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env.local file  
+`NEXT_PUBLIC_SERVER_URL` = http://localhost:5000/api/v1 // replace this url when in production  
+`NEXT_PUBLIC_NODE_ENV` = development
+`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`=[your cloudinary name]
+`NEXT_PUBLIC_UPLOAD_PRESET`=[your upload preset]
+`NEXT_PUBLIC_CLOUDINARY_API_KEY`=[your cloudinary api key]
+`NEXT_PUBLIC_CLOUDINARY_API_SECRET`=[your cloudinary api secret]
+
+## 🔒 Security
+
+-   All tokens are stored using HttpOnly cookies.
+-   Implemented CSRF and CORS protections.
+-   Role-based middleware for API route protection.
+-   Environment variables used for sensitive configs.
+
+## 📬 Contact
+
+Built by [Nihar Mondal](https://nihar-mondal.vercel.app)  
+Feel free to reach out for collaboration or feedback!
