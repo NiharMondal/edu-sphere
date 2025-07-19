@@ -16,6 +16,7 @@ import { logout } from "@/redux/slice/authSlice";
 import { useRouter } from "next/navigation";
 import { useLoggedOutMutation } from "@/redux/api/authApi";
 import { toast } from "sonner";
+import { removeCookie } from "@/actions/auth-action";
 
 type UserAvatarProps = {
 	data: {
@@ -56,6 +57,7 @@ export default function UserAvatar({ data, isLoading }: UserAvatarProps) {
 
 			if (res?.success) {
 				dispatch(logout());
+				await removeCookie();
 				router.push("/");
 				toast.success("Logged out successfully");
 			}

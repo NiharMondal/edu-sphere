@@ -14,6 +14,7 @@ import { setCredentials } from "@/redux/slice/authSlice";
 import { decodeToken } from "@/lib/decodeToken";
 import { useLoginToAccountMutation } from "@/redux/api/authApi";
 import ESInput from "@/components/form/ESInput";
+import { setCookie } from "@/actions/auth-action";
 
 export default function LoginForm() {
 	const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export default function LoginForm() {
 
 			if (res?.success) {
 				toast.success("Logged in successfully");
-
+				await setCookie(res?.result?.accessToken);
 				const user = decodeToken(res?.result?.accessToken);
 
 				dispatch(

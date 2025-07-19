@@ -12,7 +12,7 @@ export const setCookie = async (token: string) => {
 			secure: config.node_env === "production",
 			sameSite: "lax",
 			path: "/",
-			maxAge: 60 * 15, // 15 min
+			maxAge: 15 * 60 * 1000, // 15 min
 		});
 	} catch (error) {
 		console.log(error);
