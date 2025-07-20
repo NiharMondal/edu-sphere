@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import CourseInformation from "./course-information";
+import AppLoading from "@/app/loading";
 
 export default async function CourseDetails({
 	params,
@@ -9,8 +10,8 @@ export default async function CourseDetails({
 	const { slug } = await params;
 
 	return (
-		<div>
+		<Suspense fallback={<AppLoading />}>
 			<CourseInformation slug={slug} />
-		</div>
+		</Suspense>
 	);
 }

@@ -273,3 +273,17 @@ export const updateCategorySchema = z.object({
 		.trim()
 		.optional(),
 });
+
+export const createReviewSchema = z.object({
+	student: z.string({ required_error: "Student ID is required" }),
+	course: z
+		.string({ required_error: "Course ID is required" })
+		.nonempty({ message: "Course ID can not be empty" }),
+	rating: z.coerce
+		.number()
+		.min(1, { message: "Min rating value is 1" })
+		.max(5, { message: "Max rating value is 5" }),
+	message: z
+		.string({ required_error: "Message is required" })
+		.nonempty({ message: "Message can not be empty" }),
+});

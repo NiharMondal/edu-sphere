@@ -14,6 +14,7 @@ import {
 } from "@/redux/api/courseApi";
 import { ESTable } from "@/components/shared/es-table";
 import { TCourseResponse } from "@/types/course.types";
+import NoDataFound from "@/components/NoDataFound";
 
 export default function CourseTable() {
 	const { data: courses } = useAllCourseQuery({}); // fetching courses
@@ -105,7 +106,7 @@ export default function CourseTable() {
 					rowKey={(course) => course?._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No course found!" />
 			)}
 		</>
 	);

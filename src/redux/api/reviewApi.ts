@@ -29,6 +29,16 @@ const reviewApi = baseApi.injectEndpoints({
 			providesTags: ["reviews"],
 		}),
 
+		getByCourseId: builder.query<
+			TServerResponse<TReviewResponse[]>,
+			string | undefined
+		>({
+			query: (courseId) => ({
+				url: `/reviews/${courseId}/course-review`,
+				method: "GET",
+			}),
+			providesTags: ["reviews"],
+		}),
 		deleteReview: builder.mutation<
 			TServerResponse<TReviewResponse>,
 			string
@@ -61,8 +71,9 @@ const reviewApi = baseApi.injectEndpoints({
 });
 
 export const {
-	useAllReviewsQuery,
 	useCreateReviewMutation,
+	useAllReviewsQuery,
+	useGetByCourseIdQuery,
 	useDeleteReviewMutation,
 	useAcceptReviewMutation,
 	useUndoAcceptMutation,

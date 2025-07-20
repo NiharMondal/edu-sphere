@@ -14,6 +14,8 @@ import {
 } from "@/redux/api/moduleApi";
 import { ESTable } from "@/components/shared/es-table";
 import { TModuleResponse } from "@/types/module.types";
+import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
 
 export default function ModuleTable() {
 	const { data: modules, isLoading } = useAllModulesQuery({}); // fetching modules
@@ -86,9 +88,7 @@ export default function ModuleTable() {
 		}
 	};
 
-	if (isLoading) {
-		return <p>Loading...</p>;
-	}
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
 			{modules?.result.length ? (
@@ -98,7 +98,7 @@ export default function ModuleTable() {
 					rowKey={(item) => item._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No Module found" />
 			)}
 		</div>
 	);

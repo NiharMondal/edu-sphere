@@ -17,6 +17,8 @@ import {
 import { ESTable } from "@/components/shared/es-table";
 import { TUserResponse } from "@/types/user.types";
 import { toast } from "sonner";
+import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
 
 const userRole = [
 	{
@@ -92,9 +94,7 @@ export default function UserTable() {
 		[updateUserRole]
 	);
 
-	if (isLoading) {
-		return <p>Loading...</p>;
-	}
+	if (isLoading) return <AppLoading />;
 
 	return (
 		<div>
@@ -105,7 +105,7 @@ export default function UserTable() {
 					data={users?.result}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No user found" />
 			)}
 		</div>
 	);

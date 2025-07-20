@@ -21,6 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
+import NoDataFound from "@/components/NoDataFound";
+import AppLoading from "@/app/loading";
 
 export default function ReviewTable() {
 	const [order, setOrder] = useState("desc");
@@ -36,6 +38,7 @@ export default function ReviewTable() {
 		sortBy: "rating",
 		order: order,
 		search: value,
+		isAccepted: "false",
 	});
 
 	const handleDelete = async (id: string) => {
@@ -114,7 +117,7 @@ export default function ReviewTable() {
 		},
 	];
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
 			<h4>Here is a full review list</h4>
@@ -149,7 +152,7 @@ export default function ReviewTable() {
 					rowKey={(review) => review?._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No Review found" />
 			)}
 		</div>
 	);

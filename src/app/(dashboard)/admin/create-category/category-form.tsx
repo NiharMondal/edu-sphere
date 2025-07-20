@@ -56,7 +56,6 @@ export default function CreateCategoryForm() {
 						name="icon"
 						label="Category Icon(optional)"
 					/>
-					{/* Course Select Field */}
 
 					<Button type="submit" disabled={isLoading}>
 						Create Category

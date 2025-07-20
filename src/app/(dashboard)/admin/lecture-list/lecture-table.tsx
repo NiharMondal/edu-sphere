@@ -15,6 +15,8 @@ import {
 import { ESTable } from "@/components/shared/es-table";
 import EsModal from "@/components/shared/es-modal";
 import { TLectureResponse } from "@/types/lecture.types";
+import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
 
 export default function LectureTable() {
 	const { data: lectures, isLoading } = useAllLecturesQuery(); // fetching lectures
@@ -95,7 +97,7 @@ export default function LectureTable() {
 			),
 		},
 	];
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 
 	return (
 		<div>
@@ -106,7 +108,7 @@ export default function LectureTable() {
 					rowKey={(item) => item._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No Lecture found" />
 			)}
 		</div>
 	);

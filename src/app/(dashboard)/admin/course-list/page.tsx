@@ -1,11 +1,17 @@
-import React, { Suspense } from "react";
+import React from "react";
 import CourseTable from "./course-table";
-import AppLoading from "@/app/loading";
+
+import DashboardTableHeading from "@/components/shared/dashboard-table-heading";
 
 export default function CourseListPage() {
 	return (
-		<Suspense fallback={<AppLoading />}>
+		<div>
+			<DashboardTableHeading
+				title="All Courses"
+				linkName="Create Course"
+				href="/admin/create-course"
+			/>
 			<CourseTable />
-		</Suspense>
+		</div>
 	);
 }

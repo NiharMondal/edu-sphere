@@ -1,4 +1,4 @@
-// hooks/useNotificationSocket.ts
+import { config } from "@/config";
 import { useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -14,7 +14,7 @@ export const useNotificationSocket = ({
 	useEffect(() => {
 		if (!userId) return;
 
-		socket = io("http://localhost:5000", {
+		socket = io(config.backend_url, {
 			query: { userId },
 		});
 

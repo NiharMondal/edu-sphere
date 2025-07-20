@@ -1,4 +1,5 @@
 "use client";
+import NoDataFound from "@/components/NoDataFound";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
@@ -54,7 +55,7 @@ export default function MyEnrolledCourses() {
 					</div>
 				))
 			) : (
-				<p>You have not enrolled any course yet!</p>
+				<NoDataFound message="You have not enrolled any course yet" />
 			)}
 		</div>
 	);

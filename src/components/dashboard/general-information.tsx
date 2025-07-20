@@ -2,10 +2,11 @@
 import { Book, GraduationCap, Landmark, Speech } from "lucide-react";
 import EduCard from "./edu-card";
 import { useGeneralInformationQuery } from "@/redux/api/meta-data";
+import AppLoading from "@/app/loading";
 export default function GeneralInformation() {
 	const { data, isLoading } = useGeneralInformationQuery(undefined);
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 	return (
 		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-5 bg-white-shade-99 rounded-md p-5 lg:p-8">
 			<EduCard

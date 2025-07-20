@@ -36,7 +36,7 @@ export default function Notification() {
 
 	return (
 		<>
-			{user?.role === "student" && (
+			{user?.role !== "admin" && (
 				<Popover>
 					<PopoverTrigger>
 						<div className="relative">

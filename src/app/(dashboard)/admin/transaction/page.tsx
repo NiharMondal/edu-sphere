@@ -1,5 +1,7 @@
 "use client";
 
+import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
 import { ESTable } from "@/components/shared/es-table";
 import { useAllTransactionQuery } from "@/redux/api/transactionApi";
 import { TPaymentResponseForTable } from "@/types/payment.types";
@@ -28,7 +30,7 @@ export default function TransactionPage() {
 		},
 	];
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
 			<h4 className="mt-5">Here is a list of transaction</h4>
@@ -41,9 +43,7 @@ export default function TransactionPage() {
 						rowKey={(item) => item?._id}
 					/>
 				) : (
-					<div>
-						<p>No data found!</p>
-					</div>
+					<NoDataFound message="No Transaction found" />
 				)}
 			</div>
 		</div>

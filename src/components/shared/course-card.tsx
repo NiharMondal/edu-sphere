@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { TCourseResponse } from "@/types/course.types";
+import { ArrowRight } from "lucide-react";
 type CourseCardProps = {
 	course: TCourseResponse;
 };
@@ -28,10 +29,11 @@ export default function CourseCard({ course }: CourseCardProps) {
 
 					<Link href={`/courses/${course?.slug}`}>
 						<Button
-							className="inline-block mt-5 w-full bg-white-shade-97"
+							className="inline-flex mt-5 w-full bg-white-shade-97 hover:tracking-wide transition duration-150"
 							variant={"outline"}
 						>
 							See Details
+							<ArrowRight />
 						</Button>
 					</Link>
 				</div>

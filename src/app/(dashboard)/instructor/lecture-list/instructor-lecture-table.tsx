@@ -15,6 +15,7 @@ import {
 import { ESTable } from "@/components/shared/es-table";
 import EsModal from "@/components/shared/es-modal";
 import { TLectureResponse } from "@/types/lecture.types";
+import AppLoading from "@/app/loading";
 
 export default function InstructorLectureTable() {
 	const { data: lectures, isLoading } = useAssignedLecturesQuery({}); // fetching lectures
@@ -95,7 +96,7 @@ export default function InstructorLectureTable() {
 			),
 		},
 	];
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 
 	return (
 		<div>

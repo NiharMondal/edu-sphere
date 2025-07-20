@@ -10,6 +10,7 @@ import { TReviewResponse } from "@/types/review.types";
 import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
 import { toast } from "sonner";
+import AppLoading from "@/app/loading";
 
 export default function AcceptedReview() {
 	const [undoAccept, { isLoading: undoLoading }] = useUndoAcceptMutation();
@@ -77,7 +78,7 @@ export default function AcceptedReview() {
 		},
 	];
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
 			<div>

@@ -6,6 +6,7 @@ import {
 	DialogDescription,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 
 type EsModalProps = {
@@ -32,10 +33,13 @@ export default function EsModal({
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogContent
-				className={`w-full max-h-[80vh] overflow-y-auto md:max-w-5xl ${className}`}
+				className={cn(
+					"w-full max-h-[80vh] overflow-y-auto md:max-w-5xl",
+					className
+				)}
 			>
 				<DialogHeader>
-					<DialogTitle>{title}</DialogTitle>
+					<DialogTitle className="text-center">{title}</DialogTitle>
 					{description && (
 						<DialogDescription className="sr-only">
 							{description}
