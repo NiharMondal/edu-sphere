@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
@@ -17,9 +17,28 @@ import EsModal from "@/components/shared/es-modal";
 import { TLectureResponse } from "@/types/lecture.types";
 import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
-
+import { useDebounce } from "use-debounce";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import Pagination from "@/components/Pagination";
 export default function LectureTable() {
-	const { data: lectures, isLoading } = useAllLecturesQuery(); // fetching lectures
+	const [currentPage, setCurrentPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const [order, setOrder] = useState("asc");
+
+	const [searchValue] = useDebounce(search, 800);
+
+	const { data: lectures, isLoading } = useAllLecturesQuery({
+		search: searchValue,
+		order,
+		page: currentPage.toString(),
+	});
 
 	const [deleteLecture, { isLoading: deleteLoading }] =
 		useDeleteLectureMutation();
@@ -101,12 +120,39 @@ export default function LectureTable() {
 
 	return (
 		<div>
-			{lectures?.result.length ? (
-				<ESTable
-					columns={columns}
-					data={lectures?.result}
-					rowKey={(item) => item._id}
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
+				<Input
+					type="text"
+					placeholder="Search by title..."
+					className="ring-1 ring-primary"
+					onChange={(e) => setSearch(e.target.value)}
 				/>
+
+				<Select onValueChange={(value) => setOrder(value)}>
+					<SelectTrigger>
+						<SelectValue placeholder="By Default ASC" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="asc">ASC</SelectItem>
+						<SelectItem value="desc">DESC</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+			{lectures?.result.length ? (
+				<div className="space-y-2">
+					<ESTable
+						columns={columns}
+						data={lectures?.result}
+						rowKey={(item) => item._id}
+					/>
+					{lectures?.meta && (
+						<Pagination
+							currentPage={lectures.meta?.currentPage}
+							totalPages={lectures?.meta?.totalPages}
+							onPageChange={setCurrentPage}
+						/>
+					)}
+				</div>
 			) : (
 				<NoDataFound message="No Lecture found" />
 			)}

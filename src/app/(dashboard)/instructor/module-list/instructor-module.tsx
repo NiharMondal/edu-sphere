@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
@@ -14,9 +14,28 @@ import {
 } from "@/redux/api/moduleApi";
 import { ESTable } from "@/components/shared/es-table";
 import { TModuleResponse } from "@/types/module.types";
+import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
+
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { useDebounce } from "use-debounce";
 
 export default function InstructorModuleTable() {
-	const { data: modules, isLoading } = useAssignedCourseModuleQuery({});
+	const [search, setSearch] = useState("");
+	const [order, setOrder] = useState("asc");
+
+	const [searchValue] = useDebounce(search, 800);
+	const { data: modules, isLoading } = useAssignedCourseModuleQuery({
+		order,
+		search: searchValue,
+	});
 
 	const [deleteModule, { isLoading: deleteLoading }] =
 		useDeleteModuleMutation();
@@ -86,11 +105,27 @@ export default function InstructorModuleTable() {
 		}
 	};
 
-	if (isLoading) {
-		return <p>Loading...</p>;
-	}
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
+				<Input
+					type="text"
+					placeholder="Search by title..."
+					className="ring-1 ring-primary"
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+
+				<Select onValueChange={(value) => setOrder(value)}>
+					<SelectTrigger>
+						<SelectValue placeholder="By Default ASC" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="asc">ASC</SelectItem>
+						<SelectItem value="desc">DESC</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
 			{modules?.result.length ? (
 				<ESTable
 					columns={columns}
@@ -98,7 +133,7 @@ export default function InstructorModuleTable() {
 					rowKey={(item) => item._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="No module found" />
 			)}
 		</div>
 	);

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
@@ -17,8 +17,28 @@ import { TModuleResponse } from "@/types/module.types";
 import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
 
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { useDebounce } from "use-debounce";
+import Pagination from "@/components/Pagination";
+
 export default function ModuleTable() {
-	const { data: modules, isLoading } = useAllModulesQuery({}); // fetching modules
+	const [currentPage, setCurrentPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const [order, setOrder] = useState("desc");
+
+	const [searchValue] = useDebounce(search, 800);
+	const { data: modules, isLoading } = useAllModulesQuery({
+		order,
+		search: searchValue,
+		page: currentPage.toString(),
+	});
 
 	const [deleteModule, { isLoading: deleteLoading }] =
 		useDeleteModuleMutation();
@@ -91,12 +111,39 @@ export default function ModuleTable() {
 	if (isLoading) return <AppLoading />;
 	return (
 		<div>
-			{modules?.result.length ? (
-				<ESTable
-					columns={columns}
-					data={modules.result}
-					rowKey={(item) => item._id}
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
+				<Input
+					type="text"
+					placeholder="Search by title..."
+					className="ring-1 ring-primary"
+					onChange={(e) => setSearch(e.target.value)}
 				/>
+
+				<Select onValueChange={(value) => setOrder(value)}>
+					<SelectTrigger>
+						<SelectValue placeholder="By Default DESC" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="asc">ASC</SelectItem>
+						<SelectItem value="desc">DESC</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+			{modules?.result.length ? (
+				<div className="space-y-2">
+					<ESTable
+						columns={columns}
+						data={modules.result}
+						rowKey={(item) => item._id}
+					/>
+					{modules?.meta && (
+						<Pagination
+							currentPage={modules.meta?.currentPage}
+							totalPages={modules?.meta?.totalPages}
+							onPageChange={setCurrentPage}
+						/>
+					)}
+				</div>
 			) : (
 				<NoDataFound message="No Module found" />
 			)}

@@ -23,8 +23,10 @@ import { Trash } from "lucide-react";
 import { toast } from "sonner";
 import NoDataFound from "@/components/NoDataFound";
 import AppLoading from "@/app/loading";
+import Pagination from "@/components/Pagination";
 
 export default function ReviewTable() {
+	const [currentPage, setCurrentPage] = useState(1);
 	const [order, setOrder] = useState("desc");
 	const [search, setSearch] = useState("");
 	const [value] = useDebounce(search, 1000);
@@ -39,6 +41,7 @@ export default function ReviewTable() {
 		order: order,
 		search: value,
 		isAccepted: "false",
+		page: currentPage.toString(),
 	});
 
 	const handleDelete = async (id: string) => {
@@ -146,11 +149,20 @@ export default function ReviewTable() {
 				</div>
 			</div>
 			{reviews?.result?.length ? (
-				<ESTable
-					columns={columns}
-					data={reviews?.result}
-					rowKey={(review) => review?._id}
-				/>
+				<div className="space-y-2">
+					<ESTable
+						columns={columns}
+						data={reviews?.result}
+						rowKey={(review) => review?._id}
+					/>
+					{reviews?.meta && (
+						<Pagination
+							currentPage={reviews.meta?.currentPage}
+							totalPages={reviews?.meta?.totalPages}
+							onPageChange={setCurrentPage}
+						/>
+					)}
+				</div>
 			) : (
 				<NoDataFound message="No Review found" />
 			)}

@@ -19,7 +19,13 @@ const reviewApi = baseApi.injectEndpoints({
 			TServerResponse<TReviewResponse[]>,
 			Record<string, string>
 		>({
-			query: (params) => {
+			query: (query) => {
+				const params = new URLSearchParams();
+				Object.entries(query).forEach(([key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(key, value);
+					}
+				});
 				return {
 					url: "/reviews",
 					method: "GET",

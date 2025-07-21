@@ -25,9 +25,11 @@ const courseApi = baseApi.injectEndpoints({
 			query: (query) => {
 				const params = new URLSearchParams();
 
-				if (query.category) {
-					params.append("category", query.category);
-				}
+				Object.entries(query).forEach(([Key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(Key, value);
+					}
+				});
 
 				return {
 					url: "/courses",

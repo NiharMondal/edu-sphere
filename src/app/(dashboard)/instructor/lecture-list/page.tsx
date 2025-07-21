@@ -4,7 +4,7 @@ import DashboardTableHeading from "@/components/shared/dashboard-table-heading";
 
 export default function LectureListPage() {
 	return (
-		<div>
+		<div className="space-y-5">
 			<DashboardTableHeading
 				title="All Lectures"
 				linkName="Create Lecture"

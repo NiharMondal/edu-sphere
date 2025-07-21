@@ -15,11 +15,24 @@ const lectureApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["lectures"],
 		}),
-		allLectures: builder.query<TServerResponse<TLectureResponse[]>, void>({
-			query: () => ({
-				url: "/lectures",
-				method: "GET",
-			}),
+		allLectures: builder.query<
+			TServerResponse<TLectureResponse[]>,
+			Record<string, string>
+		>({
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				Object.entries(query).forEach(([key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(key, value);
+					}
+				});
+				return {
+					url: "/lectures",
+					method: "GET",
+					params,
+				};
+			},
 			providesTags: ["lectures"],
 		}),
 		lectureById: builder.query<TServerResponse<TLectureResponse>, string>({
@@ -55,10 +68,20 @@ const lectureApi = baseApi.injectEndpoints({
 			TServerResponse<TLectureResponse[]>,
 			Record<string, string>
 		>({
-			query: () => ({
-				url: "/lectures/assigned-lectures",
-				method: "GET",
-			}),
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				Object.entries(query).forEach(([key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(key, value);
+					}
+				});
+				return {
+					url: "/lectures/assigned-lectures",
+					method: "GET",
+					params,
+				};
+			},
 			providesTags: ["lectures"],
 		}),
 	}),

@@ -19,10 +19,21 @@ const moduleApi = baseApi.injectEndpoints({
 			TServerResponse<TModuleResponse[]>,
 			Record<string, string>
 		>({
-			query: () => ({
-				url: "/modules",
-				method: "GET",
-			}),
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				Object.entries(query).forEach(([Key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(Key, value);
+					}
+				});
+
+				return {
+					url: "/modules",
+					method: "GET",
+					params,
+				};
+			},
 			providesTags: ["modules"],
 		}),
 		moduleById: builder.query<TServerResponse<TModuleResponse>, string>({
@@ -68,10 +79,19 @@ const moduleApi = baseApi.injectEndpoints({
 			TServerResponse<TModuleResponse[]>,
 			Record<string, string>
 		>({
-			query: () => ({
-				url: "/modules/assigned-modules",
-				method: "GET",
-			}),
+			query: (query) => {
+				const params = new URLSearchParams();
+				Object.entries(query).forEach(([key, value]) => {
+					if (value.trim().length > 0) {
+						params.append(key, value);
+					}
+				});
+				return {
+					url: "/modules/assigned-modules",
+					method: "GET",
+					params,
+				};
+			},
 			providesTags: ["modules"],
 		}),
 	}),

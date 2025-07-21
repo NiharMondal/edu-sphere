@@ -1,5 +1,6 @@
 "use client";
 import AppLoading from "@/app/loading";
+import NoDataFound from "@/components/NoDataFound";
 import { ESTable } from "@/components/shared/es-table";
 import { useCourseByInstructorQuery } from "@/redux/api/courseApi";
 export default function AssignedCourseList() {
@@ -34,7 +35,7 @@ export default function AssignedCourseList() {
 					rowKey={(course) => course._id}
 				/>
 			) : (
-				<p>No data found!</p>
+				<NoDataFound message="Admin have not assigned you any course yet" />
 			)}
 		</div>
 	);

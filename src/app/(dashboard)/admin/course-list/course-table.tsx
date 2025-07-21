@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
@@ -15,9 +15,28 @@ import {
 import { ESTable } from "@/components/shared/es-table";
 import { TCourseResponse } from "@/types/course.types";
 import NoDataFound from "@/components/NoDataFound";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { useDebounce } from "use-debounce";
+import Pagination from "@/components/Pagination";
 
 export default function CourseTable() {
-	const { data: courses } = useAllCourseQuery({}); // fetching courses
+	const [currentPage, setCurrentPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const [order, setOrder] = useState("asc");
+
+	const [searchValue] = useDebounce(search, 800);
+	const { data: courses } = useAllCourseQuery({
+		search: searchValue,
+		order,
+		page: currentPage.toString(),
+	});
 
 	const columns = [
 		{
@@ -44,6 +63,10 @@ export default function CourseTable() {
 		{
 			key: "level",
 			label: "Level",
+		},
+		{
+			key: "duration",
+			label: "Duration",
 		},
 		{
 			key: "actions",
@@ -98,16 +121,45 @@ export default function CourseTable() {
 	};
 
 	return (
-		<>
-			{courses?.result?.length ? (
-				<ESTable
-					columns={columns}
-					data={courses?.result}
-					rowKey={(course) => course?._id}
+		<div>
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
+				<Input
+					type="text"
+					placeholder="Search by title, level or course type"
+					className="ring-1 ring-primary"
+					onChange={(e) => setSearch(e.target.value)}
 				/>
-			) : (
-				<NoDataFound message="No course found!" />
-			)}
-		</>
+
+				<Select onValueChange={(value) => setOrder(value)}>
+					<SelectTrigger>
+						<SelectValue placeholder="By Default ASC" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="asc">ASC</SelectItem>
+						<SelectItem value="desc">DESC</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+			<div className="space-y-2">
+				{courses?.result?.length ? (
+					<>
+						<ESTable
+							columns={columns}
+							data={courses?.result}
+							rowKey={(course) => course?._id}
+						/>
+						{courses?.meta && (
+							<Pagination
+								currentPage={courses.meta?.currentPage}
+								totalPages={courses?.meta?.totalPages}
+								onPageChange={setCurrentPage}
+							/>
+						)}
+					</>
+				) : (
+					<NoDataFound message="No course found!" />
+				)}
+			</div>
+		</div>
 	);
 }

@@ -12,7 +12,7 @@ const protectedRoutes = [
 export function middleware(req: NextRequest) {
 	const pathName = req.nextUrl.pathname;
 	const token = req.cookies.get("accessToken")?.value;
-	console.log({ token });
+
 	// If route is protected and no token
 	if (protectedRoutes.some((route) => pathName.startsWith(route)) && !token) {
 		return NextResponse.redirect(new URL("/login", req.url));

@@ -1,4 +1,5 @@
 "use client";
+import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -12,10 +13,9 @@ import React from "react";
 export default function MyEnrolledCourses() {
 	const { data: myEnrollment, isLoading } = useMyEnrollmentsQuery();
 
+	if (isLoading) return <AppLoading />;
 	return (
 		<div className="mt-5 space-y-5">
-			{isLoading && <p>Loading...</p>}
-
 			{myEnrollment?.result.length ? (
 				myEnrollment?.result?.map((data) => (
 					<div
