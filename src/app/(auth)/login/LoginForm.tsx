@@ -19,7 +19,7 @@ import { setCookie } from "@/actions/auth-action";
 // 👇 Add demo credentials here
 const demoUsers = {
 	student: {
-		email: "admin@gmail.com",
+		email: "student@gmail.com",
 		password: "123456",
 	},
 	instructor: {
@@ -27,7 +27,7 @@ const demoUsers = {
 		password: "123456",
 	},
 	admin: {
-		email: "student@gmail.com",
+		email: "admin@gmail.com",
 		password: "1234567",
 	},
 };
