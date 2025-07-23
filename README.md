@@ -108,12 +108,13 @@ Start the server
 
 ### 3. Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env.local file  
+To run this project, you will need to add the following environment variables to your .env.local file
+
 `NEXT_PUBLIC_SERVER_URL` = http://localhost:5000/api/v1 // replace this url when in production  
-`NEXT_PUBLIC_NODE_ENV` = development
-`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`=[your cloudinary name]
-`NEXT_PUBLIC_UPLOAD_PRESET`=[your upload preset]
-`NEXT_PUBLIC_CLOUDINARY_API_KEY`=[your cloudinary api key]
+`NEXT_PUBLIC_NODE_ENV` = development  
+`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`=[your cloudinary name]  
+`NEXT_PUBLIC_UPLOAD_PRESET`=[your upload preset]  
+`NEXT_PUBLIC_CLOUDINARY_API_KEY`=[your cloudinary api key]  
 `NEXT_PUBLIC_CLOUDINARY_API_SECRET`=[your cloudinary api secret]
 
 ## 🔒 Security
