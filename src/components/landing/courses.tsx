@@ -31,11 +31,7 @@ export default function Courses() {
 		error,
 	} = useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
-	const {
-		data: courses,
-		isLoading,
-		isFetching,
-	} = useAllCourseQuery(
+	const { data: courses, isLoading } = useAllCourseQuery(
 		{
 			category,
 		},
@@ -113,7 +109,7 @@ export default function Courses() {
 				<CarouselNext />
 			</Carousel>
 			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-				{isLoading || isFetching ? (
+				{isLoading ? (
 					<LoadingSkeleton />
 				) : courses?.result?.length ? (
 					courses?.result?.map((course) => (

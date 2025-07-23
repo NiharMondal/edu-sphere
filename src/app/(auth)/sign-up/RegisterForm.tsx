@@ -1,7 +1,7 @@
 "use client";
-
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import ESInput from "@/components/form/ESInput";
 export default function RegisterForm() {
 	const router = useRouter();
 	const [createAccount, { isLoading }] = useCreateAccountMutation();
+
 	const form = useForm<z.infer<typeof registrationSchema>>({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
@@ -45,12 +46,7 @@ export default function RegisterForm() {
 				onSubmit={form.handleSubmit(handleSubmit)}
 				className="space-y-8"
 			>
-				<ESInput
-					form={form}
-					name="name"
-					label="Full Name"
-					type="text"
-				/>
+				<ESInput form={form} name="name" label="Full Name" />
 				<ESInput form={form} name="email" label="Email" type="email" />
 				<ESInput
 					form={form}
