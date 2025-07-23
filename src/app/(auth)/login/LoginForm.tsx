@@ -16,6 +16,21 @@ import { useLoginToAccountMutation } from "@/redux/api/authApi";
 import ESInput from "@/components/form/ESInput";
 import { setCookie } from "@/actions/auth-action";
 
+// 👇 Add demo credentials here
+const demoUsers = {
+	student: {
+		email: "admin@gmail.com",
+		password: "123456",
+	},
+	instructor: {
+		email: "instructor@gmail.com",
+		password: "123456",
+	},
+	admin: {
+		email: "student@gmail.com",
+		password: "1234567",
+	},
+};
 export default function LoginForm() {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -56,24 +71,54 @@ export default function LoginForm() {
 		}
 	};
 
-	return (
-		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit(handleLogin)}
-				className="space-y-5"
-			>
-				<ESInput form={form} name="email" label="Email" />
-				<ESInput
-					form={form}
-					name="password"
-					label="Password"
-					type="password"
-				/>
+	const handleDemoLogin = async (role: keyof typeof demoUsers) => {
+		const creds = demoUsers[role];
+		form.setValue("email", creds.email);
+		form.setValue("password", creds.password);
 
-				<Button type="submit" disabled={isLoading}>
-					Login
-				</Button>
-			</form>
-		</Form>
+		// Submit login immediately
+		handleLogin(creds);
+	};
+	return (
+		<>
+			{/** Demo buttons */}
+			<div className="mt-6">
+				<p className="mb-2 font-medium">Login as demo user:</p>
+				<div className="flex items-center justify-between flex-wrap ">
+					{(["student", "instructor", "admin"] as const).map(
+						(role) => (
+							<Button
+								key={role}
+								variant="outline"
+								onClick={() => handleDemoLogin(role)}
+								disabled={isLoading}
+							>
+								{role.charAt(0).toUpperCase() + role.slice(1)}
+							</Button>
+						)
+					)}
+				</div>
+			</div>
+
+			{/** Login form */}
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(handleLogin)}
+					className="space-y-5"
+				>
+					<ESInput form={form} name="email" label="Email" />
+					<ESInput
+						form={form}
+						name="password"
+						label="Password"
+						type="password"
+					/>
+
+					<Button type="submit" disabled={isLoading}>
+						Login
+					</Button>
+				</form>
+			</Form>
+		</>
 	);
 }

@@ -14,12 +14,12 @@ const notificationApi = baseApi.injectEndpoints({
 				method: "GET",
 			}),
 		}),
-		notiFicationByStudentId: builder.query<
+		notiFicationByUserId: builder.query<
 			TServerResponse<TNotificationResponse[]>,
 			Record<string, string>
 		>({
 			query: () => ({
-				url: "/notifications/student-notification",
+				url: "/notifications/my-notifications",
 				method: "GET",
 			}),
 		}),
@@ -46,7 +46,8 @@ const notificationApi = baseApi.injectEndpoints({
 
 export const {
 	useAllNotificationsQuery,
-	useNotiFicationByStudentIdQuery,
+	useNotiFicationByUserIdQuery,
+	useLazyNotiFicationByUserIdQuery,
 	useMakeReadMutation,
 	useMakeAllReadMutation,
 } = notificationApi;
