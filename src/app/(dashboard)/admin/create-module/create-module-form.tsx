@@ -45,7 +45,6 @@ export default function CreateModuleByAdmin() {
 
 			if (response.success) {
 				toast.success("Module created successfully");
-				form.reset();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {

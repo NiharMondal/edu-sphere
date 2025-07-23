@@ -20,7 +20,7 @@ import { setCookie } from "@/actions/auth-action";
 const demoUsers = {
 	student: {
 		email: "student@gmail.com",
-		password: "123456",
+		password: "1234567",
 	},
 	instructor: {
 		email: "instructor@gmail.com",
@@ -28,7 +28,7 @@ const demoUsers = {
 	},
 	admin: {
 		email: "admin@gmail.com",
-		password: "1234567",
+		password: "123456",
 	},
 };
 export default function LoginForm() {
@@ -106,7 +106,12 @@ export default function LoginForm() {
 					onSubmit={form.handleSubmit(handleLogin)}
 					className="space-y-5"
 				>
-					<ESInput form={form} name="email" label="Email" />
+					<ESInput
+						form={form}
+						name="email"
+						label="Email"
+						type="email"
+					/>
 					<ESInput
 						form={form}
 						name="password"

@@ -10,7 +10,7 @@ export const createCourseSchema = z.object({
 	price: z.coerce
 		.number({ required_error: "Price is required" })
 		.positive({ message: "Price can not be negative" })
-		.max(15000, "Should be less than 15000 Taka"),
+		.max(25000, "Should be less than 25000 Taka"),
 	pricingType: z.enum(["paid", "free"]),
 	shortVideo: z
 		.string()
@@ -48,7 +48,7 @@ export const updateCourseSchema = z.object({
 	price: z.coerce
 		.number({ required_error: "Price is required" })
 		.positive({ message: "Price can not be negative" })
-		.max(2000, "Should be less than 30 characters")
+		.max(25000, "Should be less than 25000 Taka")
 		.optional(),
 	pricingType: z.enum(["paid", "free"]).optional(),
 	shortVideo: z

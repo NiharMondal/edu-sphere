@@ -4,7 +4,7 @@ import Container from "../shared/Container";
 import SectionTitle from "../shared/Section-Title";
 
 import { useAllCourseQuery } from "@/redux/api/courseApi";
-import AppLoading from "@/app/loading";
+
 import CourseCard from "../shared/course-card";
 import {
 	Carousel,
@@ -16,6 +16,8 @@ import {
 import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import NoDataFound from "../NoDataFound";
+import { LoadingSkeleton } from "../LoadingSkeleton";
 const data = {
 	title: "Our Courses",
 	description:
@@ -26,7 +28,11 @@ export default function Courses() {
 	const { data: categories, isLoading: categoryLoading } =
 		useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
-	const { data: courses, isLoading } = useAllCourseQuery(
+	const {
+		data: courses,
+		isLoading,
+		isFetching,
+	} = useAllCourseQuery(
 		{
 			category,
 		},
@@ -43,7 +49,6 @@ export default function Courses() {
 		}
 	}, [categories?.result]);
 
-	if (isLoading) return <AppLoading />;
 	return (
 		<Container className="py-20">
 			<SectionTitle data={data} />
@@ -98,14 +103,16 @@ export default function Courses() {
 							</CarouselItem>
 						))
 					) : (
-						<p>No category</p>
+						<NoDataFound message="No Category found" />
 					)}
 				</CarouselContent>
 				<CarouselPrevious />
 				<CarouselNext />
 			</Carousel>
 			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-				{courses?.result?.length ? (
+				{isLoading || isFetching ? (
+					<LoadingSkeleton />
+				) : courses?.result?.length ? (
 					courses?.result?.map((course) => (
 						<CourseCard course={course} key={course?._id} />
 					))

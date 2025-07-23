@@ -21,22 +21,20 @@ export default function CourseCard({ course }: CourseCardProps) {
 				<li className="border rounded py-1 px-2">{course?.duration}</li>
 				<li className=" border rounded py-1 px-2">{course?.level}</li>
 			</ul>
-			<div className="p-4 ">
-				<div>
-					<p className="font-semibold text-xl text-gray-shade-15">
-						{course?.title}
-					</p>
+			<div className="p-4">
+				<p className="font-semibold text-xl text-gray-shade-15">
+					{course?.title}
+				</p>
 
-					<Link href={`/courses/${course?.slug}`}>
-						<Button
-							className="inline-flex mt-5 w-full bg-white-shade-97 hover:tracking-wide transition duration-150"
-							variant={"outline"}
-						>
-							See Details
-							<ArrowRight />
-						</Button>
-					</Link>
-				</div>
+				<Link href={`/courses/${course?.slug}`}>
+					<Button
+						className="inline-flex mt-5 w-full bg-white-shade-97 hover:tracking-wide transition duration-150"
+						variant={"outline"}
+					>
+						See Details
+						<ArrowRight />
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);

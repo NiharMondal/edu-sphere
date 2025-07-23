@@ -1,28 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { registrationSchema } from "@/form-schema";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useCreateAccountMutation } from "@/redux/api/authApi";
+import ESInput from "@/components/form/ESInput";
 
 export default function RegisterForm() {
 	const router = useRouter();
-	const [createAccount] = useCreateAccountMutation();
+	const [createAccount, { isLoading }] = useCreateAccountMutation();
 	const form = useForm<z.infer<typeof registrationSchema>>({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
@@ -52,46 +45,22 @@ export default function RegisterForm() {
 				onSubmit={form.handleSubmit(handleSubmit)}
 				className="space-y-8"
 			>
-				<FormField
-					control={form.control}
+				<ESInput
+					form={form}
 					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Name</FormLabel>
-							<FormControl>
-								<Input placeholder="Full name" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label="Full Name"
+					type="text"
 				/>
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input placeholder="Email address" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
+				<ESInput form={form} name="email" label="Email" type="email" />
+				<ESInput
+					form={form}
 					name="password"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Password</FormLabel>
-							<FormControl>
-								<Input placeholder="Password" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
+					label="Password"
+					type="password"
 				/>
-				<Button type="submit">Create Account</Button>
+				<Button type="submit" disabled={isLoading}>
+					Create Account
+				</Button>
 			</form>
 		</Form>
 	);
