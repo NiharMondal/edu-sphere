@@ -16,6 +16,7 @@ export default function CourseCard({ course }: CourseCardProps) {
 				width={200}
 				alt={course?.title}
 				className="h-auto md:h-[200px] w-full rounded-t-md rounded-b-none overflow-hidden object-center object-cover bg-white-shade-97 "
+				loading="lazy"
 			/>
 			<ul className="flex  items-center justify-between gap-2 text-sm py-2 px-4 border-b">
 				<li className="border rounded py-1 px-2">{course?.duration}</li>

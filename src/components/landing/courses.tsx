@@ -16,8 +16,8 @@ import {
 import { useAllCategoriesQuery } from "@/redux/api/categoryApi";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import NoDataFound from "../NoDataFound";
 import { LoadingSkeleton } from "../LoadingSkeleton";
+import NoDataFound from "../NoDataFound";
 const data = {
 	title: "Our Courses",
 	description:
@@ -25,8 +25,11 @@ const data = {
 	link: "/courses",
 };
 export default function Courses() {
-	const { data: categories, isLoading: categoryLoading } =
-		useAllCategoriesQuery({});
+	const {
+		data: categories,
+		isLoading: categoryLoading,
+		error,
+	} = useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
 	const {
 		data: courses,
@@ -56,7 +59,9 @@ export default function Courses() {
 			<Carousel className="w-[300px] md:w-[560px] lg:w-[900px] xl:w-full mx-auto mt-10">
 				{categoryLoading && <p>Loading...</p>}
 				<CarouselContent>
-					{categories?.result?.length ? (
+					{error ? (
+						<p> Something went wrong!</p>
+					) : categories?.result?.length ? (
 						categories.result?.map((cat) => (
 							<CarouselItem key={cat._id} className="basis-auto">
 								<div
@@ -102,9 +107,7 @@ export default function Courses() {
 								</div>
 							</CarouselItem>
 						))
-					) : (
-						<NoDataFound message="No Category found" />
-					)}
+					) : null}
 				</CarouselContent>
 				<CarouselPrevious />
 				<CarouselNext />
@@ -117,7 +120,7 @@ export default function Courses() {
 						<CourseCard course={course} key={course?._id} />
 					))
 				) : (
-					<p>No data found!</p>
+					<NoDataFound message="Course not found" />
 				)}
 			</div>
 		</Container>
