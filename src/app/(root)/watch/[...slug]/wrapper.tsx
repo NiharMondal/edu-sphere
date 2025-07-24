@@ -133,7 +133,7 @@ export default function Wrapper({ data }: TWrapperProps) {
 			// 2. Now, navigate based on whether nextLecture exists
 			if (nextLecture && nextLecture._id && nextLecture.type) {
 				router.push(
-					`/${data.courseId}/${nextLecture.type}/${nextLecture._id}`
+					`/watch/${data.courseId}/${nextLecture.type}/${nextLecture._id}`
 				);
 			} else {
 				// ✅ Only go here if there's no valid nextLecture
