@@ -139,7 +139,7 @@ export default function Notification() {
 									: ""
 							)}
 						>
-							<p>{notification.message}</p>
+							<p className="text-sm">{notification.message}</p>
 							<small className="text-xs text-gray-shade-60">
 								{moment(notification.createdAt).fromNow()}
 							</small>

@@ -18,10 +18,20 @@ const notificationApi = baseApi.injectEndpoints({
 			TServerResponse<TNotificationResponse[]>,
 			Record<string, string>
 		>({
-			query: () => ({
-				url: "/notifications/my-notifications",
-				method: "GET",
-			}),
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				Object.entries(query).forEach(([key, value]) => {
+					if (value?.trim()?.length > 0) {
+						params.append(key, value);
+					}
+				});
+				return {
+					url: "/notifications/my-notifications",
+					method: "GET",
+					params,
+				};
+			},
 		}),
 		makeRead: builder.mutation<
 			TServerResponse<TNotificationResponse[]>,
