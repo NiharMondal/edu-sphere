@@ -1,4 +1,4 @@
-import EarningChart from "@/components/dashboard/earnign-chart";
+import EarningChart from "@/components/dashboard/earning-chart";
 import GeneralInformation from "@/components/dashboard/general-information";
 
 export default function Dashboard() {

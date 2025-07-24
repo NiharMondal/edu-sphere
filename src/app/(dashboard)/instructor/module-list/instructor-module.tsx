@@ -29,7 +29,7 @@ import { useDebounce } from "use-debounce";
 
 export default function InstructorModuleTable() {
 	const [search, setSearch] = useState("");
-	const [order, setOrder] = useState("asc");
+	const [order, setOrder] = useState("desc");
 
 	const [searchValue] = useDebounce(search, 800);
 	const { data: modules, isLoading } = useAssignedCourseModuleQuery({
@@ -42,19 +42,21 @@ export default function InstructorModuleTable() {
 
 	const columns = [
 		{
-			key: "title",
-			label: "Title",
-		},
-		{
-			key: "index",
-			label: "Index",
-		},
-		{
 			key: "course.title",
 			label: "Course Name",
 
 			render: (item: { course: { title: string } }) => item.course?.title,
 		},
+
+		{
+			key: "title",
+			label: "Module Title",
+		},
+		{
+			key: "index",
+			label: "Module Index",
+		},
+
 		{
 			key: "actions",
 			label: "Action",
@@ -118,7 +120,7 @@ export default function InstructorModuleTable() {
 
 				<Select onValueChange={(value) => setOrder(value)}>
 					<SelectTrigger>
-						<SelectValue placeholder="By Default ASC" />
+						<SelectValue placeholder="By Default DESC" />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="asc">ASC</SelectItem>

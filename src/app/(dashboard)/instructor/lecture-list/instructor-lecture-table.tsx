@@ -59,19 +59,19 @@ export default function InstructorLectureTable() {
 
 	const columns = [
 		{
-			key: "title",
-			label: "Title",
-		},
-
-		{
 			key: "module.course.title",
 			label: "Course Name",
 			render: (item: TLectureResponse) => item.module?.course?.title,
 		},
+
 		{
 			key: "module.title",
 			label: "Module Name",
 			render: (item: TLectureResponse) => item.module?.title,
+		},
+		{
+			key: "title",
+			label: "Lecture Title",
 		},
 		{
 			key: "type",
