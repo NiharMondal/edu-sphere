@@ -26,8 +26,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { useDebounce } from "use-debounce";
+import Pagination from "@/components/Pagination";
 
 export default function InstructorModuleTable() {
+	const [currentPage, setCurrentPage] = useState(1);
+
 	const [search, setSearch] = useState("");
 	const [order, setOrder] = useState("desc");
 
@@ -35,6 +38,7 @@ export default function InstructorModuleTable() {
 	const { data: modules, isLoading } = useAssignedCourseModuleQuery({
 		order,
 		search: searchValue,
+		page: currentPage.toString(),
 	});
 
 	const [deleteModule, { isLoading: deleteLoading }] =
@@ -129,11 +133,20 @@ export default function InstructorModuleTable() {
 				</Select>
 			</div>
 			{modules?.result.length ? (
-				<ESTable
-					columns={columns}
-					data={modules.result}
-					rowKey={(item) => item._id}
-				/>
+				<div className="space-y-2">
+					<ESTable
+						columns={columns}
+						data={modules?.result}
+						rowKey={(item) => item._id}
+					/>
+					{modules?.meta && (
+						<Pagination
+							currentPage={modules.meta?.currentPage}
+							totalPages={modules?.meta?.totalPages}
+							onPageChange={setCurrentPage}
+						/>
+					)}
+				</div>
 			) : (
 				<NoDataFound message="No module found" />
 			)}
