@@ -76,10 +76,7 @@ export default function CreateModuleByInstructor() {
 						placeholder="Enter Module title"
 					/>
 
-					<Button
-						type="submit"
-						disabled={moduleLoading && courseOptions?.length === 0}
-					>
+					<Button type="submit" disabled={moduleLoading}>
 						Create Module
 					</Button>
 				</form>

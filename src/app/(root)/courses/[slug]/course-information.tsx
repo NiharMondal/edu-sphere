@@ -25,10 +25,12 @@ import ReviewForm from "./ReviewForm";
 import { useGetByCourseIdQuery } from "@/redux/api/reviewApi";
 import RatingStar from "@/components/RatingStar";
 import NoDataFound from "@/components/NoDataFound";
+import { useRouter } from "next/navigation";
 
 type TRef = React.RefObject<HTMLDivElement>;
 
 export default function CourseInformation({ slug }: { slug: string }) {
+	const router = useRouter();
 	const curriculumRef = useRef<HTMLDivElement>(null) as TRef;
 	const reviewsRef = useRef<HTMLDivElement>(null) as TRef;
 	const [activeTab, setActiveTab] = useState("curriculum");
@@ -47,7 +49,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 	const handleEnrollment = async () => {
 		//checking user logged-in or not
 		if (!user?.id) {
-			return toast.warning("Please login first");
+			return router.push("/login");
 		}
 		//collecting data that is used to enroll course
 		const data = {
@@ -125,7 +127,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</div>
 			</div>
 
-			<div className="flex items-center gap-x-5 sticky top-0 shadow  bg-white px-5 py-3 rounded-md mb-5">
+			<div className="flex items-center justify-center gap-x-5 sticky top-0 shadow  bg-white px-5 py-3 rounded-md mb-5">
 				<Button
 					variant={"secondary"}
 					size={"sm"}
@@ -152,11 +154,13 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</Button>
 			</div>
 			<div ref={curriculumRef}>
-				<h5 className="text-gray-shade-30 font-semibold">Curriculum</h5>
+				<h5 className="text-gray-shade-30 font-semibold text-center">
+					Curriculum
+				</h5>
 				<Accordion
 					type="single"
 					collapsible
-					className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10 mt-5"
+					className="mt-5 space-y-4 max-w-xl mx-auto"
 				>
 					{course?.result?.modules.map((mod) => (
 						<AccordionItem
