@@ -290,7 +290,7 @@ export default function Wrapper({ data }: TWrapperProps) {
 				</div>
 
 				{/* module section  */}
-				<div className="bg-white px-4 py-2 rounded-md">
+				<div className="bg-white px-4 py-2 rounded-md max-h-[500px] overflow-y-auto">
 					{course?.result?.modules.map((mod) => (
 						<Accordion
 							type="single"
