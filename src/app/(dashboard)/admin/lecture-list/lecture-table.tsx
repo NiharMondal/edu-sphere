@@ -18,19 +18,13 @@ import { TLectureResponse } from "@/types/lecture.types";
 import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
 import { useDebounce } from "use-debounce";
-import { Input } from "@/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+
 import Pagination from "@/components/Pagination";
+import SearchAndSort from "@/components/SearchAndSort";
 export default function LectureTable() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [search, setSearch] = useState("");
-	const [order, setOrder] = useState("asc");
+	const [order, setOrder] = useState("desc");
 
 	const [searchValue] = useDebounce(search, 800);
 
@@ -119,25 +113,13 @@ export default function LectureTable() {
 	if (isLoading) return <AppLoading />;
 
 	return (
-		<div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
-				<Input
-					type="text"
-					placeholder="Search by title..."
-					className="ring-1 ring-primary"
-					onChange={(e) => setSearch(e.target.value)}
-				/>
-
-				<Select onValueChange={(value) => setOrder(value)}>
-					<SelectTrigger>
-						<SelectValue placeholder="By Default ASC" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="asc">ASC</SelectItem>
-						<SelectItem value="desc">DESC</SelectItem>
-					</SelectContent>
-				</Select>
-			</div>
+		<div className="space-y-5">
+			<SearchAndSort
+				setSearch={setSearch}
+				setOrder={setOrder}
+				placeholder="Search by title"
+				selectValue="By Default DESC"
+			/>
 			{lectures?.result.length ? (
 				<div className="space-y-2">
 					<ESTable

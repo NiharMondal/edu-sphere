@@ -15,24 +15,19 @@ import {
 import { ESTable } from "@/components/shared/es-table";
 import { TCourseResponse } from "@/types/course.types";
 import NoDataFound from "@/components/NoDataFound";
-import { Input } from "@/components/ui/input";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+
 import { useDebounce } from "use-debounce";
 import Pagination from "@/components/Pagination";
+import AppLoading from "@/app/loading";
+import SearchAndSort from "@/components/SearchAndSort";
 
 export default function CourseTable() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [search, setSearch] = useState("");
-	const [order, setOrder] = useState("asc");
-
+	const [order, setOrder] = useState("desc");
 	const [searchValue] = useDebounce(search, 800);
-	const { data: courses } = useAllCourseQuery({
+
+	const { data: courses, isLoading } = useAllCourseQuery({
 		search: searchValue,
 		order,
 		page: currentPage.toString(),
@@ -120,26 +115,15 @@ export default function CourseTable() {
 		}
 	};
 
+	if (isLoading) return <AppLoading />;
 	return (
 		<div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 ">
-				<Input
-					type="text"
-					placeholder="Search by title, level or course type"
-					className="ring-1 ring-primary"
-					onChange={(e) => setSearch(e.target.value)}
-				/>
-
-				<Select onValueChange={(value) => setOrder(value)}>
-					<SelectTrigger>
-						<SelectValue placeholder="By Default ASC" />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="asc">ASC</SelectItem>
-						<SelectItem value="desc">DESC</SelectItem>
-					</SelectContent>
-				</Select>
-			</div>
+			<SearchAndSort
+				setSearch={setSearch}
+				setOrder={setOrder}
+				placeholder="Search by title, level and Course type..."
+				selectValue="By Default DESC"
+			/>
 			<div className="space-y-2">
 				{courses?.result?.length ? (
 					<>

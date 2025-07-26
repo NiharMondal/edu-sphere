@@ -8,11 +8,21 @@ const userApi = baseApi.injectEndpoints({
 			TServerResponse<TUserResponse[]>,
 			Record<string, string>
 		>({
-			query: (params) => ({
-				url: "/users",
-				method: "GET",
-				params: params,
-			}),
+			query: (query) => {
+				const params = new URLSearchParams();
+
+				Object.entries(query).forEach(([Key, value]) => {
+					if (value?.trim().length > 0) {
+						params.append(Key, value);
+					}
+				});
+
+				return {
+					url: "/users",
+					method: "GET",
+					params,
+				};
+			},
 			providesTags: ["users"],
 		}),
 

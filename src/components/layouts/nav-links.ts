@@ -115,7 +115,20 @@ export const sidebar: TSidebar = {
 			icon: MessageSquareMore,
 			name: "Manage Reviews",
 		},
-		{ url: "/admin/users", icon: UserCheck, name: "Manage Users" },
+		{
+			name: "Manage Users",
+			icon: UserCheck,
+			children: [
+				{
+					name: "Students",
+					url: "/admin/manage-students",
+				},
+				{
+					name: "Instructors",
+					url: "/admin/instructors-list",
+				},
+			],
+		},
 	],
 	student: [{ url: "/student", icon: Book, name: "My Courses" }],
 	instructor: [

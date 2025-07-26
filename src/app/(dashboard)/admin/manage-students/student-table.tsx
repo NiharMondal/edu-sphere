@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import moment from "moment";
 
 import {
@@ -19,28 +19,39 @@ import { TUserResponse } from "@/types/user.types";
 import { toast } from "sonner";
 import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
+import Pagination from "@/components/Pagination";
+import SearchAndSort from "@/components/SearchAndSort";
+import { useDebounce } from "use-debounce";
 
 const userRole = [
 	{
-		value: "admin",
-		level: "Admin",
+		value: "student",
+		level: "Student",
 	},
 	{
 		value: "instructor",
 		level: "Instructor",
 	},
-	{
-		value: "student",
-		level: "Student",
-	},
 ];
 
-export default function UserTable() {
-	const { data: users, isLoading } = useAllUsersQuery({});
+export default function StudentTable() {
+	const [currentPage, setCurrentPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const [order, setOrder] = useState("desc");
+	const [searchValue] = useDebounce(search, 800);
+	const { data: students, isLoading } = useAllUsersQuery({
+		role: "student",
+		order,
+		search: searchValue,
+		page: currentPage.toString(),
+	});
+
+	console.log(students);
 	const [updateUserRole] = useUpdateUserRoleMutation();
 
 	const columns = [
 		{ key: "name", label: "Name" },
+		{ key: "email", label: "Email" },
 		{ key: "role", label: "Role" },
 		{
 			key: "createdAt",
@@ -97,15 +108,31 @@ export default function UserTable() {
 	if (isLoading) return <AppLoading />;
 
 	return (
-		<div>
-			{users?.result?.length ? (
-				<ESTable
-					columns={columns}
-					rowKey={(item) => item._id}
-					data={users?.result}
-				/>
+		<div className="space-y-5">
+			<SearchAndSort
+				setOrder={setOrder}
+				setSearch={setSearch}
+				selectValue="By Default DESC"
+				placeholder="Search by name and email"
+			/>
+			{students?.result?.length ? (
+				<div className="space-y-2">
+					<ESTable
+						columns={columns}
+						rowKey={(item) => item._id}
+						data={students?.result}
+					/>
+
+					{students?.meta && (
+						<Pagination
+							currentPage={students.meta?.currentPage}
+							totalPages={students?.meta?.totalPages}
+							onPageChange={setCurrentPage}
+						/>
+					)}
+				</div>
 			) : (
-				<NoDataFound message="No user found" />
+				<NoDataFound message="No student found" />
 			)}
 		</div>
 	);

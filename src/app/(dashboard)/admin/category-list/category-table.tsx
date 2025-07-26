@@ -1,4 +1,5 @@
 "use client";
+import AppLoading from "@/app/loading";
 import NoDataFound from "@/components/NoDataFound";
 import UpdateCategory from "@/components/shared/@category/update-category";
 import EsModal from "@/components/shared/es-modal";
@@ -15,7 +16,7 @@ import React from "react";
 import { toast } from "sonner";
 
 export default function CategoryTable() {
-	const { data: categories } = useAllCategoriesQuery({});
+	const { data: categories, isLoading } = useAllCategoriesQuery({});
 	const [deleteCategory, { isLoading: deleteLoading }] =
 		useDeleteCategoryMutation();
 
@@ -78,6 +79,7 @@ export default function CategoryTable() {
 		},
 	];
 
+	if (isLoading) return <AppLoading />;
 	return (
 		<>
 			{categories?.result?.length ? (
