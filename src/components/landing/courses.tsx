@@ -26,9 +26,13 @@ const data = {
 	link: "/courses",
 };
 export default function Courses() {
-	const { data: categories, error } = useAllCategoriesQuery({});
+	const {
+		data: categories,
+		isLoading: categoryLoading,
+		error,
+	} = useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
-	const { data: courses, isLoading } = useAllCourseQuery(
+	const { data: courses } = useAllCourseQuery(
 		{
 			category,
 		},
@@ -45,7 +49,7 @@ export default function Courses() {
 		}
 	}, [categories?.result]);
 
-	if (isLoading) return <LoadingSkeleton />;
+	if (categoryLoading) return <LoadingSkeleton />;
 	return (
 		<Container className="py-20">
 			<SectionTitle data={data} />
