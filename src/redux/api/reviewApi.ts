@@ -37,7 +37,7 @@ const reviewApi = baseApi.injectEndpoints({
 
 		getByCourseId: builder.query<
 			TServerResponse<TReviewResponse[]>,
-			string | undefined
+			string
 		>({
 			query: (courseId) => ({
 				url: `/reviews/${courseId}/course-review`,
