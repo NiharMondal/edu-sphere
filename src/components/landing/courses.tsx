@@ -18,6 +18,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { LoadingSkeleton } from "../LoadingSkeleton";
 import NoDataFound from "../NoDataFound";
+import AppLoading from "@/app/loading";
 
 const data = {
 	title: "Our Courses",
@@ -32,7 +33,7 @@ export default function Courses() {
 		error,
 	} = useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
-	const { data: courses } = useAllCourseQuery(
+	const { data: courses, isLoading } = useAllCourseQuery(
 		{
 			category,
 		},
@@ -109,15 +110,18 @@ export default function Courses() {
 				<CarouselPrevious />
 				<CarouselNext />
 			</Carousel>
-			<>
-				{courses?.result?.length === 0 && (
-					<NoDataFound message="Course not found" />
+			<div>
+				{isLoading ? (
+					<AppLoading />
+				) : courses?.result.length === 0 ? (
+					<NoDataFound message="No Course found" />
+				) : (
+					<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+						{courses?.result?.map((course) => (
+							<CourseCard course={course} key={course?._id} />
+						))}
+					</div>
 				)}
-			</>
-			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-				{courses?.result?.map((course) => (
-					<CourseCard course={course} key={course?._id} />
-				))}
 			</div>
 		</Container>
 	);
