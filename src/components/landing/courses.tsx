@@ -18,6 +18,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { LoadingSkeleton } from "../LoadingSkeleton";
 import NoDataFound from "../NoDataFound";
+
 const data = {
 	title: "Our Courses",
 	description:
@@ -25,11 +26,7 @@ const data = {
 	link: "/courses",
 };
 export default function Courses() {
-	const {
-		data: categories,
-		isLoading: categoryLoading,
-		error,
-	} = useAllCategoriesQuery({});
+	const { data: categories, error } = useAllCategoriesQuery({});
 	const [category, setCategory] = useState("");
 	const { data: courses, isLoading } = useAllCourseQuery(
 		{
@@ -48,12 +45,12 @@ export default function Courses() {
 		}
 	}, [categories?.result]);
 
+	if (isLoading) return <LoadingSkeleton />;
 	return (
 		<Container className="py-20">
 			<SectionTitle data={data} />
 
 			<Carousel className="w-[300px] md:w-[560px] lg:w-[900px] xl:w-full mx-auto mt-10">
-				{categoryLoading && <p>Loading...</p>}
 				<CarouselContent>
 					{error ? (
 						<p> Something went wrong!</p>
@@ -108,16 +105,15 @@ export default function Courses() {
 				<CarouselPrevious />
 				<CarouselNext />
 			</Carousel>
-			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-				{isLoading ? (
-					<LoadingSkeleton />
-				) : courses?.result?.length ? (
-					courses?.result?.map((course) => (
-						<CourseCard course={course} key={course?._id} />
-					))
-				) : (
+			<>
+				{courses?.result?.length === 0 && (
 					<NoDataFound message="Course not found" />
 				)}
+			</>
+			<div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+				{courses?.result?.map((course) => (
+					<CourseCard course={course} key={course?._id} />
+				))}
 			</div>
 		</Container>
 	);
