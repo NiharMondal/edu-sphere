@@ -5,11 +5,11 @@ export default function ContactPage() {
 	return (
 		<div className=" bg-white text-gray-800">
 			{/* Header Section */}
-			<section className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-20 px-6 text-center">
+			<section className="bg-gradient-to-r from-orange-shade-90 to-orange-shade-97 py-20 px-6 text-center">
 				<h1 className="text-4xl md:text-5xl font-bold mb-4">
 					Get in Touch
 				</h1>
-				<p className="text-lg md:text-xl max-w-2xl mx-auto">
+				<p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-shade-60">
 					We&apos;re here to help you. Reach out with any questions,
 					feedback, or support requests.
 				</p>
@@ -60,9 +60,7 @@ export default function ContactPage() {
 							placeholder="Your message..."
 						/>
 					</div>
-					<Button className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
-						Submit Message
-					</Button>
+					<Button>Submit Message</Button>
 				</form>
 			</section>
 

@@ -6,7 +6,7 @@ import SectionTitle from "../shared/Section-Title";
 const data = {
 	title: "Benefits",
 	description:
-		"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident iste libero minima impedit fuga? Ea ut, sequi aliquam a nemo hic, amet quod laudantium exercitationem praesentium laborum. Aspernatur aut veritatis nesciunt sunt repellendus quo. Animi, incidunt? Dignissimos, rerum explicabo. Alias eaque quis quibusdam placeat illum quas laboriosam similique temporibus impedit!",
+		"Our platform is designed to help you build real skills that lead to real opportunities. With a focus on hands-on learning, you’ll work on practical projects that strengthen your portfolio and prepare you for real-world challenges.",
 	link: "/benefits",
 };
 export default function Benefits() {

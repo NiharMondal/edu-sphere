@@ -7,6 +7,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import { faqs } from "@/dummy-data/faqs";
 
 export default function FAQs() {
 	return (
@@ -24,89 +25,26 @@ export default function FAQs() {
 					</Button>
 				</div>
 				<div className="space-y-8 text-left">
-					<Accordion
-						type="single"
-						collapsible
-						className="p-10 bg-white rounded-md border"
-					>
-						<AccordionItem value="item-1" className="border-none">
-							<AccordionTrigger className="text-lg font-medium text-left">
-								Can I enroll in multiple courses at once?
-							</AccordionTrigger>
-							<AccordionContent className="text-gray-shade-30">
-								Absolutely! You can enroll in multiple courses
-								simultaneously and access them at your
-								convenience.
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
-					<Accordion
-						type="single"
-						collapsible
-						className="p-10 bg-white rounded-md border"
-					>
-						<AccordionItem value="item-2" className="border-none">
-							<AccordionTrigger className="text-lg font-medium text-left">
-								What kind of support can I expect from
-								instructors?
-							</AccordionTrigger>
-							<AccordionContent className="text-gray-shade-30">
-								Absolutely! You can enroll in multiple courses
-								simultaneously and access them at your
-								convenience.
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
-					<Accordion
-						type="single"
-						collapsible
-						className="p-10 bg-white rounded-md border"
-					>
-						<AccordionItem value="item-3" className="border-none">
-							<AccordionTrigger className="text-lg font-medium text-left">
-								Are the courses self-paced or do they have
-								specific start and end dates?
-							</AccordionTrigger>
-							<AccordionContent className="text-gray-shade-30">
-								Absolutely! You can enroll in multiple courses
-								simultaneously and access them at your
-								convenience.
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
-					<Accordion
-						type="single"
-						collapsible
-						className="p-10 bg-white rounded-md border"
-					>
-						<AccordionItem value="item-4" className="border-none">
-							<AccordionTrigger className="text-lg font-medium text-left">
-								Are there any prerequisites for the courses?
-							</AccordionTrigger>
-							<AccordionContent className="text-gray-shade-30">
-								Absolutely! You can enroll in multiple courses
-								simultaneously and access them at your
-								convenience.
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
-					<Accordion
-						type="single"
-						collapsible
-						className="p-10 bg-white rounded-md border"
-					>
-						<AccordionItem value="item-5" className="border-none">
-							<AccordionTrigger className="text-lg font-medium text-left">
-								Can I download the course materials for offline
-								access?
-							</AccordionTrigger>
-							<AccordionContent className="text-gray-shade-30">
-								Absolutely! You can enroll in multiple courses
-								simultaneously and access them at your
-								convenience.
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
+					{faqs.map((faq, index) => (
+						<Accordion
+							type="single"
+							collapsible
+							className="p-5 md:p-10 bg-white rounded-md border"
+							key={index}
+						>
+							<AccordionItem
+								value={faq.question}
+								className="border-none"
+							>
+								<AccordionTrigger className="text-lg font-medium text-left">
+									{faq.question}
+								</AccordionTrigger>
+								<AccordionContent className="text-gray-shade-30">
+									{faq.answer}
+								</AccordionContent>
+							</AccordionItem>
+						</Accordion>
+					))}
 				</div>
 			</div>
 		</Container>

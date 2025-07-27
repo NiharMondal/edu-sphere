@@ -40,7 +40,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 		useMakePaymentMutation();
 	const { data: course, isLoading } = useCourseBySlugQuery(slug);
 	const courseId = course?.result?._id;
-	const { data: reviews } = useGetByCourseIdQuery(courseId, {
+	const { data: reviews } = useGetByCourseIdQuery(courseId!, {
 		skip: !courseId,
 	});
 
@@ -92,17 +92,19 @@ export default function CourseInformation({ slug }: { slug: string }) {
 					</p>
 
 					<div className="flex items-center gap-x-3">
-						<div className=" data-[slot=avatar]:ring-2 data-[slot=avatar]:ring-orange-shade-50">
-							<Avatar>
-								<AvatarImage
-									src={
-										course?.result?.instructor?.avatar || ""
-									}
-									alt="instructor-photo"
-								/>
-								<AvatarFallback>AU</AvatarFallback>
-							</Avatar>
-						</div>
+						<Avatar className="ring-1 ring-primary">
+							<AvatarImage
+								src={
+									course?.result?.instructor?.avatar ||
+									"https://github.com/evilrabbit.png"
+								}
+								alt="instructor-photo"
+							/>
+							<AvatarFallback>
+								{course?.result?.instructor?.name}
+							</AvatarFallback>
+						</Avatar>
+
 						<span className="font-semibold text-gray-shade-30">
 							By {course?.result?.instructor?.name}
 						</span>
@@ -205,10 +207,13 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</Accordion>
 			</div>
 
-			<div ref={reviewsRef} className="bg-white  rounded-md max-w-3xl">
+			<div
+				ref={reviewsRef}
+				className="bg-white  rounded-md max-w-4xl mx-auto"
+			>
 				<div className="md:flex items-center md:justify-between space-y-5 md:space-y-0 border-b p-5">
 					<h5 className="text-gray-shade-30 font-semibold">
-						Here is a list of reviews
+						Reviews
 					</h5>
 					<EsModal
 						title="Write a review"
@@ -231,31 +236,33 @@ export default function CourseInformation({ slug }: { slug: string }) {
 						)}
 					</EsModal>
 				</div>
-				<div className="p-5">
-					{reviews?.result && reviews.result.length > 0 ? (
-						reviews.result.map((review) => (
-							<div
-								key={review._id}
-								className="space-y-2 border-b pb-2"
-							>
-								<div className="space-y-1">
-									<RatingStar
-										readOnly={true}
-										initialRating={review.rating}
-									/>
-									<p className="text-gray-shade-30  tracking-wide italic">
-										<q>{review.message}</q>
-									</p>
-								</div>
-
-								<p className="mt-4 font-semibold">
-									By - {review?.student?.name}
+				{reviews?.result.length === 0 && (
+					<NoDataFound message="This course has no reviews yet. Be the first one to write a review." />
+				)}
+				<div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-10">
+					{reviews?.result?.map((review, index) => (
+						<div
+							key={review._id}
+							className={cn(
+								"space-y-2",
+								index % 2 === 0 ? "border-r" : ""
+							)}
+						>
+							<div className="space-y-1">
+								<RatingStar
+									readOnly={true}
+									initialRating={review.rating}
+								/>
+								<p className="text-gray-shade-30  tracking-wide italic">
+									<q>{review.message}</q>
 								</p>
 							</div>
-						))
-					) : (
-						<NoDataFound message="This course has no reviews yet. Be the first one to write a review." />
-					)}
+
+							<p className="mt-4 font-semibold">
+								By - {review?.student?.name}
+							</p>
+						</div>
+					))}
 				</div>
 			</div>
 		</Container>

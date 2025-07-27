@@ -15,7 +15,7 @@ import AppLoading from "@/app/loading";
 const data = {
 	title: "Our Testimonials",
 	description:
-		"Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Ac cum eget habitasse in velit fringilla feugiat senectus in.",
+		"Hear from the learners who turned their goals into success stories. Our students come from diverse backgrounds—many with no prior experience—and have gone on to land jobs, launch freelance careers, and build confidence in their skills.",
 	link: "/testimonials",
 };
 

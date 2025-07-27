@@ -20,10 +20,12 @@ export default function AboutPage() {
 				</p>
 
 				<div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-					{achievements.map((ach) => (
+					{achievements.map((ach, index) => (
 						<div
 							key={ach.title}
 							className="bg-white rounded-md p-12"
+							data-aos="fade-up"
+							data-aos-delay={index * 40}
 						>
 							<div className="bg-orange-shade-90 size-14 stroke-orange-shade-97 flex items-center justify-center rounded-md">
 								<ach.icon size={32} color="orange" />
@@ -51,20 +53,22 @@ export default function AboutPage() {
 				</p>
 
 				<div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-					{ourGoals.map((ach) => (
+					{ourGoals.map((goal, index) => (
 						<div
-							key={ach.title}
+							key={goal.title}
 							className="bg-white rounded-md p-12"
+							data-aos="fade-up"
+							data-aos-delay={index * 40}
 						>
 							<div className="bg-orange-shade-90 size-14 stroke-orange-shade-97 flex items-center justify-center rounded-md">
-								<ach.icon size={32} color="orange" />
+								<goal.icon size={32} color="orange" />
 							</div>
 
 							<p className="text-lg md:text-xl font-medium text-gray-shade-15 mt-3 mb-2">
-								{ach.title}
+								{goal.title}
 							</p>
 							<p className="text-gray-shade-35 text-sm md:text-base">
-								{ach.subtitle}
+								{goal.subtitle}
 							</p>
 						</div>
 					))}

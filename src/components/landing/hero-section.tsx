@@ -15,19 +15,18 @@ export default function HeroSection() {
 	};
 	return (
 		<Container className="py-20 space-y-14 h-[calc(100vh-80px)] flex items-center justify-center">
-			<div className="w-full max-w-[950px] mx-auto text-center relative">
+			<div
+				className="w-full max-w-[950px] mx-auto text-center relative"
+				data-aos="zoom-in"
+			>
 				<Image
 					src={abstractLine}
 					height={30}
 					width={30}
 					alt="abstract-line"
 					className="size-10 absolute -top-6 left-0 md:left-16 md:-top-6"
-					data-aos="fade-up"
 				/>
-				<h1
-					className="inline-flex items-center gap-x-2 md:gap-x-5 text-xl sm:text-4xl md:text-5xl"
-					data-aos="fade-up"
-				>
+				<h1 className="inline-flex items-center gap-x-2 md:gap-x-5 text-xl sm:text-4xl md:text-5xl">
 					<span>
 						<Image
 							src={ideaIcon}
@@ -41,17 +40,14 @@ export default function HeroSection() {
 					Your Creative Potential
 				</h1>
 
-				<p
-					className="font-medium text-[24px] px-8 md:px-0 md:text-[38px] mt-7 flex flex-col"
-					data-aos="fade-up"
-				>
+				<p className="font-medium text-[24px] px-8 md:px-0 md:text-[38px] mt-7 flex flex-col">
 					with Online Design and Development Courses.
 					<span className=" font-normal text-[14px] md:text-base text-gray-shade-15">
 						Learn from Industry Experts and Enhance Your Skills.
 					</span>
 				</p>
 
-				<div className="flex justify-center  mt-10" data-aos="fade-up">
+				<div className="flex justify-center  mt-10">
 					<Button onClick={gotoCoursePage}>Explore Courses</Button>
 				</div>
 			</div>
