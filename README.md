@@ -1,6 +1,6 @@
 # 📚 E-Learning Platform
 
-A full-featured, role-based e-learning platform built with **Next.js**, **Node.js**, **MongoDB**, and **Stripe**. The platform enables students to purchase and learn from courses, instructors to manage course content, and admins to control the entire system.
+A full-featured, role-based e-learning platform built with **React**, **Next.js**, **Node.js**, **MongoDB**, **Stripe** and **socket.io**. The platform enables students to purchase and learn from courses, instructors to manage course content, and admins to control the entire system.
 
 ---
 
@@ -49,6 +49,9 @@ A full-featured, role-based e-learning platform built with **Next.js**, **Node.j
     -   Each module contains multiple **Lectures**
 -   Lecture unlocking handled sequentially (can’t access next until previous completed).
 
+### Live Link and Backend GitHub
+
+-   **Live Link** [edu-sphere-backend](https://edu-sphere-five.vercel.app/)
 -   **Backend GitHub Link:** [edu-sphere-backend](https://github.com/NiharMondal/edu-sphere-backend)
 
 ---
@@ -72,9 +75,8 @@ A full-featured, role-based e-learning platform built with **Next.js**, **Node.j
 -   **MongoDB**, **Mongoose**
 -   **JWT** for authentication
 -   **Stripe API** for payments
--   **Socket.IO Server** for real-time communication
+-   **Socket.IO Server** for real-time notifications
 -   **CORS**, **cookie-parser**, etc. for security & middleware
--   **Backend GitHub Link:** [edu-sphere-backend](https://github.com/NiharMondal/edu-sphere-backend)
 
 ---
 
@@ -106,7 +108,7 @@ Start the server
   npm run dev
 ```
 
-### 3. Environment Variables
+### Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env.local file
 
