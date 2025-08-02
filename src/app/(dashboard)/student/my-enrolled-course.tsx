@@ -15,7 +15,7 @@ export default function MyEnrolledCourses() {
 
 	if (isLoading) return <AppLoading />;
 	return (
-		<div className="mt-5 space-y-5">
+		<div className="space-y-5">
 			{myEnrollment?.result.length ? (
 				myEnrollment?.result?.map((data) => (
 					<div

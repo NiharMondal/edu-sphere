@@ -81,7 +81,7 @@ export default function LectureTable() {
 			render: (lecture: TLectureResponse) => (
 				<div className="space-x-1 space-y-1 text-center">
 					<EsModal
-						title="Update Module"
+						title="Update Lecture"
 						trigger={
 							<Button variant="outline">
 								<Edit className="mr-2 h-4 w-4" />

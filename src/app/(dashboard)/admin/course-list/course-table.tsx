@@ -70,7 +70,7 @@ export default function CourseTable() {
 			render: (lecture: TCourseResponse) => (
 				<div className="space-x-1 space-y-1 text-center">
 					<EsModal
-						title="Update Module"
+						title="Update Course"
 						trigger={
 							<Button variant="outline" size={"sm"}>
 								<Edit className="mr-2 h-4 w-4" />

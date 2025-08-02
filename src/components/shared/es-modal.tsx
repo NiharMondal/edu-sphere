@@ -39,7 +39,7 @@ export default function EsModal({
 				)}
 			>
 				<DialogHeader>
-					<DialogTitle className="text-center">{title}</DialogTitle>
+					<DialogTitle className="text-left">{title}</DialogTitle>
 					{description && (
 						<DialogDescription className="sr-only">
 							{description}

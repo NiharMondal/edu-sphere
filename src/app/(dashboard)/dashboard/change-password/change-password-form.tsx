@@ -38,7 +38,7 @@ export default function ChangePasswordForm() {
 	return (
 		<Form {...form}>
 			<form
-				className="max-w-xl w-full mt-10 space-y-5 p-10 border bg-white-shade-99  rounded-md"
+				className="w-full space-y-5 p-10 border bg-white-shade-99  rounded-md"
 				onSubmit={form.handleSubmit(handleChangePassword)}
 			>
 				<ESInput

@@ -10,7 +10,7 @@ interface StarRatingProps {
 	onChange?: (rating: number) => void;
 }
 
-export default function RatingStar({
+export default function Rating({
 	totalStars = 5,
 	initialRating = 0,
 	readOnly = false,

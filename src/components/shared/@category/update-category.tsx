@@ -25,8 +25,9 @@ export default function UpdateCategory({
 	categoryId,
 	closeModal,
 }: UpdateCategoryProps) {
-	const { data: category } = useCategoryByIdQuery(categoryId);
-	const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
+	const { data: category, isLoading } = useCategoryByIdQuery(categoryId);
+	const [updateCategory, { isLoading: updateLoading }] =
+		useUpdateCategoryMutation();
 
 	const form = useForm<z.infer<typeof updateCategorySchema>>({
 		resolver: zodResolver(updateCategorySchema),
@@ -61,6 +62,8 @@ export default function UpdateCategory({
 			});
 		}
 	}, [form, category?.result]);
+
+	if (isLoading) return <p>Loading...</p>;
 	return (
 		<div className="grid grid-cols-1 place-items-center">
 			<Form {...form}>
@@ -81,7 +84,7 @@ export default function UpdateCategory({
 					/>
 					{/* Course Select Field */}
 
-					<Button type="submit" disabled={isLoading}>
+					<Button type="submit" disabled={updateLoading}>
 						Update Category
 					</Button>
 				</form>

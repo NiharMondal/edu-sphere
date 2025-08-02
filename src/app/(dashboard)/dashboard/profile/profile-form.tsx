@@ -71,7 +71,7 @@ export default function ProfileForm() {
 	return (
 		<Form {...form}>
 			<form
-				className="max-w-xl w-full mt-10 space-y-5 p-10 bg-white-shade-99 border rounded-md"
+				className=" space-y-5 p-10 bg-white-shade-99 border rounded-md"
 				onSubmit={form.handleSubmit(handleUserDetails)}
 			>
 				<ESImageUpload

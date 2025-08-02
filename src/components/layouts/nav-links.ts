@@ -130,7 +130,10 @@ export const sidebar: TSidebar = {
 			],
 		},
 	],
-	student: [{ url: "/student", icon: Book, name: "My Courses" }],
+	student: [
+		{ url: "/student", icon: Book, name: "My Courses" },
+		{ url: "/student/reviews", icon: MessageSquareMore, name: "Reviews" },
+	],
 	instructor: [
 		{
 			url: "/instructor",

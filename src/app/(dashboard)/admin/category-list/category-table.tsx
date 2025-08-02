@@ -49,7 +49,7 @@ export default function CategoryTable() {
 			render: (category: TCategory) => (
 				<div className="space-x-1 space-y-1 text-center">
 					<EsModal
-						title="Update Module"
+						title="Update Category"
 						trigger={
 							<Button variant="outline" size={"sm"}>
 								<Edit className="mr-2 h-4 w-4" />
