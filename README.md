@@ -51,7 +51,7 @@ A full-featured, role-based e-learning platform built with **React**, **Next.js*
 
 ### Live Link and Backend GitHub
 
--   **Live Link** [edu-sphere-backend](https://edu-sphere-five.vercel.app/)
+-   **Live Link** [Edu Sphere](https://edu-sphere-five.vercel.app/)
 -   **Backend GitHub Link:** [edu-sphere-backend](https://github.com/NiharMondal/edu-sphere-backend)
 
 ---
