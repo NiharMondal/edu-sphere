@@ -2,6 +2,14 @@ import { TServerResponse } from "@/types";
 import { baseApi } from "./baseApi";
 import { TReviewRequest, TReviewResponse } from "@/types/review.types";
 
+type TUpdateReviewRequest = {
+	id: string;
+	payload: {
+		rating: number;
+		message: string;
+	};
+};
+
 const reviewApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		createReview: builder.mutation<
@@ -32,6 +40,14 @@ const reviewApi = baseApi.injectEndpoints({
 					params,
 				};
 			},
+			providesTags: ["reviews"],
+		}),
+
+		singleReview: builder.query<TServerResponse<TReviewResponse>, string>({
+			query: (id) => ({
+				url: `/reviews/${id}`,
+				method: "GET",
+			}),
 			providesTags: ["reviews"],
 		}),
 
@@ -73,14 +89,28 @@ const reviewApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ["reviews"],
 		}),
+
+		updateReview: builder.mutation<
+			TServerResponse<TReviewResponse>,
+			TUpdateReviewRequest
+		>({
+			query: ({ id, payload }) => ({
+				url: `/reviews/${id}`,
+				method: "PATCH",
+				body: payload,
+			}),
+			invalidatesTags: ["reviews"],
+		}),
 	}),
 });
 
 export const {
 	useCreateReviewMutation,
 	useAllReviewsQuery,
+	useSingleReviewQuery,
 	useGetByCourseIdQuery,
 	useDeleteReviewMutation,
 	useAcceptReviewMutation,
 	useUndoAcceptMutation,
+	useUpdateReviewMutation,
 } = reviewApi;

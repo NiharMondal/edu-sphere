@@ -27,7 +27,7 @@ export default function ReviewForm({ userId, courseId }: ReviewFormProps) {
 		resolver: zodResolver(createReviewSchema),
 		defaultValues: {
 			course: courseId,
-			student: userId || "",
+			student: userId,
 			rating: rating,
 			message: "",
 		},

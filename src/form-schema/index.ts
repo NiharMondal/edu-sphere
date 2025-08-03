@@ -287,3 +287,12 @@ export const createReviewSchema = z.object({
 		.string({ required_error: "Message is required" })
 		.nonempty({ message: "Message can not be empty" }),
 });
+export const updateReviewSchema = z.object({
+	rating: z.coerce
+		.number()
+		.min(1, { message: "Min rating value is 1" })
+		.max(5, { message: "Max rating value is 5" }),
+	message: z
+		.string({ required_error: "Message is required" })
+		.nonempty({ message: "Message can not be empty" }),
+});

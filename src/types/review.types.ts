@@ -13,5 +13,6 @@ export type TReviewResponse = {
 	course: TPopulatedCourse;
 	rating: number;
 	message: string;
+	isDeleted: boolean;
 	isAccepted: boolean;
 };
