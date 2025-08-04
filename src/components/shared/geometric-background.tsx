@@ -1,12 +1,15 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 type GeometricBackgroundProps = {
 	children: React.ReactNode;
+	className?: string;
 };
 export default function GeometricBackground({
 	children,
+	className,
 }: GeometricBackgroundProps) {
 	return (
-		<div className="min-h-screen w-full relative">
+		<div className={cn("h-auto w-full relative", className)}>
 			<div
 				className="absolute inset-0 -z-20"
 				style={{

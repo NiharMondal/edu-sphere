@@ -121,3 +121,25 @@
 		@apply text-base font-medium sm:font-semibold;
 	}
 }
+
+
+@layer components{
+	.ornament::after {
+		content: "";
+		position: absolute;
+		width: 91px;
+		height: 12px;
+		bottom: -10px;
+		right: 0;
+		z-index: -1;
+		transform: translate(-5px);
+		background-color: #ffc221;
+		-webkit-repeat: no-repeat;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-size: contain;
+		mask-size: contain;
+		-webkit-mask-image: url("/illustration/headline-curve.svg");
+		mask-image: url("/illustration/headline-curve.svg");
+	}
+}

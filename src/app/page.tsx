@@ -2,6 +2,7 @@ import Benefits from "@/components/landing/benefits";
 import Courses from "@/components/landing/courses";
 import FAQs from "@/components/landing/faqs";
 import HeroSection from "@/components/landing/hero-section";
+import HowItWorks from "@/components/landing/how-it-works";
 import Testimonials from "@/components/landing/testimonials";
 
 import Footer from "@/components/shared/footer";
@@ -17,6 +18,7 @@ export default function Home() {
 				<HeroSection />
 			</GeometricBackground>
 			<Courses />
+			<HowItWorks />
 			<Benefits />
 
 			<Testimonials />

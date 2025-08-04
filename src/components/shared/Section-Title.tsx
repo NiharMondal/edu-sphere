@@ -11,10 +11,10 @@ type SectionTitleProps = {
 };
 export default function SectionTitle({ data }: SectionTitleProps) {
 	return (
-		<div className="space-y-3">
-			<h2>{data.title}</h2>
+		<div className="space-y-5">
+			<h3 className="max-w-fit relative ornament">{data.title}</h3>
 			<div className="sm:flex items-start justify-between  gap-8">
-				<p className="max-w-5xl text-gray-shade-10">
+				<p className="max-w-5xl text-gray-shade-30">
 					{data.description}
 				</p>
 				<Button variant={"outline"}>
