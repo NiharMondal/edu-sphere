@@ -7,6 +7,7 @@ interface StarRatingProps {
 	totalStars?: number;
 	initialRating?: number;
 	readOnly?: boolean;
+	className?: string;
 	onChange?: (rating: number) => void;
 }
 
@@ -15,6 +16,7 @@ export default function Rating({
 	initialRating = 0,
 	readOnly = false,
 	onChange,
+	className,
 }: StarRatingProps) {
 	const [hovered, setHovered] = useState<number | null>(null);
 	const [rating, setRating] = useState(initialRating);
@@ -45,11 +47,12 @@ export default function Rating({
 					<Star
 						key={index}
 						className={cn(
-							"w-6 h-6  transition-colors duration-150",
+							"size-6 transition-colors duration-150",
 							isFilled
 								? "fill-yellow-400 text-yellow-400"
 								: "text-gray-300",
-							readOnly ? "cursor-default" : "cursor-pointer"
+							readOnly ? "cursor-default" : "cursor-pointer",
+							className
 						)}
 						onMouseEnter={() => handleMouseEnter(index)}
 						onMouseLeave={handleMouseLeave}

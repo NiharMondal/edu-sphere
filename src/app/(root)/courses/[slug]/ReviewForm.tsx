@@ -18,7 +18,11 @@ type ReviewFormProps = {
 };
 
 type ReviewForm = z.infer<typeof createReviewSchema>;
-export default function ReviewForm({ userId, courseId }: ReviewFormProps) {
+export default function ReviewForm({
+	userId,
+	courseId,
+	closeModal,
+}: ReviewFormProps) {
 	const router = useRouter();
 
 	const [createReview] = useCreateReviewMutation();
@@ -44,6 +48,7 @@ export default function ReviewForm({ userId, courseId }: ReviewFormProps) {
 			const res = await createReview(values).unwrap();
 			if (res.success) {
 				toast.success("Thank you for your review");
+				closeModal();
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
@@ -69,8 +74,12 @@ export default function ReviewForm({ userId, courseId }: ReviewFormProps) {
 					label="Message"
 					placeholder="Write something about this course..."
 				/>
-
-				<Button type="submit">Submit</Button>
+				<div className="flex items-center justify-between">
+					<Button type="submit">Submit Review</Button>
+					<Button onClick={closeModal} variant={"outline"}>
+						Cancel
+					</Button>
+				</div>
 			</form>
 		</Form>
 	);

@@ -4,7 +4,7 @@ import { z } from "zod";
 export const createCourseSchema = z.object({
 	title: z
 		.string({ required_error: "Title is required" })
-		.min(10, "Title should be more than 10 characters")
+		.min(33, "Title should be more than 33 characters")
 		.max(50, "Title should be less than 50 characters")
 		.trim(),
 	price: z.coerce

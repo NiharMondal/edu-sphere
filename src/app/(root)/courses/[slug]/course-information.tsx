@@ -82,14 +82,16 @@ export default function CourseInformation({ slug }: { slug: string }) {
 	return (
 		<Container className="space-y-10 py-20">
 			<div className="grid grid-cols-1 md:grid-cols-2 place-content-center gap-10 pb-10 ">
-				<div className="space-y-2">
-					<h2 className="font-semibold text-gray-shade-15">
-						{course?.result?.title}
-					</h2>
+				<div className="space-y-8">
+					<div className="space-y-2">
+						<h2 className="font-semibold text-gray-shade-15">
+							{course?.result?.title}
+						</h2>
 
-					<p className="text-gray-shade-35 text-base lg:text-lg">
-						{course?.result?.description}
-					</p>
+						<p className="text-gray-shade-35 text-base lg:text-lg">
+							{course?.result?.description}
+						</p>
+					</div>
 
 					<div className="flex items-center gap-x-3">
 						<Avatar className="ring-1 ring-primary">
@@ -129,7 +131,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</div>
 			</div>
 
-			<div className="flex items-center justify-center gap-x-5 sticky top-0 shadow  bg-white px-5 py-3 rounded-md mb-5">
+			<div className="space-x-5 sticky top-0 shadow  bg-white px-5 py-5 rounded-md mb-5">
 				<Button
 					variant={"secondary"}
 					size={"sm"}
@@ -156,14 +158,10 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</Button>
 			</div>
 			<div ref={curriculumRef}>
-				<h5 className="text-gray-shade-30 font-semibold text-center">
+				<h4 className="text-gray-shade-30 font-semibold mb-3">
 					Curriculum
-				</h5>
-				<Accordion
-					type="single"
-					collapsible
-					className="mt-5 space-y-4 max-w-xl mx-auto"
-				>
+				</h4>
+				<Accordion type="single" collapsible className="space-y-3">
 					{course?.result?.modules.map((mod) => (
 						<AccordionItem
 							key={mod._id}
@@ -207,10 +205,7 @@ export default function CourseInformation({ slug }: { slug: string }) {
 				</Accordion>
 			</div>
 
-			<div
-				ref={reviewsRef}
-				className="bg-white  rounded-md max-w-4xl mx-auto"
-			>
+			<div ref={reviewsRef} className="bg-white rounded-md ">
 				<div className="md:flex items-center md:justify-between space-y-5 md:space-y-0 border-b p-5">
 					<h5 className="text-gray-shade-30 font-semibold">
 						Reviews
